@@ -1,0 +1,20 @@
+package com.dialoguespace.dao;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class MemberDAOImpl implements MemberDAO {
+
+	@Autowired
+	private SqlSession sqlsession;
+	
+	// 회원 등록
+	@Override
+	public int insertMember(MemberDto memberDto) throws Exception {
+		System.out.println("MemberDAOImpl id : " + id);
+		return sqlsession.insert("memberMapper.insertMember", id);
+	}
+
+}

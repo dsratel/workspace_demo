@@ -1,0 +1,31 @@
+package com.dialoguespace.controller;
+
+import java.net.URLEncoder;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dialoguespace.service.MemberService;
+
+
+@Controller
+@RequestMapping(value="/member", produces="text/plain;charset=UTF-8")
+public class MemberController {
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@PostMapping(value="/insertMember.do")
+	public String insertMember(@RequestBody String req, Model model) throws Exception {
+		System.out.println("MemberController req : " + req);
+		String encodeResult = URLEncoder.encode(req, "UTF-8");
+		System.out.println("MemberController dcd : " + encodeResult);
+		//memberService.insertMember(id);
+		return "result";
+	}
+
+}

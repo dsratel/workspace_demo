@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="memberMapper">
+	
+	<!-- 멤버 등록 -->
+	<!-- insert id="insertMember" parameterType="memberDto">
+		INSERT INTO T_MEMBER(m_id) VALUES(#{id})
+	</insert -->
+	<select id="test">
+		select now();
+	</select>
+	
+
+</mapper>

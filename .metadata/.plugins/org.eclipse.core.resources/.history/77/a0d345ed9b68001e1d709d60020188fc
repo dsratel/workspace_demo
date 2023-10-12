@@ -1,0 +1,8 @@
+package com.dialoguespace.dao;
+
+import com.dialoguespace.dto.MemberDTO;
+
+public interface MemberDAO {
+	// 등록
+	public int insertMember(MemberDTO memberDto) throws Exception;
+}

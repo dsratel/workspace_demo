@@ -1,0 +1,23 @@
+package com.dialoguespace.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.dialoguespace.dto.MemberDTO;
+import com.dialoguespace.service.MemberService;
+
+
+@Controller
+@RequestMapping(value="/member")
+public class MemberController {
+	
+	private MemberService memberService;
+	
+	@PostMapping("/insertMember.do")
+	public int insertMember(@RequestBody MemberDTO memberDto) throws Exception {
+		return memberService.insertMember(memberDto);
+	}
+
+}

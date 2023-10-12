@@ -1,0 +1,18 @@
+package com.dialoguespace.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.dao.MemberDAO;
+
+@Service
+public class MemberService {
+	
+	@Autowired
+	private MemberDAO memberDAO;
+	
+	public int insertMember(String id) throws Exception {
+		System.out.println("memberDAO id : " + id);
+		return memberDAO.insertMember(id);
+	}
+}

@@ -1,0 +1,23 @@
+package com.dialoguespace.service;
+
+import java.sql.Timestamp;
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.dao.MemberDAO;
+import com.dialoguespace.dto.MemberDTO;
+
+@Service
+public class MemberService {
+	@Autowired
+	private MemberDAO memberDAO;
+	
+	public int insertMember(MemberDTO memberDto) throws Exception {
+		memberDto.setM_regdate(LocalDate.now());
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		System.out.println("memberDAO memberDto : " + memberDto);
+		return memberDAO.insertMember(memberDto);
+	}
+}

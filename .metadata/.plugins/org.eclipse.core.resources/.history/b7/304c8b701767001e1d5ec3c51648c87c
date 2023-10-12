@@ -1,0 +1,5 @@
+package com.dialoguespace.dto;
+
+public class MemberDTO {
+
+}

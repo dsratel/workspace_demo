@@ -1,0 +1,17 @@
+package com.dialoguespace.service;
+
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.dao.MemberDAO;
+import com.dialoguespace.dto.MemberDTO;
+
+@Service
+public class MemberService {
+	
+	private MemberDAO memberDAO;
+	
+	public int insertMember(String id) throws Exception {
+		System.out.println("memberDAO id : " + id);
+		return memberDAO.insertMember(id);
+	}
+}

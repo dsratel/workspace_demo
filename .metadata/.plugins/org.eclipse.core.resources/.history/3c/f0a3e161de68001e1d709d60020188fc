@@ -1,0 +1,41 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>member list</title>
+</head>
+<body>
+	<h1>회원 목록</h1>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">ID</th>
+					<th scope="col">닉네임</th>
+					<th scope="col">이름</th>
+					<th scope="col">주소</th>
+					<th scope="col">전화번호</th>
+					<th scope="col">가입일자</th>
+				</tr>
+			</thead>
+		
+			<tbody>
+				<c:forEach var="member" items="${list }">
+				<tr>
+					<th scope="row">${status.count}</th>
+					<td><c:out value="${member.m_id }"/></td>
+					<td><c:out value="${member.m_nickname }"/></td>
+					<td><c:out value="${member.m_name }"/></td>
+					<td><c:out value="${member.m_address }"/></td>
+					<td><c:out value="${member.m_phone }"/></td>
+					<td><c:out value="${member.m_regdate }"/></td>
+				</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
