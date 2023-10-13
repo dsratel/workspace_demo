@@ -1,0 +1,19 @@
+package com.dialoguespace.dao;
+
+import java.util.List;
+
+import com.dialoguespace.dto.MemberDTO;
+
+public interface MemberDAO {
+	// 등록
+	public int insertMember(MemberDTO memberDto) throws Exception;
+	
+	// 전체 목록
+	public List<MemberDTO> listAll() throws Exception;
+	
+	// 회원 삭제
+	public int delMember(String id) throws Exception;
+	
+	// 선택한 회원 삭제
+	public int selDelMember(Map<String, Object> map) throws Exception;
+}

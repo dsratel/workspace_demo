@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="json"/>
+		<item key="selection" value="openSession"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="opensession"/>
+			<item value="sqlsessionfactory"/>
+			<item value="openSession"/>
+			<item value="SqlSessionFactoryBuilder"/>
+			<item value="auto"/>
+			<item value="DefaultSqlSession"/>
 			<item value="json"/>
 			<item value="request"/>
 			<item value="m_name"/>
@@ -17,12 +23,6 @@
 			<item value="connector"/>
 			<item value="uriencoding"/>
 			<item value="encoding"/>
-			<item value="filter"/>
-			<item value="bean"/>
-			<item value="base"/>
-			<item value="lombok"/>
-			<item value="org.springframework-versio"/>
-			<item value="filter-name"/>
 		</list>
 		<list key="replacehistory">
 		</list>

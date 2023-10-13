@@ -14,7 +14,7 @@
 				
 			</div>
 			<div class="col-6" style="border:1px solid">
-				<form action="/member/insertMember.do" method="post" name="insertTest" id="insertTest">
+				<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMember">
 					<div class="row" style="padding: 5px 0px 5px">
 						<div class="col-6">
 							<span>ID</span>
@@ -68,12 +68,18 @@
 			<div class="col-3" style="border:1px solid; padding: 2px;">
 				<button class="btn btn-primary" type="button" form="insertTest" id="save">저장하기</button>
 				<button class="btn btn-success" type="button" id="showList">목록출력</button>
+				<button class="btn btn-secondary" type="button" id="testBtn">테스트 버튼</button>
 			</div>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script>
 	$(function(){
+		
+		// context-path 체크용 테스트 버튼
+		$("#testBtn").click(function(){
+			console.log(location.href);
+		});
 		
 		// 저장하기
 		$("#save").click(function(){
@@ -103,20 +109,7 @@
 		
 		// 목록출력
 		$("#showList").click(function(data){
-			
-  			$.ajax({
-				url: "./member/listAll.do",
-				contentType:'application/json',
-				method: "post",
-				data: JSON.stringify(0),
-				success:function(data){
-					window.location.replace("/member/list");
-					
-				},
-				error:function(){
-					alert("error");
-				}
-			});
+			window.location.replace("/member/list");
 		});
 	});
 	
