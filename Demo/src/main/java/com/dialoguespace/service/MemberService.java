@@ -23,8 +23,8 @@ public class MemberService {
 	}
 	
 	// 회원 목록 출력
-	public List<MemberDTO> toMemberList() throws Exception {
-		List<MemberDTO> list = memberDAO.memberListAll();
+	public List<MemberDTO> toMemberList(Map srchInfo) throws Exception {
+		List<MemberDTO> list = memberDAO.memberList(srchInfo);
 		return list;
 	}
 	

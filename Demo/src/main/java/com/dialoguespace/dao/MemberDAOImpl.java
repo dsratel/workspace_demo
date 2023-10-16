@@ -21,10 +21,10 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlsession.insert("memberMapper.insertMember", memberDto);
 	}
 	
-	// 전체 회원 셀렉트
+	// 회원 목록
 	@Override
-	public List<MemberDTO> memberListAll() throws Exception {
-		List<MemberDTO> list = sqlsession.selectList("memberMapper.memberListAll");
+	public List<MemberDTO> memberList(Map srchInfo) throws Exception {
+		List<MemberDTO> list = sqlsession.selectList("memberMapper.memberList", srchInfo);
 		return list;
 	}
 	
@@ -54,6 +54,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int editMember(MemberDTO memberDto) throws Exception {
 		return sqlsession.update("memberMapper.editMember", memberDto);
+	}
+	
+	// 데이터 개수
+	@Override
+	public int totalCnt(Map srchInfo) throws Exception {
+		return sqlsession.selectOne("memberMapper.totalCnt", srchInfo);
 	}
 
 }

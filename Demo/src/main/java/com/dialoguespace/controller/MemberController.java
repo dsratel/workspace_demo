@@ -1,6 +1,8 @@
 package com.dialoguespace.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dialoguespace.dao.TestDAO;
 import com.dialoguespace.dto.MemberDTO;
+import com.dialoguespace.service.CommonService;
 import com.dialoguespace.service.MemberService;
 
 
@@ -23,6 +25,9 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private CommonService commonService;
 	
 	// 회원 등록
 	@ResponseBody
@@ -36,9 +41,25 @@ public class MemberController {
 	
 	// 리스트 페이지 이동
 	@GetMapping(value="/list")
-	public String toMemberList(Model model) throws Exception {
-		List<MemberDTO> list = memberService.toMemberList();
+	public String toMemberList(String searchType, String searchKeyword, Integer pageNo, Integer perPage, Model model) throws Exception {
+		// 검색 및 페이징 Map에 담기
+		System.out.println("searchType : " + searchType + " / searchKeyword : " + searchKeyword + " / pageNo : " + pageNo + " / perPage : " + perPage);
+		
+		// 검색조건
+		Map srchInfo = commonService.makeSrchInfo(searchType, searchKeyword);
+		
+		// 검색결과 리스트
+		List<MemberDTO> list = memberService.toMemberList(srchInfo);
+		
+		// 페이징 조건
+//		Map pagingInfo = commonService(list.size(), pageNo, perPage);
+		
+		// 검색결과 총 개수 데이터 추가
+		list = list.subList((int)srchInfo.get("startPage"), (int)srchInfo.get("endPage"));
 		System.out.println("회원 목록 조회 완료");
+		
+		srchInfo.put("total", listSize);		
+		model.addAttribute("srchInfo", srchInfo);
 		model.addAttribute("list", list);
 		return "list";
 	}

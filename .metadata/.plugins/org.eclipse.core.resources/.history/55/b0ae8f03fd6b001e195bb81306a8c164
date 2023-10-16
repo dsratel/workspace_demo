@@ -1,0 +1,45 @@
+package com.dialoguespace.service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.dao.CommonDAO;
+
+@Service
+public class CommonService {
+	
+	@Autowired
+	CommonDAO commonDAO;
+
+	// 검색 및 페이징 Map에 담기
+	public Map makeSrchInfo(String searchType, String searchKeyword, Integer pageNo) throws Exception {
+		Map srchInfo = new HashMap();
+		// Null 체크
+		if(searchType == null) {
+			searchType = "0";
+		}
+		if(searchKeyword == null) {
+			searchKeyword = "";
+		}
+		if(pageNo == null) {
+			pageNo = 1;
+		}
+		
+		// 페이징
+//		int perPage		= perPage;
+		int startPage	= 10 * (pageNo-1);
+		int endPage		= (10 * pageNo)+1;
+		int 
+		
+		srchInfo.put("searchType", searchType);
+		srchInfo.put("searchKeyword", searchKeyword);
+		srchInfo.put("pageNo", pageNo);
+		srchInfo.put("startPage", startPage);
+		srchInfo.put("endPage", endPage);
+		
+		return srchInfo;
+	}
+}

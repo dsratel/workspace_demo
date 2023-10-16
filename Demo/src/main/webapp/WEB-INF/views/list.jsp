@@ -11,10 +11,28 @@
 <body>
 	<h1>회원 목록</h1>
  	<div class="container">
+		<form name="searchForm" action="/member/list" method="get" id="searchForm">
  		<div class="row">
- 			<div class="col"><button class="btn btn-primary" id="regForm">회원가입 화면으로</button></div>
- 			<div class="col" style="text-align: right"><button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button></div>
- 		</div>
+ 			<div class="col-9">
+	 				<select name="searchType" class="custom-select" id="searchType">
+	 					<option value="0">ID</option>
+						<option value="1">NICKNAME</option>
+						<option value="2">NAME</option>
+						<option value="3">ADDRESS</option>
+						<option value="4">PHONE</option>
+						<option value="5">전체</option>
+	 				</select>
+	 				<input type="text" name="searchKeyword" class="form-control" id="searchKeyword" value="${srchInfo.searchKeyword }"> 	
+	 				<button type="button" class="btn btn-dark" id="searchBtn">검색</button>	
+ 				
+ 			</div>
+ 			<div class="col-3" style="text-align: right">
+ 				<button class="btn btn-primary" id="regForm">회원가입 화면으로</button>
+ 				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
+			</div>
+		</div>
+		</form>
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -53,7 +71,8 @@
 		$(function(){
 			// 회원가입 화면으로 이동
 			$("#regForm").click(function(){
-				window.location.replace("/");
+				alert("회원가입 화면으로 이동");
+				window.location.replace("${pageContext.request.contextPath}/");
 			});
 			
 			// 삭제 버튼 클릭
@@ -108,6 +127,32 @@
  				window.location.replace("/member/editMember?m_id="+$(this).val());
  			});
 			
+			// 검색 버튼 클릭
+			$("#searchBtn").on("click", function(){
+				search();
+			});
+			
+			// 검색창에서 엔터
+			$("searchKeyword").keypress(function() {
+				search();
+			});
+			
+			// 검색 함수
+			function search() {				
+				var searchType = $("#searchType").val();
+				var searchKeyword = $("#searchKeyword").val();
+				
+				console.log("searchType : " + searchType + " / searchKeyword : " + searchKeyword);
+				
+				$("#searchForm").submit();
+			}
+			
+			// 검색 부분 css 수정
+			$("#searchKeyword").css("width","50%");
+			$(".form-control").css("display","inline");
+			
+			// 전에 검색했던 내용 다시 써주기
+			$("#searchType").val(${srchInfo.searchType}).prop("selected", true);
 			
 		});	// funcion() end
 		

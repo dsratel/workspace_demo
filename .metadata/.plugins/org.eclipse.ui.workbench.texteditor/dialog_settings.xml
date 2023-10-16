@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="openSession"/>
+		<item key="selection" value="searchKeyword"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="opensession"/>
-			<item value="sqlsessionfactory"/>
-			<item value="openSession"/>
-			<item value="SqlSessionFactoryBuilder"/>
-			<item value="auto"/>
-			<item value="DefaultSqlSession"/>
-			<item value="json"/>
-			<item value="request"/>
-			<item value="m_name"/>
-			<item value="meta charset"/>
-			<item value="java_opts"/>
-			<item value="java_opt"/>
-			<item value="connector"/>
-			<item value="uriencoding"/>
-			<item value="encoding"/>
+			<item value="searchKeyword"/>
+			<item value="memberList"/>
+			<item value="regForm"/>
+			<item value="regform"/>
+			<item value="com.mysql.jdbc.driver"/>
+			<item value="sql"/>
+			<item value="jdbc.sqlonly"/>
+			<item value="additivity"/>
+			<item value="logger name"/>
+			<item value="sqlonly"/>
+			<item value="sqltiming"/>
+			<item value="lo"/>
+			<item value="log4j"/>
+			<item value="log4h"/>
+			<item value="log4"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -30,8 +30,8 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="824"/>
 		<item key="DIALOG_Y_ORIGIN" value="268"/>
-		<item key="DIALOG_WIDTH" value="288"/>
-		<item key="DIALOG_HEIGHT" value="391"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_WIDTH" value="340"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 </section>

@@ -9,8 +9,8 @@ public interface MemberDAO {
 	// 등록
 	public int insertMember(MemberDTO memberDto) throws Exception;
 	
-	// 전체 목록
-	public List<MemberDTO> memberListAll() throws Exception;
+	// 회원 목록
+	public List<MemberDTO> memberList(Map srchInfo) throws Exception;
 	
 	// 회원 삭제
 	public int delMember(String id) throws Exception;
@@ -23,5 +23,8 @@ public interface MemberDAO {
 	
 	// 회원 정보 수정
 	public int editMember(MemberDTO memberDto) throws Exception;
+	
+	// 데이터 개수
+	public int totalCnt(Map srchInfo) throws Exception;
 	
 }

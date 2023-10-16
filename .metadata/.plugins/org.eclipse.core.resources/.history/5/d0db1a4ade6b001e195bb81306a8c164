@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="memberMapper">
+	
+	<!-- 멤버 등록 -->
+	<insert id="insertMember" parameterType="memberDto">
+		INSERT INTO T_MEMBER VALUES(#{m_id}, #{m_pw}, #{m_nickname}, #{m_name}, #{m_address}, #{m_phone}, #{m_regdate}, #{masteryn})
+	</insert>
+	
+	<!-- 회원 목록 -->
+	<select id="memberList" parameterType="map" resultType="memberDto">
+		SELECT * FROM T_MEMBER
+		
+		<if test="searchType != null && searchType < 5">
+			WHERE
+			<choose>
+				<when test="searchType == 0">
+					m_id
+				</when>
+				<when test="searchType == 1">
+					m_nickname
+				</when>
+				<when test="searchType == 2">
+					m_name
+				</when>
+				<when test="searchType == 3">
+					m_address
+				</when>
+				<when test="searchType == 4">
+					m_phone
+				</when>
+			</choose>
+			LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		
+		ORDER BY m_regdate;
+	</select>
+	
+	<!-- 회원 삭제 -->
+	<delete id="delMember" parameterType="String">
+		DELETE FROM T_MEMBER WHERE m_id LIKE #{m_id}
+	</delete>
+	
+	<!-- 선택한 회원 삭제 -->
+	<delete id="selDelMember" parameterType="map">
+		DELETE FROM T_MEMBER WHERE m_id IN
+		<foreach collection="selectedMember" item="m_id" open="(" close=")" separator=",">
+			#{m_id}
+		</foreach>
+	</delete>
+	
+	<!-- 회원 한 명 정보 가져오기 -->
+	<select id="selectMember" parameterType="String" resultType="memberDto">
+		SELECT m_id, m_pw, m_nickname, m_name, m_address, m_phone FROM T_MEMBER WHERE m_id LIKE #{m_id}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="editMember" parameterType="memberDto">
+		UPDATE T_MEMBER
+		SET m_pw=#{m_pw}, m_nickname=#{m_nickname}, m_name=#{m_name}, m_address=#{m_address}, m_phone=#{m_phone}
+		WHERE m_id LIKE #{m_id}
+	</update>
+
+</mapper>

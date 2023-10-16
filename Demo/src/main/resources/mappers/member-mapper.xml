@@ -10,9 +10,37 @@
 		INSERT INTO T_MEMBER VALUES(#{m_id}, #{m_pw}, #{m_nickname}, #{m_name}, #{m_address}, #{m_phone}, #{m_regdate}, #{masteryn})
 	</insert>
 	
-	<!-- 전체 회원 셀렉트 -->
-	<select id="memberListAll" resultType="memberDto">
-		SELECT * FROM T_MEMBER ORDER BY m_regdate;
+	<!-- 회원 목록 -->
+	<select id="memberList" parameterType="map" resultType="memberDto">
+		
+		SELECT * FROM t_member WHERE
+		
+			<if test="searchType != null and searchType &lt; 5">
+				<choose>
+					<when test="searchType == 0">
+						m_id
+					</when>
+					<when test="searchType == 1">
+						m_nickname
+					</when>
+					<when test="searchType == 2">
+						m_name
+					</when>
+					<when test="searchType == 3">
+						m_address
+					</when>
+					<when test="searchType == 4">
+						m_phone
+					</when>			
+				</choose>
+				LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchType != null and searchType == 5">
+				((m_id LIKE CONCAT('%',#{searchKeyword},'%')) OR (m_nickname LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (m_name LIKE CONCAT('%',#{searchKeyword},'%')) OR (m_address LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (m_phone LIKE CONCAT('%',#{searchKeyword},'%')))
+			</if>
+		ORDER BY m_regdate;
 	</select>
 	
 	<!-- 회원 삭제 -->
@@ -39,5 +67,10 @@
 		SET m_pw=#{m_pw}, m_nickname=#{m_nickname}, m_name=#{m_name}, m_address=#{m_address}, m_phone=#{m_phone}
 		WHERE m_id LIKE #{m_id}
 	</update>
+	
+	<!-- 데이터 개수 -->
+	<select id="totalCnt" parameterType="map">
+		SELECT 
+	</select>
 
 </mapper>
