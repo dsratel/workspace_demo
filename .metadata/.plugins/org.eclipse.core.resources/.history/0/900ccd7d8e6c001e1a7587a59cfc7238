@@ -1,0 +1,5 @@
+package com.dialoguespace.vo;
+
+public class PaginationVO {
+
+}

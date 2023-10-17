@@ -27,4 +27,6 @@ public interface MemberDAO {
 	// 데이터 개수
 	public int totalCnt(Map srchInfo) throws Exception;
 	
+	// 조건에 맞는 회원 카운팅
+	public int countList(Map srchInfo) throws Exception;
 }

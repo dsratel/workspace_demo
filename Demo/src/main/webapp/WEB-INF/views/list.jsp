@@ -11,9 +11,9 @@
 <body>
 	<h1>회원 목록</h1>
  	<div class="container">
-		<form name="searchForm" action="/member/list" method="get" id="searchForm">
  		<div class="row">
  			<div class="col-9">
+				<form name="searchForm" action="/member/list" method="get" id="searchForm">
 	 				<select name="searchType" class="custom-select" id="searchType">
 	 					<option value="0">ID</option>
 						<option value="1">NICKNAME</option>
@@ -23,15 +23,23 @@
 						<option value="5">전체</option>
 	 				</select>
 	 				<input type="text" name="searchKeyword" class="form-control" id="searchKeyword" value="${srchInfo.searchKeyword }"> 	
-	 				<button type="button" class="btn btn-dark" id="searchBtn">검색</button>	
- 				
+	 				<button type="button" class="btn btn-dark" id="searchBtn">검색</button>
+	 				<label for="pageSize">페이지 당 row 수</label>
+	 				<select name="pageSize" class="custom-select" id="pageSize">
+	 					<option value="2">2</option>
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+	 				</select>
+				</form>
  			</div>
  			<div class="col-3" style="text-align: right">
  				<button class="btn btn-primary" id="regForm">회원가입 화면으로</button>
  				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
 			</div>
 		</div>
-		</form>
 
 		<table class="table">
 			<thead>
@@ -53,7 +61,7 @@
 				<c:forEach var="member" items="${list }" varStatus="status">
 				<tr>
 					<td><input type="checkbox" class="memCheckBox form-check-input" name="memCheckBox" value="${member.m_id }"></td>
-					<th scope="row">${status.count}</th>
+					<th scope="row">${srchInfo.pagination.startIndex+status.count}</th>
 					<td><c:out value="${member.m_id }"/></td>
 					<td><c:out value="${member.m_nickname }"/></td>
 					<td><c:out value="${member.m_name }"/></td>
@@ -66,6 +74,20 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination">
+		  	<c:if test="${srchInfo.pagination.curRange > 1 }">
+		    	<li class="page-item"><a class="page-link" id="prevPage">Previous</a></li>
+		    </c:if>
+		    <c:forEach var="i" begin="${srchInfo.pagination.startPage }" end="${srchInfo.pagination.endPage }">
+		    	<li class="page-item"><a class="page-link toPage" value="${i }" >${i }</a></li>
+		    </c:forEach>
+		    <c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
+		    	<li class="page-item"><a class="page-link" id="nextPage">Next</a></li>
+		    </c:if>
+		  </ul>
+		</nav>
 	</div>
 	<script>
 		$(function(){
@@ -147,12 +169,73 @@
 				$("#searchForm").submit();
 			}
 			
-			// 검색 부분 css 수정
+			// 전 페이지의 내용 전달
+			$("#searchType").val("${srchInfo.searchType}").prop("selected", true);
+			$("#pageSize").val("${srchInfo.pagination.pageSize}").prop("selected", true);
+			
+			// 페이징
+			//// 페이징 파라미터
+			var searchType		= "";
+			var searchKeyword	= "";
+			var curPage			= "";
+			var pageSize		= "";
+			var url				= "";
+			
+			function setPaginationParam(opt, pageNo) {
+				switch(opt) {
+				case "prev" :
+					curPage = "${(srchInfo.pagination.curRange-1)*srchInfo.pagination.rangeSize}";
+				break
+				case "next" :
+					curPage = "${(srchInfo.pagination.curRange*srchInfo.pagination.rangeSize)+1}";
+				break
+				default :
+					curPage = pageNo;
+				break
+				}
+				searchType		= $("#searchType").val();
+				searchKeyword	= $("#searchKeyword").val();
+				pageSize		= $("#pageSize").val();				
+				url				= "/member/list?" + "searchType=" + searchType + "&searchKeyword=" + searchKeyword
+										+ "&curPage=" + curPage + "&pageSize=" + pageSize;
+			}
+			
+			//// 이전 페이지 클릭
+			$("#prevPage").click(function(){
+				setPaginationParam('prev');
+				window.location.href=url;
+				// window.location.replace(url);
+				// window.open(url);
+			});
+			
+			//// 다음 페이지 클릭
+			$("#nextPage").click(function(){
+				setPaginationParam('next');
+				window.location.href=url;
+			});
+			
+			//// 특정 페이지 클릭
+			$(".toPage").click(function(){
+				setPaginationParam('cur', $(this).attr("value"));
+				window.location.href=url;
+			});
+			
+			//// 한 페이지 row 수 변경
+			$("#pageSize").on("change", function(){
+				setPaginationParam('cur', 1);		
+				window.location.href=url;
+			});
+			
+			// css 수정
+			//// 검색
 			$("#searchKeyword").css("width","50%");
 			$(".form-control").css("display","inline");
-			
-			// 전에 검색했던 내용 다시 써주기
-			$("#searchType").val(${srchInfo.searchType}).prop("selected", true);
+			//// 페이지
+			$(".page-item").css("cursor", "pointer");
+			$(".page-item").find("a[value=${srchInfo.pagination.curPage}]").css("color", "pink");
+			// row select
+			$("label").css("padding-left", "100px");
+
 			
 		});	// funcion() end
 		

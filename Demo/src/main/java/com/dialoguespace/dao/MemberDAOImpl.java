@@ -61,5 +61,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public int totalCnt(Map srchInfo) throws Exception {
 		return sqlsession.selectOne("memberMapper.totalCnt", srchInfo);
 	}
+	
+	// 조건에 맞는 회원 카운팅
+	@Override
+	public int countList(Map srchInfo) throws Exception {
+		return sqlsession.selectOne("memberMapper.countList", srchInfo);
+	}
 
 }

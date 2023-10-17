@@ -66,7 +66,7 @@
 				</form>
 			</div>
 			<div class="col-3" style="border:1px solid; padding: 2px;">
-				<button class="btn btn-primary" type="button" form="insertTest" id="save">저장하기</button>
+				<button class="btn btn-primary" type="submit" form="insertMember" id="save">저장하기</button>
 				<button class="btn btn-success" type="button" id="showList">목록출력</button>
 				<button class="btn btn-secondary" type="button" id="testBtn">테스트 버튼</button>
 			</div>
@@ -82,7 +82,7 @@
 		});
 		
 		// 저장하기
-		$("#save").click(function(){
+/* 		$("#save").click(function(){
 			alert("click");
 			//$("#insertTest").submit();
   			$.ajax({
@@ -105,7 +105,7 @@
 					alert("error");
 				}
 			});
-		});
+		}); */
 		
 		// 목록출력
 		$("#showList").click(function(data){
