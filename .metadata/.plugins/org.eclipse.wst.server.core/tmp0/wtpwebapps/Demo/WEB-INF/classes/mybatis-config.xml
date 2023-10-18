@@ -11,6 +11,6 @@
 		
 		<typeAliases>
 			<typeAlias type="com.dialoguespace.dto.MemberDTO" alias="memberDto" />
-			<typeAlias type="com.dialoguespace.dto.FilemetaDTO" alias="filemetaDto" />
+			<typeAlias type="com.dialoguespace.vo.FileVO" alias="fileVo" />
 		</typeAliases>
 	</configuration>

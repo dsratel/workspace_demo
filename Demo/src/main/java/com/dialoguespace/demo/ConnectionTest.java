@@ -1,5 +1,7 @@
 package com.dialoguespace.demo;
 
+import java.io.File;
+
 public class ConnectionTest {
 	public static void main(String[] args) {
 		
@@ -22,26 +24,40 @@ public class ConnectionTest {
 //			System.out.println("DB접속오류");
 //		}
 		
-		int rangeSize	= 5;
-		
-		int curPage		= 5;
-		int listCnt		= 100;
-		int pageSize	= 10;
+		String tempPath = "D:\\demoTemp\\";
+		createTempFolder(tempPath);
 		
 		
-		int pageCnt	= (listCnt-1)/pageSize +1;
-		int rangeCnt	= (pageCnt-1)/rangeSize +1;
-		int startPage	= ((curPage-1)/rangeSize)*rangeSize +1;
-		int endPage	= startPage + rangeSize -1;
-		int curRange	= (startPage-1)/rangeSize +1;
 		
-		// 마지막 페이지가 총 페이지 수보다 큰 경우 마지막 페이지를 총 페이지 개수에 맞추기
-		if(endPage > pageCnt) endPage = pageCnt;
+
+	}	// main end
+	
+	
+	// 임시 폴더 생성 
+	public static void createTempFolder(String tempPath) {
 		
-		System.out.println("pageCnt : " + pageCnt);	
-		System.out.println("rangeCnt : " + rangeCnt);
-		System.out.println("startPage : " + startPage);
-		System.out.println("endPage : " + endPage);
-		System.out.println("curRange : " + curRange);
+		File folder = new File(tempPath);
+		try {
+			if(folder.exists()) {
+				System.out.println("demo 임시 폴더가 존재합니다. 하위 파일을 삭제합니다.");
+				delFiles(folder);
+			} else {
+				folder.mkdir();
+				System.out.println("demo 임시 폴더 생성");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
+	
+	// 하위 파일 삭제
+	public static void delFiles(File folder) {
+		File[] folder_list = folder.listFiles();
+		for(File file : folder_list) {
+			file.delete();
+			System.out.println(file + " 삭제 완료");
+		}
+	}
+
 }

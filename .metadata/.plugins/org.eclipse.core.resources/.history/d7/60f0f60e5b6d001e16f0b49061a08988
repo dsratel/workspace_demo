@@ -1,0 +1,12 @@
+package com.dialoguespace.vo;
+
+public class FileVO {
+	private int fileNo;
+	private int fileParentNo;
+	private String category;
+	private String orgName;
+	private String sysName;
+	
+	
+
+}

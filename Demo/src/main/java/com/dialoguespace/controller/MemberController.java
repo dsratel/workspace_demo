@@ -1,6 +1,10 @@
 package com.dialoguespace.controller;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dialoguespace.dto.MemberDTO;
 import com.dialoguespace.service.CommonService;
 import com.dialoguespace.service.MemberService;
+import com.dialoguespace.vo.FileVO;
 import com.dialoguespace.vo.PaginationVO;
 
 
@@ -31,10 +36,24 @@ public class MemberController {
 	
 	// 회원 등록
 	@PostMapping(value="/insertMember.do")
-	public String insertMember(MemberDTO memberDto) throws Exception {
+	public String insertMember(MemberDTO memberDto, @RequestParam("upfile") MultipartFile[] files, HttpServletRequest request) throws Exception {
+		// 회원 등록
 		System.out.println("MemberController memberDto : " + memberDto);
 		memberService.insertMember(memberDto);
 		System.out.println("insert success");
+		
+		// 프로필 사진 등록
+		//// 파일 디렉토리 변수에 담기
+		String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
+		String path			= contextRoot + "resources/testFoler/";
+		
+		//// 파일VO에 리스트로 정리
+		List<FileVO> fileList = commonService.getFileList(files, memberDto.getM_id(), "member", path);
+		
+		//// 파일 저장
+		commonService.saveFiles(files, fileList);
+		System.out.println("프로필 파일 저장 완료");
+
 		return "redirect:/member/list";
 	}
 	
@@ -42,8 +61,6 @@ public class MemberController {
 	@GetMapping(value="/list")
 	public String toMemberList(@RequestParam(defaultValue = "0") String searchType, @RequestParam(defaultValue = "")String searchKeyword,
 			 @RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "10") int pageSize, Model model) throws Exception {
-		System.out.println("searchType : " + searchType + " / searchKeyword : " + searchKeyword + " / curPage : " + curPage);
-		
 		// 검색 조건 - 조건으로 검색 - 전체 페이지 출력 - 조건 및 페이지에 맞는 데이터만 추출 - 화면에 출력
 		// 검색 및 페이징 Map에 담기
 		// 검색조건
@@ -112,22 +129,5 @@ public class MemberController {
 		System.out.println(memberDto.getM_id() + "님 회원정보 수정 완료");
 		return toEditMember(memberDto.getM_id(), model);
 	}
-	
-	// 프로필 사진 등록 테스트
-	//// 파일 업로드 화면 이동
-	@GetMapping(value="/uploadFile")
-	public String toUploadFile() throws Exception {
-		return "fileupload";
-	}
-	
-	//// 사진 업로드 테스트
-	@GetMapping(value="/uploadFile.do")
-	public String uploadFile(@RequestParam("upfile") MultipartFile[] files) throws Exception {
-		for(MultipartFile mfile : files) {
-			
-		}
-		return "result";
-	}
-	
 	
 }

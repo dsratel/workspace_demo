@@ -14,7 +14,15 @@
 				
 			</div>
 			<div class="col-6" style="border:1px solid">
-				<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMember">
+				<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMember" enctype="multipart/form-data">
+					<div class="row" style="padding: 5px 0px 5px">
+						<div class="col-6">
+							<span>프로필 사진</span>
+						</div>
+						<div class="col-6">
+							<input type="file" name="upfile" class="form-control" id="inputGroupFile02">
+						</div>
+					</div>
 					<div class="row" style="padding: 5px 0px 5px">
 						<div class="col-6">
 							<span>ID</span>
@@ -80,9 +88,9 @@
 		$("#testBtn").click(function(){
 			console.log(location.href);
 		});
-		
+		/*
 		// 저장하기
-/* 		$("#save").click(function(){
+ 		$("#save").click(function(){
 			alert("click");
 			//$("#insertTest").submit();
   			$.ajax({
@@ -105,8 +113,8 @@
 					alert("error");
 				}
 			});
-		}); */
-		
+		}); 
+		*/
 		// 목록출력
 		$("#showList").click(function(data){
 			window.location.replace("/member/list");

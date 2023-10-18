@@ -1,0 +1,10 @@
+package com.dialoguespace.dao;
+
+import java.util.List;
+
+import com.dialoguespace.vo.FileVO;
+
+public interface CommonDAO {
+	// 파일 저장
+	public int saveFiles(List<FileVO> fileList) throws Exception;
+}
