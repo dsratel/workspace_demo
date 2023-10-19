@@ -3,5 +3,7 @@
 	<section name="conditionHistory">
 	</section>
 	<section name="expressionHistory">
+		<item key="expressionHistoryEntry_0" value="[FileVO(fileNo=0, fileParent=tempParent, category=member, orgName=testImg.jpg, sysName=f63f2ec2-b9c1-419c-809b-d65491321147, fileSize=71974, fancySize=70.3 KB, contentType=image/jpeg, filePath=D:\workspace_demo\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Demo\resources/testFoler/, downHit=null, delYn=null, regDate=null)]"/>
+		<item key="expressionHistoryEntryCount" value="1"/>
 	</section>
 </section>

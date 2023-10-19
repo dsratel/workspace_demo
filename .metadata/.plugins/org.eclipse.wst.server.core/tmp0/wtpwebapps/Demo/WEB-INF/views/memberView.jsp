@@ -15,13 +15,22 @@
 				
 			</div>
 			<div class="col-6" style="border:1px solid">
-				<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm">
+				<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
+					<div class="row" style="padding: 5px 0px 5px">
+						<div class="col-6">
+							<span>프로필 사진</span>
+						</div>
+						<div class="col-6">
+							<img class="img-thumbnail" src="${filePath }" id="preview"/>
+							<input type="file" name="profilePhoto" onchange="readURL(this)";>
+						</div>
+					</div>
 					<div class="row" style="padding: 5px 0px 5px">
 						<div class="col-6">
 							<span>ID</span>
 						</div>
 						<div class="col-6">
-							<input type="text" class="form-control" name="m_id" value="${map.m_id }" readonly>
+							<input type="text" class="form-control" name="m_id" value="${dto.m_id }" readonly>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -29,7 +38,7 @@
 							<span>비밀번호</span>
 						</div>
 						<div class="col-6">
-							<input type="password" class="form-control" name="m_pw" value="${map.m_pw }">
+							<input type="password" class="form-control" name="m_pw" value="${dto.m_pw }">
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -37,7 +46,7 @@
 							<span>닉네임</span>
 						</div>
 						<div class="col-6">
-							<input type="text" class="form-control" name="m_nickname" value="${map.m_nickname }">
+							<input type="text" class="form-control" name="m_nickname" value="${dto.m_nickname }">
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -45,7 +54,7 @@
 							<span>이름</span>
 						</div>
 						<div class="col-6">
-							<input type="text" class="form-control" name="m_name" value="${map.m_name }">
+							<input type="text" class="form-control" name="m_name" value="${dto.m_name }">
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -53,7 +62,7 @@
 							<span>주소</span>
 						</div>
 						<div class="col-6">
-							<input type="text" class="form-control" name="m_address" value="${map.m_address }">
+							<input type="text" class="form-control" name="m_address" value="${dto.m_address }">
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -61,7 +70,7 @@
 							<span>전화번호</span>
 						</div>
 						<div class="col-6">
-							<input type="text" class="form-control" name="m_phone" value="${map.m_phone }">
+							<input type="text" class="form-control" name="m_phone" value="${dto.m_phone }">
 						</div>
 					</div>
 				</form>
@@ -94,11 +103,20 @@
 		
 		// ID input 태그 색상 변경
 		$("input[name='m_id']").css({"background-color":"grey", "color":"white"});
-		
-		
-		
-		
 	}); // function() end
+	
+	// 사진 미리보기
+	function readURL(input) {
+		if(input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr("src", e.target.result);
+			};
+			reader.readAsDataURL(input.files[0]);
+		} else {
+			$("#preview").attr("src", "");
+		}
+	}
 	</script>
 </body>
 </html>

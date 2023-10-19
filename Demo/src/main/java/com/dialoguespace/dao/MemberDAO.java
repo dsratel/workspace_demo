@@ -29,4 +29,10 @@ public interface MemberDAO {
 	
 	// 조건에 맞는 회원 카운팅
 	public int countList(Map srchInfo) throws Exception;
+	
+	// 프로필 사진 PK 등록
+	public int addFileNo(Map map) throws Exception;
+	
+	// 회원의 프로필 사진 PK 찾기
+	public int selFileNo(String m_id) throws Exception;
 }

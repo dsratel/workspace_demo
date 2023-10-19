@@ -17,5 +17,6 @@ public class MemberDTO {
 	private String m_phone;
 	private Date m_regdate;
 	private boolean masteryn;
+	private int m_fileno;
 	
 }

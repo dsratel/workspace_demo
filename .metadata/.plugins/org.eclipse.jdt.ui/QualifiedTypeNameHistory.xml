@@ -6,7 +6,9 @@
 <fullyQualifiedTypeName name="java.lang.ClassNotFoundException"/>
 <fullyQualifiedTypeName name="java.sql.Blob"/>
 <fullyQualifiedTypeName name="java.net.URLEncoder"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.sql.Timestamp"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.apache.commons.io.FileUtils"/>
 </qualifiedTypeNameHistroy>

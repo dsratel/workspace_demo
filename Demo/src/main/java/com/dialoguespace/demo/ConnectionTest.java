@@ -3,7 +3,7 @@ package com.dialoguespace.demo;
 import java.io.File;
 
 public class ConnectionTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 //		try {
 //			// MySQL DB용 드라이브로드
@@ -24,10 +24,21 @@ public class ConnectionTest {
 //			System.out.println("DB접속오류");
 //		}
 		
-		String tempPath = "D:\\demoTemp\\";
-		createTempFolder(tempPath);
+//		String tempPath = "D:\\demoTemp\\";
+//		//createTempFolder(tempPath);
+//		
+//		File testFolder = new File("D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources\\testFoler");
+//		
+//		for(File f : testFolder.listFiles()) {
+//			System.out.println(f);			
+//		}
 		
 		
+		delFilePhs("D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/testFoler/31973541-2080-4337-9ef2-ef0e12039e43");
+		
+//		String str = "D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/testFoler/31973541-2080-4337-9ef2-ef0e12039e43";
+//		String rs1 = str.substring(str.lastIndexOf("resources"));
+//		System.out.println(rs1);
 		
 
 	}	// main end
@@ -58,6 +69,13 @@ public class ConnectionTest {
 			file.delete();
 			System.out.println(file + " 삭제 완료");
 		}
+	}
+	
+	// fileno로 특정 파일 삭제(물리적)
+	public static void delFilePhs(String filePath) throws Exception {
+		File f = new File(filePath);
+		f.delete();
+		System.out.println(filePath + " 삭제 완료");
 	}
 
 }

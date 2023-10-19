@@ -40,18 +40,25 @@ public class MemberController {
 		// 회원 등록
 		System.out.println("MemberController memberDto : " + memberDto);
 		memberService.insertMember(memberDto);
-		System.out.println("insert success");
+		System.out.println("회원정보 등록 완료");
 		
 		// 프로필 사진 등록
+		if(files[0].getSize() > 0) {
 		//// 파일 디렉토리 변수에 담기
 		String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
-		String path			= contextRoot + "resources/testFoler/";
+		String path			= contextRoot + "resources/testFolder/";
 		
 		//// 파일VO에 리스트로 정리
 		List<FileVO> fileList = commonService.getFileList(files, memberDto.getM_id(), "member", path);
 		
-		//// 파일 저장
-		commonService.saveFiles(files, fileList);
+		
+		List<Integer> pk = commonService.saveNewFiles(files, fileList);			
+			
+		// 회원 프로필 사진 PK 등록
+		memberService.addFileNo(memberDto.getM_id(), pk.get(0));
+		}
+		
+		
 		System.out.println("프로필 파일 저장 완료");
 
 		return "redirect:/member/list";
@@ -114,7 +121,16 @@ public class MemberController {
 	public String toEditMember(String m_id, Model model) throws Exception {
 		System.out.println("수정할 회원 ID : " + m_id);
 		if(m_id != null) {
-			model.addAttribute("map", memberService.toEditMember(m_id));			
+			// 멤버 정보 Model에 담기
+			MemberDTO dto = memberService.toEditMember(m_id);
+			model.addAttribute("dto", dto);
+			
+			if(dto.getM_fileno() > 0) {
+				String path = commonService.getPath(dto.getM_fileno());
+				String filePath = path.substring(path.lastIndexOf("resources")-1);
+				model.addAttribute("filePath", filePath);				
+			}
+			// 사진 경로
 			return "memberView";
 		} else {
 			return "errorPage";
@@ -123,10 +139,55 @@ public class MemberController {
 	
 	// 회원 정보 수정
 	@PostMapping(value="/editMember.do")
-	public String editMember(MemberDTO memberDto, Model model) throws Exception {
+	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model, HttpServletRequest request) throws Exception {
+		
+		// 해당 회원의 프로필 사진 PK
+		int fileNo = memberService.selFileNo(memberDto.getM_id());			
+		
+		// 새로운 사진 유무
+		if(files[0].getSize() > 0) {	
+			/* 파일 디렉토리 변수에 담기 */
+			String contextRoot		= new HttpServletRequestWrapper(request).getRealPath("/");
+			String sysPath			= contextRoot + "resources/testFolder/";
+			String tempPath			= "D:\\demoTemp\\";
+			List<FileVO> fileList	= commonService.getFileList(files, memberDto.getM_id(), "member", sysPath);	// FileVO 정보 생성
+			
+			if(fileNo > 0) {
+				// 새로운 사진 O & 기존에 프로필 사진 O
+				//// 기존 프로필 사진 물리파일 삭제
+				commonService.delFilePhs(fileNo);
+				System.out.println("기존 프로필 사진 물리파일 삭제");
+				
+				//// 새로운 프로필 사진 저장				
+				commonService.saveFileOnly(files[0], fileList.get(0).getSysName(), tempPath, sysPath);
+				
+				//// 새로운 프로필 사진 정보 DB에 업데이트
+				fileList.get(0).setFileNo(fileNo);
+				commonService.updateFileDB(fileList.get(0));
+				
+				// 기존 사진 번호 dto에 담기
+				memberDto.setM_fileno(fileNo);
+			} else {
+				// 새로운 사진 O & 기존에 프로필 사진 X
+				// 새로운 프로필 사진 등록
+				commonService.saveNewFiles(files, fileList);
+				
+				// 새로 등록한 fileNo MemberDTO에도 등록
+				memberDto.setM_fileno(commonService.selectFilePK("member", memberDto.getM_id()));
+			}
+		} else {
+			if(fileNo > 0) {
+				// 새로운 사진 X & 기존 프로필 사진 O
+				memberDto.setM_fileno(fileNo);
+			}
+			// 새로운 사진이 없고 기존 프로필도 없으면 회원 정보만 업데이트.
+		}
+		
+		// 회원의 DB 정보 수정
 		System.out.println("수정할 회원 정보 : " + memberDto.toString());
 		memberService.editMember(memberDto);
 		System.out.println(memberDto.getM_id() + "님 회원정보 수정 완료");
+		
 		return toEditMember(memberDto.getM_id(), model);
 	}
 	

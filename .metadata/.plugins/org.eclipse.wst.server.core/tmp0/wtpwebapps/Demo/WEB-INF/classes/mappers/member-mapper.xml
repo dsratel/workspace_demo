@@ -7,7 +7,7 @@
 	
 	<!-- 멤버 등록 -->
 	<insert id="insertMember" parameterType="memberDto">
-		INSERT INTO T_MEMBER VALUES(#{m_id}, #{m_pw}, #{m_nickname}, #{m_name}, #{m_address}, #{m_phone}, #{m_regdate}, #{masteryn})
+		INSERT INTO T_MEMBER VALUES(#{m_id}, #{m_pw}, #{m_nickname}, #{m_name}, #{m_address}, #{m_phone}, #{m_regdate}, #{masteryn}, #{m_fileno})
 	</insert>
 	
 	<!-- 회원 목록 -->
@@ -40,7 +40,7 @@
 				OR (m_name LIKE CONCAT('%',#{searchKeyword},'%')) OR (m_address LIKE CONCAT('%',#{searchKeyword},'%'))
 				OR (m_phone LIKE CONCAT('%',#{searchKeyword},'%')))
 			</if>
-		ORDER BY m_regdate
+		ORDER BY m_regdate, m_id
 		LIMIT #{pagination.startIndex}, #{pagination.pageSize};
 	</select>
 	
@@ -59,13 +59,13 @@
 	
 	<!-- 회원 한 명 정보 가져오기 -->
 	<select id="selectMember" parameterType="String" resultType="memberDto">
-		SELECT m_id, m_pw, m_nickname, m_name, m_address, m_phone FROM T_MEMBER WHERE m_id LIKE #{m_id}
+		SELECT m_id, m_pw, m_nickname, m_name, m_address, m_phone, m_fileno FROM T_MEMBER WHERE m_id LIKE #{m_id}
 	</select>
 	
 	<!-- 회원 정보 수정 -->
 	<update id="editMember" parameterType="memberDto">
 		UPDATE T_MEMBER
-		SET m_pw=#{m_pw}, m_nickname=#{m_nickname}, m_name=#{m_name}, m_address=#{m_address}, m_phone=#{m_phone}
+		SET m_pw=#{m_pw}, m_nickname=#{m_nickname}, m_name=#{m_name}, m_address=#{m_address}, m_phone=#{m_phone}, m_fileno=#{m_fileno}
 		WHERE m_id LIKE #{m_id}
 	</update>
 	
@@ -100,5 +100,16 @@
 			</if>
 		ORDER BY m_regdate;
 	</select>
+	
+	<!-- 프로필 사진 PK 등록 -->
+	<update id="addFileNo" parameterType="map">
+		UPDATE t_member SET m_fileno = #{fileno} WHERE m_id LIKE #{m_id}
+	</update>
+	
+	<!-- 회원의 프로필 사진 PK 찾기 -->
+	<select id="selFileNo" parameterType="String" resultType="Integer">
+		SELECT m_fileno FROM t_member WHERE m_id LIKE #{m_id}
+	</select>
+	
 
 </mapper>

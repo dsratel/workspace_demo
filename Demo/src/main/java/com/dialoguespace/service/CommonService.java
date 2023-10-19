@@ -82,13 +82,13 @@ public class CommonService {
 	}
 
 	// 파일 저장
-	public int saveFiles(MultipartFile[] multipartFiles, List<FileVO> fileList) {
+	public List<Integer> saveNewFiles(MultipartFile[] multipartFiles, List<FileVO> fileList) {
 		// 임시 폴더 경로
 		String tempPath = "D:\\demoTemp\\";
 		createTempFolder(tempPath);
+		List<Integer> filesPK = new ArrayList<>();
 		
 		try {
-			
 			// 파일 하나씩 저장		// for문 하나에서 인덱스 지정하여 물리파일 저장-DB저장-resource로 파일 이동에서 for문 3개로 나눔
 			for(int i = 0; i < multipartFiles.length; i++) {
 				// 물리 파일 저장
@@ -98,7 +98,8 @@ public class CommonService {
 			
 			// 파일 내용 DB에 저장
 			for(FileVO vo : fileList) {
-				commonDAO.saveFile(vo);
+				commonDAO.saveNewFile(vo);
+				filesPK.add(commonDAO.selectFilePK(vo));
 			}
 			
 			// 물리파일, DB 저장 끝난 후 템프 폴더에 있는 파일을 resource로 옮기기
@@ -122,11 +123,11 @@ public class CommonService {
 		} finally {
 			// 템프 폴더 지우기
 			File folder = new File(tempPath);
-			delFiles(folder);
+			delFilesUnderFolder(folder);	// 폴더 하위에 파일이 있으면 폴더가 삭제되지 않으므로 파일들을 우선 삭제한다.
 			folder.delete();			
 		}
 			
-		return 0;
+		return filesPK;
 		
 	}
 	
@@ -137,7 +138,7 @@ public class CommonService {
 		try {
 			if(folder.exists()) {
 				System.out.println("demo 임시 폴더가 존재합니다. 하위 파일을 삭제합니다.");
-				delFiles(folder);
+				delFilesUnderFolder(folder);
 			} else {
 				folder.mkdir();
 				System.out.println("demo 임시 폴더 생성");
@@ -168,13 +169,65 @@ public class CommonService {
 		}
 	}
 	
-	// 하위 파일 삭제
-	public void delFiles(File folder) {
+	// 폴더 하위 파일 삭제
+	public void delFilesUnderFolder(File folder) {
 		File[] folder_list = folder.listFiles();
 		for(File file : folder_list) {
 			file.delete();
 			System.out.println(file + " 삭제 완료");
 		}
+	}
+	
+	// 파일 경로 검색
+	public String getPath(int fileno) throws Exception {
+		return commonDAO.getPath(fileno);
+	}
+	
+	// fileno로 특정 파일 삭제(물리적)
+	public void delFilePhs(int fileno) throws Exception {
+		String filePath = commonDAO.getPath(fileno);
+		File f = new File(filePath);
+		f.delete();
+		System.out.println(filePath + " 삭제 완료");
+	}
+	
+	// fileno로 특정 파일 DB정보 삭제
+	public int delFileDB(int fileno) throws Exception {
+		return commonDAO.delFileDB(fileno);
+	}
+	
+	// fileno로 특정 파일 DB정보 업데이트
+	public int updateFileDB(FileVO file) throws Exception {
+		return commonDAO.updateFileDB(file);
+	}
+	
+	// 특정 파일 물리적으로 저장
+	public void saveFileOnly(MultipartFile multipartFile, String sysname, String tempPath, String sysPath) {
+		// 물리 파일 저장
+		try {
+			FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), new File(tempPath, sysname));			
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			File folder = new File(tempPath);
+			delFilesUnderFolder(folder);
+			folder.delete();
+			try {
+				FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), new File(sysPath, sysname));				
+			} catch(IOException e) {
+				e.printStackTrace();
+				}
+		}
+		
+		System.out.println(sysPath + sysname + "물리 파일 저장 완료"); 
+	}
+	
+	// 파일 PK 찾기
+	public int selectFilePK(String category, String fileParent) throws Exception {
+		FileVO vo = new FileVO();
+		vo.setCategory(category);
+		vo.setFileParent(fileParent);
+		return commonDAO.selectFilePK(vo); 
 	}
 	
 }

@@ -56,4 +56,19 @@ public class MemberService {
 		return memberDAO.countList(srchInfo);
 	}
 	
+	// 프로필 사진 PK 등록
+	public int addFileNo(String m_id, int fileno) throws Exception {
+		// 파라미터 map에 등록
+		Map map = new HashMap();
+		map.put("m_id", m_id);
+		map.put("fileno", fileno);
+		return memberDAO.addFileNo(map);
+	}
+	
+	// 회원의 프로필 사진 PK 찾기
+	public int selFileNo(String m_id) throws Exception {
+		System.out.println("memberService selFileNo 진입");
+		return memberDAO.selFileNo(m_id);
+	}
+	
 }

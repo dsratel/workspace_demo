@@ -67,5 +67,19 @@ public class MemberDAOImpl implements MemberDAO {
 	public int countList(Map srchInfo) throws Exception {
 		return sqlsession.selectOne("memberMapper.countList", srchInfo);
 	}
+	
+	// 프로필 사진 PK 등록
+	@Override
+	public int addFileNo(Map map) throws Exception {
+		return sqlsession.update("memberMapper.addFileNo", map);
+	}
+	
+	// 회원의 프로필 사진 PK 찾기
+	@Override
+	public int selFileNo(String m_id) throws Exception {
+		System.out.println("memberDAOImpl selFileNo 진입");
+		System.out.println("m_id : " + m_id);
+		return sqlsession.selectOne("memberMapper.selFileNo", m_id);
+	}
 
 }

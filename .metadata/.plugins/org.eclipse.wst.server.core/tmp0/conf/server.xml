@@ -147,20 +147,22 @@
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
       </Realm>
 
-      <Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+		<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
 
-        <!-- SingleSignOn valve, share authentication between web applications
-             Documentation at: /docs/config/valve.html -->
-        <!--
-        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
-        -->
-
-        <!-- Access log processes all example.
-             Documentation at: /docs/config/valve.html
-             Note: The pattern used is equivalent to using pattern="common" -->
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
-
-      <Context docBase="D:\workspace_demo\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Demo" path="" reloadable="true" source="org.eclipse.jst.jee.server:Demo"/></Host>
+			<!-- SingleSignOn valve, share authentication between web applications
+	             Documentation at: /docs/config/valve.html -->
+	        <!--
+	        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+	        -->
+	
+	        <!-- Access log processes all example.
+	             Documentation at: /docs/config/valve.html
+	             Note: The pattern used is equivalent to using pattern="common" -->
+			<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
+	
+			<Context docBase="D:\workspace_demo\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Demo" path="" reloadable="true" source="org.eclipse.jst.jee.server:Demo"/>
+			<!-- <Context docBase="D:\workspace_demo\testImgFolder" path="/test/imgLoad" reloadable="true" /> -->
+		</Host>
     </Engine>
   </Service>
 </Server>
