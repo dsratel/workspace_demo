@@ -179,24 +179,24 @@ public class CommonService {
 	}
 	
 	// 파일 경로 검색
-	public String getPath(int fileno) throws Exception {
-		return commonDAO.getPath(fileno);
+	public String getPath(int seq) throws Exception {
+		return commonDAO.getPath(seq);
 	}
 	
-	// fileno로 특정 파일 삭제(물리적)
-	public void delFilePhs(int fileno) throws Exception {
-		String filePath = commonDAO.getPath(fileno);
+	// seq로 특정 파일 삭제(물리적)
+	public void delFilePhs(int seq) throws Exception {
+		String filePath = commonDAO.getPath(seq);
 		File f = new File(filePath);
 		f.delete();
 		System.out.println(filePath + " 삭제 완료");
 	}
 	
-	// fileno로 특정 파일 DB정보 삭제
-	public int delFileDB(int fileno) throws Exception {
-		return commonDAO.delFileDB(fileno);
+	// seq로 특정 파일 DB정보 삭제
+	public int delFileDB(int seq) throws Exception {
+		return commonDAO.delFileDB(seq);
 	}
 	
-	// fileno로 특정 파일 DB정보 업데이트
+	// seq로 특정 파일 DB정보 업데이트
 	public int updateFileDB(FileVO file) throws Exception {
 		return commonDAO.updateFileDB(file);
 	}

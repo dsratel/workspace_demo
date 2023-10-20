@@ -44,8 +44,8 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 회원 수정 페이지로 이동 - 회원 한 명 정보 가져오기
 	@Override
-	public MemberDTO selectMember(String m_id) throws Exception {
-		MemberDTO memberInfo = sqlsession.selectOne("memberMapper.selectMember", m_id);
+	public MemberDTO selectMember(String id) throws Exception {
+		MemberDTO memberInfo = sqlsession.selectOne("memberMapper.selectMember", id);
 		System.out.println("선택한 회원 정보 DTO : " + memberInfo.toString());
 		return memberInfo;
 	}
@@ -76,10 +76,15 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 회원의 프로필 사진 PK 찾기
 	@Override
-	public int selFileNo(String m_id) throws Exception {
+	public int selFileNo(String id) throws Exception {
 		System.out.println("memberDAOImpl selFileNo 진입");
-		System.out.println("m_id : " + m_id);
-		return sqlsession.selectOne("memberMapper.selFileNo", m_id);
+		System.out.println("id : " + id);
+		return sqlsession.selectOne("memberMapper.selFileNo", id);
+	}
+	
+	@Override
+	public int checkId(String id) throws Exception {
+		return sqlsession.selectOne("memberMapper.checkId", id);
 	}
 
 }

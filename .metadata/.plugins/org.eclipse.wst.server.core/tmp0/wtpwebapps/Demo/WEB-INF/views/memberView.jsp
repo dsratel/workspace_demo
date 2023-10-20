@@ -22,7 +22,8 @@
 						</div>
 						<div class="col-6">
 							<img class="img-thumbnail" src="${filePath }" id="preview"/>
-							<input type="file" name="profilePhoto" onchange="readURL(this)";>
+							<input type="file" class="form-control" id="inputGroupFile02" name="profilePhoto" onchange="readURL(this)";>
+							<button type="button" class="btn btn-danger" id="delPfPhoto">프로필 사진 삭제</button>
 						</div>
 					</div>
 					<div class="row" style="padding: 5px 0px 5px">
@@ -103,16 +104,21 @@
 		
 		// ID input 태그 색상 변경
 		$("input[name='m_id']").css({"background-color":"grey", "color":"white"});
+		
+		// 프로필 사진 삭제
+		$("#delPfPhoto").click(function(){
+			alert('프로필 사진 삭제');
+		});
 	}); // function() end
 	
 	// 사진 미리보기
 	function readURL(input) {
 		if(input.files && input.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function(e) {
+			var reader = new FileReader();	// FileReader 객체 생성
+			reader.onload = function(e) {	// load 이벤트의 핸들러. 읽기 동작이 성공적으로 완료되었을 때마다 발생.
 				$("#preview").attr("src", e.target.result);
 			};
-			reader.readAsDataURL(input.files[0]);
+			reader.readAsDataURL(input.files[0]);	// <input type="file">의 파일을 url로 읽어들인다. 성공적으로 읽혔다면 위의 .onload를 통해 <img>의 src 속성에 url 주입.
 		} else {
 			$("#preview").attr("src", "");
 		}

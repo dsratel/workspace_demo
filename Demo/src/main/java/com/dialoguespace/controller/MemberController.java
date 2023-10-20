@@ -49,13 +49,13 @@ public class MemberController {
 		String path			= contextRoot + "resources/testFolder/";
 		
 		//// 파일VO에 리스트로 정리
-		List<FileVO> fileList = commonService.getFileList(files, memberDto.getM_id(), "member", path);
+		List<FileVO> fileList = commonService.getFileList(files, memberDto.getId(), "member", path);
 		
 		
 		List<Integer> pk = commonService.saveNewFiles(files, fileList);			
 			
 		// 회원 프로필 사진 PK 등록
-		memberService.addFileNo(memberDto.getM_id(), pk.get(0));
+		memberService.addFileNo(memberDto.getId(), pk.get(0));
 		}
 		
 		
@@ -125,8 +125,8 @@ public class MemberController {
 			MemberDTO dto = memberService.toEditMember(m_id);
 			model.addAttribute("dto", dto);
 			
-			if(dto.getM_fileno() > 0) {
-				String path = commonService.getPath(dto.getM_fileno());
+			if(dto.getFileno() > 0) {
+				String path = commonService.getPath(dto.getFileno());
 				String filePath = path.substring(path.lastIndexOf("resources")-1);
 				model.addAttribute("filePath", filePath);				
 			}
@@ -142,7 +142,7 @@ public class MemberController {
 	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model, HttpServletRequest request) throws Exception {
 		
 		// 해당 회원의 프로필 사진 PK
-		int fileNo = memberService.selFileNo(memberDto.getM_id());			
+		int fileNo = memberService.selFileNo(memberDto.getId());			
 		
 		// 새로운 사진 유무
 		if(files[0].getSize() > 0) {	
@@ -150,7 +150,7 @@ public class MemberController {
 			String contextRoot		= new HttpServletRequestWrapper(request).getRealPath("/");
 			String sysPath			= contextRoot + "resources/testFolder/";
 			String tempPath			= "D:\\demoTemp\\";
-			List<FileVO> fileList	= commonService.getFileList(files, memberDto.getM_id(), "member", sysPath);	// FileVO 정보 생성
+			List<FileVO> fileList	= commonService.getFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
 			
 			if(fileNo > 0) {
 				// 새로운 사진 O & 기존에 프로필 사진 O
@@ -162,23 +162,23 @@ public class MemberController {
 				commonService.saveFileOnly(files[0], fileList.get(0).getSysName(), tempPath, sysPath);
 				
 				//// 새로운 프로필 사진 정보 DB에 업데이트
-				fileList.get(0).setFileNo(fileNo);
+				fileList.get(0).setSeq(fileNo);
 				commonService.updateFileDB(fileList.get(0));
 				
 				// 기존 사진 번호 dto에 담기
-				memberDto.setM_fileno(fileNo);
+				memberDto.setFileno(fileNo);
 			} else {
 				// 새로운 사진 O & 기존에 프로필 사진 X
 				// 새로운 프로필 사진 등록
 				commonService.saveNewFiles(files, fileList);
 				
 				// 새로 등록한 fileNo MemberDTO에도 등록
-				memberDto.setM_fileno(commonService.selectFilePK("member", memberDto.getM_id()));
+				memberDto.setFileno(commonService.selectFilePK("member", memberDto.getId()));
 			}
 		} else {
 			if(fileNo > 0) {
 				// 새로운 사진 X & 기존 프로필 사진 O
-				memberDto.setM_fileno(fileNo);
+				memberDto.setFileno(fileNo);
 			}
 			// 새로운 사진이 없고 기존 프로필도 없으면 회원 정보만 업데이트.
 		}
@@ -186,9 +186,23 @@ public class MemberController {
 		// 회원의 DB 정보 수정
 		System.out.println("수정할 회원 정보 : " + memberDto.toString());
 		memberService.editMember(memberDto);
-		System.out.println(memberDto.getM_id() + "님 회원정보 수정 완료");
+		System.out.println(memberDto.getId() + "님 회원정보 수정 완료");
 		
-		return toEditMember(memberDto.getM_id(), model);
+		return toEditMember(memberDto.getId(), model);
 	}
+	
+	// ID 중복체크
+	@ResponseBody	// ajax를 쓰려면 @ResponseBody 어노테이션을 붙여야 한다.
+	@GetMapping(value="/checkId")	// 브라우저에서 보낼 때 contentType: application/x-www-form-urlencoded; charset=utf-8; 을 설정해도 보낼 떄 text형 그리고 charset을 다시 지정해야 한다.
+	public int checkId(String id) throws Exception {
+		return memberService.checkId(id);
+	}
+	
+//	// 사진 옮기기 테스트
+//	@ResponseBody
+//	@PostMapping(value="/test")
+//	public String testFile(MultipartFile file) {
+//		
+//	}
 	
 }

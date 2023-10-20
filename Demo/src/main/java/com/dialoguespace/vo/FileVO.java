@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class FileVO {
-	private int fileNo;				// 첨부파일 번호(PK)
+	private int seq;				// 첨부파일 번호(PK)
 	private String fileParent;		// 부모 게시글의 PK
 	private String category;		// 부모글의 분류(Member, Board 등)
 	private String orgName;			// 사용자가 올린 원래 파일명

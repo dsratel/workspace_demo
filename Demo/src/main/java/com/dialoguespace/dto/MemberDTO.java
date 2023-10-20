@@ -9,14 +9,15 @@ import lombok.Data;
 @Data
 @Alias("memberDto")
 public class MemberDTO {
-	private String m_id;
-	private String m_pw;
-	private String m_nickname;
-	private String m_name;
-	private String m_address;
-	private String m_phone;
-	private Date m_regdate;
-	private boolean masteryn;
-	private int m_fileno;
-	
+	private int seq;
+	private String id;
+	private String pw;
+	private String name;
+	private String nickname;
+	private String address;
+	private String phone;
+	private int status;
+	private Date regdate;
+	private char masteryn;
+	private int fileno;
 }

@@ -18,7 +18,7 @@ public class MemberService {
 	
 	// 회원 추가
 	public int insertMember(MemberDTO memberDto) throws Exception {
-		memberDto.setM_regdate(new Timestamp(System.currentTimeMillis()));
+		memberDto.setRegdate(new Timestamp(System.currentTimeMillis()));
 		return memberDAO.insertMember(memberDto);
 	}
 	
@@ -42,8 +42,8 @@ public class MemberService {
 	}
 	
 	// 회원 수정 페이지로 이동 - 회원 한 명 정보 가져오기
-	public MemberDTO toEditMember(String m_id) throws Exception {
-		return memberDAO.selectMember(m_id);
+	public MemberDTO toEditMember(String id) throws Exception {
+		return memberDAO.selectMember(id);
 	}
 	
 	// 회원 정보 수정
@@ -57,18 +57,22 @@ public class MemberService {
 	}
 	
 	// 프로필 사진 PK 등록
-	public int addFileNo(String m_id, int fileno) throws Exception {
+	public int addFileNo(String id, int fileno) throws Exception {
 		// 파라미터 map에 등록
 		Map map = new HashMap();
-		map.put("m_id", m_id);
+		map.put("id", id);
 		map.put("fileno", fileno);
 		return memberDAO.addFileNo(map);
 	}
 	
 	// 회원의 프로필 사진 PK 찾기
-	public int selFileNo(String m_id) throws Exception {
-		System.out.println("memberService selFileNo 진입");
-		return memberDAO.selFileNo(m_id);
+	public int selFileNo(String id) throws Exception {
+		return memberDAO.selFileNo(id);
+	}
+	
+	// ID 중복검사
+	public int checkId(String id) throws Exception {
+		return memberDAO.checkId(id);
 	}
 	
 }

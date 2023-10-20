@@ -13,11 +13,11 @@ public interface CommonDAO {
 	public int selectFilePK(FileVO file) throws Exception;
 	
 	// 파일 경로 검색
-	public String getPath(int fileno) throws Exception;
+	public String getPath(int seq) throws Exception;
 	
-	// fileno로 특정 파일 DB정보 삭제
-	public int delFileDB(int fileno) throws Exception;
+	// seq로 특정 파일 DB정보 삭제
+	public int delFileDB(int seq) throws Exception;
 	
-	// fileno로 특정 파일 DB정보 업데이트
+	// seq로 특정 파일 DB정보 업데이트
 	public int updateFileDB(FileVO file) throws Exception;
 }

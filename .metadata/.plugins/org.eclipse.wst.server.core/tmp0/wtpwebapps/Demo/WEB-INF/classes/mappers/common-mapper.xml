@@ -17,23 +17,23 @@
 	
 	<!-- 파일 PK 찾기 -->
 	<select id="selectFilePK" parameterType="fileVo" resultType="Integer">
-		SELECT fileno FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent}
+		SELECT seq FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent} AND delyn = 'N'
 	</select>
 
 	<!-- 파일 경로 찾기 -->
 	<select id="getPath" parameterType="Integer" resultType="String">
-		SELECT concat(filepath,sysname) as 'path' FROM t_filemeta WHERE fileno = #{fileno}
+		SELECT concat(filepath,sysname) as 'path' FROM t_filemeta WHERE seq = #{seq}
 	</select>
 
 	<!-- fileno로 특정 파일 DB정보 삭제 -->
 	<update id="delFileDB" parameterType="Integer">
-		UPDATE t_filemeta SET delyn = 'Y' WHERE fileno = #{fileno}
+		UPDATE t_filemeta SET delyn = 'Y' WHERE seq = #{seq}
 	</update>
 
 	<!-- fileno로 특정 파일 DB정보 업데이트 -->
 	<update id="updateFileDB" parameterType="fileVo">
 		UPDATE t_filemeta SET orgname = #{orgName}, sysname = #{sysName}, filesize = #{fileSize}, fancysize = #{fancySize}, contenttype = #{contentType}, filepath = #{filePath}
-		WHERE fileno = #{fileNo}
+		WHERE seq = #{seq}
 	</update>
 
 </mapper>

@@ -32,7 +32,7 @@ public class TestController {
 			System.out.println("root path : " + request.getSession().getServletContext().getRealPath("/"));	// D:\workspace_demo\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Demo\
 			
 			// 사진 경로
-			String path = commonService.getPath(dto.getM_fileno());
+			String path = commonService.getPath(dto.getFileno());
 			String filePath = path.substring(path.lastIndexOf("resources"));
 			model.addAttribute("filePath", filePath);
 			

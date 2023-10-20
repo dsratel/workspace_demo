@@ -19,7 +19,7 @@ public interface MemberDAO {
 	public int selDelMember(Map<String, Object> map) throws Exception;
 	
 	// 회원 수정 페이지로 이동
-	public MemberDTO selectMember(String m_id) throws Exception;
+	public MemberDTO selectMember(String id) throws Exception;
 	
 	// 회원 정보 수정
 	public int editMember(MemberDTO memberDto) throws Exception;
@@ -34,5 +34,8 @@ public interface MemberDAO {
 	public int addFileNo(Map map) throws Exception;
 	
 	// 회원의 프로필 사진 PK 찾기
-	public int selFileNo(String m_id) throws Exception;
+	public int selFileNo(String id) throws Exception;
+	
+	// ID 중복검사
+	public int checkId(String id) throws Exception;
 }

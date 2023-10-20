@@ -37,14 +37,14 @@ public class CommonDAOImpl implements CommonDAO {
 	
 	// 파일 경로 검색
 	@Override
-	public String getPath(int fileno) throws Exception {
-		return sqlsession.selectOne("commonMapper.getPath", fileno);
+	public String getPath(int seq) throws Exception {
+		return sqlsession.selectOne("commonMapper.getPath", seq);
 	}
 	
 	// fileno로 특정 파일 DB정보 삭제
 	@Override
-	public int delFileDB(int fileno) throws Exception {
-		return sqlsession.update("commonMapper.delFileDB", fileno);
+	public int delFileDB(int seq) throws Exception {
+		return sqlsession.update("commonMapper.delFileDB", seq);
 	}
 	
 	// fileno로 특정 파일 DB정보 업데이트
