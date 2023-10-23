@@ -7,7 +7,8 @@
 <mapper namespace="commonMapper">
 	<!-- 파일 저장 -->
 	<insert id="saveFile" parameterType="fileVo">
-		INSERT INTO t_filemeta VALUES((SELECT nextval('file')), #{fileParent}, #{category}, #{orgName}, #{sysName}, #{fileSize}, #{fancySize}, #{contentType}, #{filePath}, 0, 'N', sysdate());
+		INSERT INTO t_filemeta(fileparent, category, orgname, sysname, filesize, fancysize, contenttype, filepath, downhit, delyn, regdate)
+		VALUES(#{fileParent}, #{category}, #{orgName}, #{sysName}, #{fileSize}, #{fancySize}, #{contentType}, #{filePath}, 0, 'N', sysdate());
 	</insert>
 	
 	<!-- 파일 삭제 -->

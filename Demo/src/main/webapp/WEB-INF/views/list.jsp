@@ -36,7 +36,6 @@
 				</form>
  			</div>
  			<div class="col-3" style="text-align: right">
- 				<button class="btn btn-primary" id="regForm">회원가입 화면으로</button>
  				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
 			</div>
 		</div>
@@ -60,16 +59,16 @@
 			<tbody>
 				<c:forEach var="member" items="${list }" varStatus="status">
 				<tr>
-					<td><input type="checkbox" class="memCheckBox form-check-input" name="memCheckBox" value="${member.m_id }"></td>
+					<td><input type="checkbox" class="memCheckBox form-check-input" name="memCheckBox" value="${member.id }"></td>
 					<th scope="row">${srchInfo.pagination.startIndex+status.count}</th>
-					<td><c:out value="${member.m_id }"/></td>
-					<td><c:out value="${member.m_nickname }"/></td>
-					<td><c:out value="${member.m_name }"/></td>
-					<td><c:out value="${member.m_address }"/></td>
-					<td><c:out value="${member.m_phone }"/></td>
-					<td><c:out value="${member.m_regdate }"/></td>
-					<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.m_id }">수정</button></td>
-					<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.m_id }">삭제</button></td>
+					<td><c:out value="${member.id }"/></td>
+					<td><c:out value="${member.nickname }"/></td>
+					<td><c:out value="${member.name }"/></td>
+					<td><c:out value="${member.address }"/></td>
+					<td><c:out value="${member.phone }"/></td>
+					<td><c:out value="${member.regdate }"/></td>
+					<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">수정</button></td>
+					<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>
 				</tr>
 				</c:forEach>
 			</tbody>
@@ -91,22 +90,16 @@
 	</div>
 	<script>
 		$(function(){
-			// 회원가입 화면으로 이동
-			$("#regForm").click(function(){
-				alert("회원가입 화면으로 이동");
-				window.location.replace("${pageContext.request.contextPath}/");
-			});
-			
 			// 삭제 버튼 클릭
 			$(".BtnDelMember").click(function(){
-				var param = "m_id=" + $(this).val();
+				var param = "id=" + $(this).val();
 				console.log('param : ' + param);
  				$.ajax({
 					url: "${pageContext.request.contextPath}/member/delMember.do",
 //					contentType: "application/json",
 					method: "post",
 //					data: JSON.stringify({
-//						m_id: $(this).val()
+//						id: $(this).val()
 //					}),
 					data: param,
 					success:function(data){
@@ -146,7 +139,7 @@
 			
 			// 수정 버튼 클릭
  			$(".BtnEditMember").on("click", function(){
- 				window.location.replace("/member/editMember?m_id="+$(this).val());
+ 				window.location.replace("/member/editMember?id="+$(this).val());
  			});
 			
 			// 검색 버튼 클릭

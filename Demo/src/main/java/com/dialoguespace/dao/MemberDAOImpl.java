@@ -82,9 +82,16 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlsession.selectOne("memberMapper.selFileNo", id);
 	}
 	
+	// ID 중복검사
 	@Override
 	public int checkId(String id) throws Exception {
 		return sqlsession.selectOne("memberMapper.checkId", id);
+	}
+	
+	// 로그인 - ID, PW로 회원 선택
+	@Override
+	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception {
+		return sqlsession.selectOne("memberMapper.selMemberByIdPw", memberDto);
 	}
 
 }

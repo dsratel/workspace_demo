@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,12 +35,17 @@ public class MemberController {
 	@Autowired
 	private CommonService commonService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	// 회원 등록
 	@PostMapping(value="/insertMember.do")
 	public String insertMember(MemberDTO memberDto, @RequestParam("upfile") MultipartFile[] files, HttpServletRequest request) throws Exception {
 		// 회원 등록
-		System.out.println("MemberController memberDto : " + memberDto);
-		memberService.insertMember(memberDto);
+		System.out.println("MemberController memberDto : " + memberDto); 
+		if(memberService.insertMember(memberDto) < 0) {
+			return "errorPage";
+		};
 		System.out.println("회원정보 등록 완료");
 		
 		// 프로필 사진 등록
@@ -98,9 +104,9 @@ public class MemberController {
 	// 회원 한명 삭제
 	@ResponseBody
 	@PostMapping(value="/delMember.do")
-	public void delMember(@RequestParam String m_id) throws Exception {
-		System.out.println("삭제할 id 값 : " + m_id);
-		memberService.delMember(m_id);
+	public void delMember(@RequestParam String id) throws Exception {
+		System.out.println("삭제할 id 값 : " + id);
+		memberService.delMember(id);
 		System.out.println("회원 삭제 완료");
 	}
 	
@@ -118,11 +124,11 @@ public class MemberController {
 	
 	// 회원 수정 페이지로 이동
 	@GetMapping(value="/editMember")
-	public String toEditMember(String m_id, Model model) throws Exception {
-		System.out.println("수정할 회원 ID : " + m_id);
-		if(m_id != null) {
+	public String toEditMember(String id, Model model) throws Exception {
+		System.out.println("수정할 회원 ID : " + id);
+		if(id != null) {
 			// 멤버 정보 Model에 담기
-			MemberDTO dto = memberService.toEditMember(m_id);
+			MemberDTO dto = memberService.toEditMember(id);
 			model.addAttribute("dto", dto);
 			
 			if(dto.getFileno() > 0) {
@@ -142,7 +148,7 @@ public class MemberController {
 	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model, HttpServletRequest request) throws Exception {
 		
 		// 해당 회원의 프로필 사진 PK
-		int fileNo = memberService.selFileNo(memberDto.getId());			
+		int seq = memberService.selFileNo(memberDto.getId());			
 		
 		// 새로운 사진 유무
 		if(files[0].getSize() > 0) {	
@@ -152,21 +158,21 @@ public class MemberController {
 			String tempPath			= "D:\\demoTemp\\";
 			List<FileVO> fileList	= commonService.getFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
 			
-			if(fileNo > 0) {
+			if(seq > 0) {
 				// 새로운 사진 O & 기존에 프로필 사진 O
 				//// 기존 프로필 사진 물리파일 삭제
-				commonService.delFilePhs(fileNo);
+				commonService.delFilePhs(seq);
 				System.out.println("기존 프로필 사진 물리파일 삭제");
 				
 				//// 새로운 프로필 사진 저장				
 				commonService.saveFileOnly(files[0], fileList.get(0).getSysName(), tempPath, sysPath);
 				
 				//// 새로운 프로필 사진 정보 DB에 업데이트
-				fileList.get(0).setSeq(fileNo);
+				fileList.get(0).setSeq(seq);
 				commonService.updateFileDB(fileList.get(0));
 				
 				// 기존 사진 번호 dto에 담기
-				memberDto.setFileno(fileNo);
+				memberDto.setFileno(seq);
 			} else {
 				// 새로운 사진 O & 기존에 프로필 사진 X
 				// 새로운 프로필 사진 등록
@@ -176,16 +182,18 @@ public class MemberController {
 				memberDto.setFileno(commonService.selectFilePK("member", memberDto.getId()));
 			}
 		} else {
-			if(fileNo > 0) {
+			if(seq > 0) {
 				// 새로운 사진 X & 기존 프로필 사진 O
-				memberDto.setFileno(fileNo);
+				memberDto.setFileno(seq);
 			}
 			// 새로운 사진이 없고 기존 프로필도 없으면 회원 정보만 업데이트.
 		}
 		
 		// 회원의 DB 정보 수정
 		System.out.println("수정할 회원 정보 : " + memberDto.toString());
-		memberService.editMember(memberDto);
+		if(memberService.editMember(memberDto) < 0) {
+			return "errorPage";
+		}
 		System.out.println(memberDto.getId() + "님 회원정보 수정 완료");
 		
 		return toEditMember(memberDto.getId(), model);
@@ -198,11 +206,28 @@ public class MemberController {
 		return memberService.checkId(id);
 	}
 	
-//	// 사진 옮기기 테스트
-//	@ResponseBody
-//	@PostMapping(value="/test")
-//	public String testFile(MultipartFile file) {
-//		
-//	}
+	// 로그인
+	@PostMapping(value="/login.do")
+	public String loginProcess(MemberDTO memberDto, Model model) throws Exception {
+		System.out.println("===== 로그인 정보 =====");
+		System.out.println("ID : " + memberDto.getId() + " / PW : " + memberDto.getPw());
+		
+		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
+		MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+		if(dto != null && dto.getStatus() == 1) {
+			session.setAttribute("loginSession", dto);
+			model.addAttribute("dto", dto);
+			return "result";
+		} else {
+			return "redirect:/";
+		}
+	}
+	
+	// 회원가입 페이지로 이동
+	@GetMapping(value="/signUp")
+	public String toSignUp() {
+		return "signUp";
+	}
+	
 	
 }

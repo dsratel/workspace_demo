@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div class="container">
+		<form name="loginForm" method="post" action="member/login.do" id="loginForm">
+			<table class="table table-bordered">
+				<tr>
+					<td>아이디</td>
+					<td><input type="text" class="form-control" name="id" id="${dto.id }"></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td><input type="password" class="form-control" name="pw" id="${dto.pw }"></td>
+				</tr>
+			</table>		
+		</form>
+	</div>
+</body>
+</html>

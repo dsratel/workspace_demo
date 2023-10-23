@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	
+<mapper namespace="commonMapper">
+	<!-- 파일 저장 -->
+	<insert id="saveFile" parameterType="fileVo">
+		INSERT INTO t_filemeta VALUES(#{fileParent}, #{category}, #{orgName}, #{sysName}, #{fileSize}, #{fancySize}, #{contentType}, #{filePath}, 0, 'N', sysdate());
+	</insert>
+	
+	<!-- 파일 삭제 -->
+	<delete id="delFile" parameterType="fileVo">
+		DELETE FROM t_filemeta WHERE fileparent like #{fileParent} AND sysname LIKE #{sysName} 
+	</delete>
+	
+	<!-- 파일 PK 찾기 -->
+	<select id="selectFilePK" parameterType="fileVo" resultType="Integer">
+		SELECT seq FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent} AND delyn = 'N'
+	</select>
+
+	<!-- 파일 경로 찾기 -->
+	<select id="getPath" parameterType="Integer" resultType="String">
+		SELECT concat(filepath,sysname) as 'path' FROM t_filemeta WHERE seq = #{seq}
+	</select>
+
+	<!-- fileno로 특정 파일 DB정보 삭제 -->
+	<update id="delFileDB" parameterType="Integer">
+		UPDATE t_filemeta SET delyn = 'Y' WHERE seq = #{seq}
+	</update>
+
+	<!-- fileno로 특정 파일 DB정보 업데이트 -->
+	<update id="updateFileDB" parameterType="fileVo">
+		UPDATE t_filemeta SET orgname = #{orgName}, sysname = #{sysName}, filesize = #{fileSize}, fancysize = #{fancySize}, contenttype = #{contentType}, filepath = #{filePath}
+		WHERE seq = #{seq}
+	</update>
+
+</mapper>

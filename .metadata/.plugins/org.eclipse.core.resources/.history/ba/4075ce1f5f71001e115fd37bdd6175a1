@@ -1,0 +1,5 @@
+package com.dialoguespace.utils;
+
+public class ExceptionController {
+
+}
