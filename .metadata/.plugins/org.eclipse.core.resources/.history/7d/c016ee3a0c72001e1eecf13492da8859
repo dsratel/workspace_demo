@@ -1,0 +1,14 @@
+package com.dialoguespace.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.dao.BoardDAO;
+
+@Service
+public class BoardService {
+	
+	@Autowired
+	BoardDAO boardDAO;
+
+}

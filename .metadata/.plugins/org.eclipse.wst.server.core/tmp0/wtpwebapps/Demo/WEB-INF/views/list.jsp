@@ -4,8 +4,8 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
+	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>member list</title>
 </head>
 <body>
@@ -36,7 +36,6 @@
 				</form>
  			</div>
  			<div class="col-3" style="text-align: right">
- 				<button class="btn btn-primary" id="regForm">회원가입 화면으로</button>
  				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
 			</div>
 		</div>
@@ -91,12 +90,6 @@
 	</div>
 	<script>
 		$(function(){
-			// 회원가입 화면으로 이동
-			$("#regForm").click(function(){
-				alert("회원가입 화면으로 이동");
-				window.location.replace("${pageContext.request.contextPath}/");
-			});
-			
 			// 삭제 버튼 클릭
 			$(".BtnDelMember").click(function(){
 				var param = "id=" + $(this).val();

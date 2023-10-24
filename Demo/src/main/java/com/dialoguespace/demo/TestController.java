@@ -8,9 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dialoguespace.dto.MemberDTO;
-import com.dialoguespace.service.CommonService;
-import com.dialoguespace.service.MemberService;
+import com.dialoguespace.common.CommonService;
+import com.dialoguespace.member.MemberDTO;
+import com.dialoguespace.member.MemberService;
 
 @Controller
 @RequestMapping(value="/test")

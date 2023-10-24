@@ -45,19 +45,16 @@ public class ConnectionTest {
 //		System.out.println(rs1);
 		
 		
-		EncryptionUtils encUtils = new EncryptionUtils();
-		String password = "Abcde02!@#";
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.reset();
-			md.update(password.getBytes("utf8"));
-			password = String.format("%0128x", new BigInteger(1, md.digest()));
-			System.out.println("객체 생성");
-		} catch(Exception e) {
-			e.printStackTrace();	
+		String str = "<p>"
+				+ "<img style=\"width: 640px;\" src=\"/resources/summerNoteImg/1dd21104-aa20-4ed0-9889-dc56dcfe8a56.jpg\">"
+				+ "<img style=\"width: 427px;\" src=\"/resources/summerNoteImg/292a0437-9eee-45a9-b18b-74f6738eab1e.jpg\">"
+				+ "<img style=\"width: 640px;\" src=\"/resources/summerNoteImg/5972aa2a-0ccf-46c9-a203-9c6dc42f3f05.jpg\"><br></p>";
+		// <img > 가 들어간 개수
+		
+		String rs[] = str.split(">");
+		for(int i = 0; i < rs.length; i++) {
+			System.out.println(rs[i]);
 		}
-		
-		
 
 	}	// main end
 	
