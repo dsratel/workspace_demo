@@ -212,7 +212,7 @@ public class MemberController {
 		if(dto != null && dto.getStatus() == 1) {
 			session.setAttribute("loginSession", dto);
 			model.addAttribute("dto", dto);
-			return "result";
+			return "redirect:/board/toList";
 		} else {
 			return "redirect:/";
 		}

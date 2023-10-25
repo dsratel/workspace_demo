@@ -1,0 +1,16 @@
+package com.dialoguespace.board;
+
+import org.springframework.stereotype.Repository;
+
+import com.dialoguespace.member.MemberDTO;
+
+@Repository
+public class BoardDAOImpl implements BoardDAO {
+	
+	// 글 작성 프로세스
+	public int writeArticle(BoardDTO boardDto) {
+		System.out.println("========== BoardDAOImpl 진입 ==========");
+		
+	}
+
+}

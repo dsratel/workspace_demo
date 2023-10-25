@@ -1,6 +1,7 @@
 package com.dialoguespace.common;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,37 @@ public class CommonDAOImpl implements CommonDAO {
 	
 	// fileno로 특정 파일 DB정보 삭제
 	@Override
-	public int delFileDB(int seq) throws Exception {
-		return sqlsession.update("commonMapper.delFileDB", seq);
+	public int delFileDbBySeq(int seq) throws Exception {
+		return sqlsession.update("commonMapper.delFileDbBySeq", seq);
 	}
 	
 	// fileno로 특정 파일 DB정보 업데이트
 	@Override
 	public int updateFileDB(FileVO file) throws Exception {
 		return sqlsession.update("commonMapper.updateFileDB", file);
+	}
+	
+	// id와 category로 파일 경로 찾기
+	@Override
+	public List<String> selFilePathByIdCat(Map map) {
+		return sqlsession.selectList("commonMapper.selFilePathByIdCat", map);
+	}
+	
+	// id와 category로 파일 DB 삭제
+	@Override
+	public int delFileDbByIdCat(Map map) {
+		return sqlsession.delete("commonMapper.delFileDbByIdCat", map);
+	}
+	
+	// id와 category로 fileparent update
+	@Override
+	public int modifyFileparent(Map map) { 
+		return sqlsession.update("commonMapper.modifyFileparent", map);
+	}
+	
+	// seq로 File db 찾기
+	@Override
+	public List<FileVO> SelFileById(String id) {
+		return sqlsession.selectList("commonMapper.SelFileById", id);
 	}
 }

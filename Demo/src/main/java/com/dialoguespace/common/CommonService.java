@@ -180,8 +180,8 @@ public class CommonService {
 	}
 	
 	// seq로 특정 파일 DB정보 삭제
-	public int delFileDB(int seq) throws Exception {
-		return commonDAO.delFileDB(seq);
+	public int delFileDbBySeq(int seq) throws Exception {
+		return commonDAO.delFileDbBySeq(seq);
 	}
 	
 	// seq로 특정 파일 DB정보 업데이트
@@ -216,6 +216,46 @@ public class CommonService {
 		vo.setCategory(category);
 		vo.setFileParent(fileParent);
 		return commonDAO.selectFilePK(vo); 
+	}
+	
+	// id와 category로 파일 삭제
+	public int delFileByIdCat(String id, String category) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("category", category);
+		
+		int delFile = 0;
+		
+		// 물리파일 삭제
+		//// 경로 가져오기
+		List<String> paths = commonDAO.selFilePathByIdCat(map);
+		//// 경로에 해당하는 파일 삭제
+		for(String filePath : paths) {
+			File file = new File(filePath);
+			file.delete();
+			delFile++;
+		}
+		
+		// filemeta DB 삭제
+		int delFileDb = commonDAO.delFileDbByIdCat(map);
+		
+		System.out.println("물리파일 삭제 개수 : " + delFile + " / 파일 DB 삭제 개수 : " + delFileDb);
+		return delFileDb;
+	}
+	
+	// id와 category로 fileparent update
+	public int modifyFileparent(String id, String category, int seq) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("category", category);
+		map.put("seq", seq);
+		
+		return commonDAO.modifyFileparent(map);
+	}
+	
+	// seq로 File db 찾기
+	public List<FileVO> SelFileById(String id) {
+		return commonDAO.SelFileById(id);
 	}
 	
 }

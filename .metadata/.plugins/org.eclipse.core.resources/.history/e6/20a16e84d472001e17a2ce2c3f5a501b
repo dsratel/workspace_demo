@@ -1,0 +1,7 @@
+package com.dialoguespace.board;
+
+public interface BoardDAO {
+	// 글 작성 프로세스
+	public int writeArticle(BoardDTO boardDto);
+
+}

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -23,7 +24,7 @@
     <div class="container">
     	<form method="post" action="/board/write.do" name="writeArticleForm" id="writeArticleForm" encType="multipart/form-data">
     		<input type="text" name="title">
-    		<input type="text" name="author" value="${loginId }">
+    		<input type="text" name="author" value="${loginId }" readonly>
     		<select name="category" class="custom-select" id="category">
     			<option value="free">자유게시판</option>
     		</select>
@@ -65,6 +66,7 @@
 	    function sendFile(file, editor) {
 	    	data = new FormData();
 	    	data.append("file", file);
+	    	data.append("author", "${loginId}");
 	    	$.ajax({
 	    		data: data,
 	    		type: "post",

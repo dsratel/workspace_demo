@@ -9,41 +9,7 @@ import com.dialoguespace.utils.EncryptionUtils;
 public class ConnectionTest {
 	public static void main(String[] args) throws Exception {
 		
-//		try {
-//			// MySQL DB용 드라이브로드
-//			Class.forName("com.mysql.jdbc.Driver");
-//			// DB 연결
-//			Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/demo_schema", "root", "1234");
-//			System.out.println("mysql db연결 성공");
-//			
-//			// DB연결해제
-//			conn.close();
-//			System.out.println("mysql DB 연결 해제 성공");
-//			
-//			
-//		} catch(ClassNotFoundException error) {
-//			System.out.println(error);
-//			System.out.println("mysql driver 미설치 또는 드라이버 이름 오류");
-//		} catch(SQLException error) {
-//			System.out.println("DB접속오류");
-//		}
-		
-//		String tempPath = "D:\\demoTemp\\";
-//		//createTempFolder(tempPath);
-//		
-//		File testFolder = new File("D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources\\testFoler");
-//		
-//		for(File f : testFolder.listFiles()) {
-//			System.out.println(f);			
-//		}
-		
-		
-		//delFilePhs("D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/testFoler/31973541-2080-4337-9ef2-ef0e12039e43");
-		
-//		String str = "D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/testFoler/31973541-2080-4337-9ef2-ef0e12039e43";
-//		String rs1 = str.substring(str.lastIndexOf("resources"));
-//		System.out.println(rs1);
-		
+/*
 		
 		String str = "<p>"
 				+ "<img style=\"width: 640px;\" src=\"/resources/summerNoteImg/1dd21104-aa20-4ed0-9889-dc56dcfe8a56.jpg\">"
@@ -55,6 +21,13 @@ public class ConnectionTest {
 		for(int i = 0; i < rs.length; i++) {
 			System.out.println(rs[i]);
 		}
+		
+		*/
+		
+		String path = "D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/summerNoteImg/07092b7e-6877-4f5a-a81e-8b7ed2ccc11d";
+		File f = new File(path);
+		f.delete();
+		
 
 	}	// main end
 	

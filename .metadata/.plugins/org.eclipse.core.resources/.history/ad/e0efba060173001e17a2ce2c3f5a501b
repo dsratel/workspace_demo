@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="boardMapper">
+	<insert id="writeArticle" parameterType="boardDto">
+		INSERT INTO t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachFile}, sysdate())
+	</insert>
+	
+	<select id="selectAll" resultType="boardDto">
+		SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate FROM t_board
+	</select>
+	
+	<select id="selArticleBySeq" parameterType="Integer" resultType="boardDto">
+		SELECT seq, category, author, title, content, regdate FROM t_board WHERE seq = #{seq}
+	</select>
+
+</mapper>

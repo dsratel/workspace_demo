@@ -18,7 +18,7 @@
 	
 	<!-- 파일 PK 찾기 -->
 	<select id="selectFilePK" parameterType="fileVo" resultType="Integer">
-		SELECT seq FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent} AND delyn = 'N'
+		SELECT seq FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent} AND orgname LIKE #{orgName} AND delyn = 'N'
 	</select>
 
 	<!-- 파일 경로 찾기 -->
@@ -27,7 +27,7 @@
 	</select>
 
 	<!-- fileno로 특정 파일 DB정보 삭제 -->
-	<update id="delFileDB" parameterType="Integer">
+	<update id="delFileDbBySeq" parameterType="Integer">
 		UPDATE t_filemeta SET delyn = 'Y' WHERE seq = #{seq}
 	</update>
 
@@ -36,5 +36,25 @@
 		UPDATE t_filemeta SET orgname = #{orgName}, sysname = #{sysName}, filesize = #{fileSize}, fancysize = #{fancySize}, contenttype = #{contentType}, filepath = #{filePath}
 		WHERE seq = #{seq}
 	</update>
+	
+	<!-- id와 category로 파일 경로 찾기 -->
+	<select id="selFilePathByIdCat" parameterType="map" resultType="String">
+		SELECT concat(filepath, sysname) AS path FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id}
+	</select>
+	
+	<!-- id와 category로 파일 DB 삭제 -->
+	<delete id="delFileDbByIdCat" parameterType="map">
+		DELETE FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id} 
+	</delete>
+	
+	<!-- id와 category로 fileparent update -->
+	<update id="modifyFileparent" parameterType="map">
+		UPDATE t_filemeta SET fileparent = #{seq} WHERE category LIKE #{category} AND fileparent LIKE #{id}
+	</update>
+	
+	<!-- seq로 File db 찾기 -->
+	<select id="SelFileById" parameterType="String" resultType="fileVo">
+		SELECT seq, fileparent as fileParent, category, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	</select>
 
 </mapper>

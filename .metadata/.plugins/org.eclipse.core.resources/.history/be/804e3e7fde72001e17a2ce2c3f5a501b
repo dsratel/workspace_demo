@@ -1,0 +1,28 @@
+package com.dialoguespace.board;
+
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class BoardDAOImpl implements BoardDAO {
+	
+	@Autowired
+	SqlSession sqlsession;
+	
+	// 글 작성 프로세스
+	public int writeArticle(BoardDTO boardDto) {
+		System.out.println("========== BoardDAOImpl 진입 ==========");
+		return sqlsession.insert("boardMapper.writeArticle", boardDto);
+	}
+	
+	// 글 전체 불러오기
+	public List<BoardDTO> selectAll() {
+		System.out.println("========== BoardDAOImpl 진입 ==========");
+		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectAll"); 
+		return list;
+	}
+
+}
