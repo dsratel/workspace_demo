@@ -35,4 +35,7 @@ public interface CommonDAO {
 	
 	// seq로 File db 찾기
 	public List<FileVO> SelFileById(String id);
+	
+	// seq로 File path 찾기
+	public List<String> SelFilePathById(String id);
 }

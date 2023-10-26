@@ -32,7 +32,7 @@ public class CommonService {
 	}
 	
 	// 다중 MultipartFile에서 VO 설정 및 업로드 파일 처리 후 List 리턴
-	public List<FileVO> getFileList(MultipartFile[] files, String fileParent, String category, String path) throws IOException {
+	public List<FileVO> setFileList(MultipartFile[] files, String fileParent, String category, String path) throws IOException {
 		List<FileVO> fileList = new ArrayList<>();
 		for(int i = 0; i < files.length; i++) {
 			MultipartFile file = files[i];
@@ -48,12 +48,14 @@ public class CommonService {
 	// 개별 fileVO 설정
 	public FileVO setFileVOByMultipart(MultipartFile file, String fileParent, String category, String path) throws IOException {
 		if(!file.isEmpty()) {
-			String sysName = UUID.randomUUID().toString();
+			String orgName = file.getOriginalFilename();
+			String extension = orgName.substring(orgName.lastIndexOf("."));
+			String sysName = UUID.randomUUID().toString() + extension;
 			FileVO vo = new FileVO();
 			
 			vo.setFileParent(fileParent);
 			vo.setCategory(category);
-			vo.setOrgName(file.getOriginalFilename());
+			vo.setOrgName(orgName);
 			vo.setSysName(sysName);
 			vo.setFileSize(file.getSize());
 			vo.setFancySize(fansySize(file.getSize()));
@@ -256,6 +258,10 @@ public class CommonService {
 	// seq로 File db 찾기
 	public List<FileVO> SelFileById(String id) {
 		return commonDAO.SelFileById(id);
-	}
+	}	
 	
+	// seq로 File path 찾기
+	public List<String> SelFilePathById(String id) {
+		return commonDAO.SelFilePathById(id);
+	}
 }

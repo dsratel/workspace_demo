@@ -53,7 +53,7 @@ public class MemberController {
 		String path			= contextRoot + "resources/testFolder/";
 		
 		//// 파일VO에 리스트로 정리
-		List<FileVO> fileList = commonService.getFileList(files, memberDto.getId(), "member", path);
+		List<FileVO> fileList = commonService.setFileList(files, memberDto.getId(), "member", path);
 		
 		
 		List<Integer> pk = commonService.saveNewFiles(files, fileList);			
@@ -154,7 +154,7 @@ public class MemberController {
 			String contextRoot		= new HttpServletRequestWrapper(request).getRealPath("/");
 			String sysPath			= contextRoot + "resources/testFolder/";
 			String tempPath			= "D:\\demoTemp\\";
-			List<FileVO> fileList	= commonService.getFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
+			List<FileVO> fileList	= commonService.setFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
 			
 			if(seq > 0) {
 				// 새로운 사진 O & 기존에 프로필 사진 O

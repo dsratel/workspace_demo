@@ -46,23 +46,31 @@ public class BoardController {
 		
 		model.addAttribute("loginId", loginId);
 		 
-		return "writeArticle";
+		return "/board/writeBoard";
 	}
 	
-	// 글 작성 프로세스
 	@PostMapping(value="/write.do")
-	public String writeAtricle(BoardDTO dto, Model model) throws IOException {
-		System.out.println("========== Board Controller 진입 ==========");
-		System.out.println("BoardDTO : " + dto.toString());
-		boardService.writeArticle(dto);
-		System.out.println("글 저장 완료");
+	public String writeArticle(BoardDTO boardDto, @RequestParam("upfile") MultipartFile[] multipartFiles, Model model, HttpServletRequest request) throws IOException {
+		System.out.println("========== BoardController - writeBoard ==========");
+		System.out.println("BoardDTO : " + boardDto.toString());
+		// board DB 저장
+		boardService.writeArticle(boardDto);
+		String seq = "" + boardService.getLatestSeq(boardDto.getAuthor());
 		
-		// 파일 DB의 fileparent를 게시글 seq로 변경
-		int seq = boardService.getLatestSeq(dto.getAuthor());
-		commonService.modifyFileparent(dto.getAuthor(), "board", seq);
+		// 첨부 파일이 있는 경우
+		if(boardDto.getAttachfile().contentEquals("y")) {
+		//// 파일 디렉토리 변수에 담기
+		String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
+		String path			= contextRoot + "resources/board/";
 		
-		 return toListPage(model);
+		List<FileVO> fileList = commonService.setFileList(multipartFiles, seq, "board", path);
+		commonService.saveNewFiles(multipartFiles, fileList);
+		}
+		
+		// 글 목록 불러오기
+		return toListPage(model);
 	}
+
 	
 	// 글 목록 페이지로 이동
 	@GetMapping(value="/toList")
@@ -75,38 +83,33 @@ public class BoardController {
 	@GetMapping(value="/viewArticle")
 	public String toViewPage(int seq, Model model) {
 		System.out.println("========== Board Controller 진입 ==========");
-		MemberDTO dto = (MemberDTO) session.getAttribute("loginSession");
-		String loginId = dto.getId();
-		System.out.println("글 번호 : " + seq);
+		
+		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
+		String loginId = "";
+		if(loginDto != null) {
+			loginId = loginDto.getId(); System.out.println("글 번호 : " + seq);			  
+		} else {
+			loginId = "";
+		}
 		System.out.println("로그인 아이디 : " + loginId);
+		 
 		
 		// model에 dto 객체 담기
-		model.addAttribute("dto", boardService.selArticleBySeq(seq));
+		//// 글 정보  
+		BoardDTO dto = boardService.selArticleBySeq(seq);
+		model.addAttribute("dto", dto);
 		model.addAttribute("loginId", loginId);
 		
-		return "viewArticle";
+		//// 파일 정보
+		if(dto.getAttachfile().contentEquals("y")) {
+			// "board"와 seq에 해당하는 파일들 가져오기
+			model.addAttribute("files", commonService.SelFilePathById(""+seq));
+		}
+		
+		return "/board/viewBoard";
 	}
 	
-	// 썸머노트 이미지 저장
-	@ResponseBody
-	@PostMapping(value="/summernoteImgSave")
-	public String summerNoteTest(@RequestParam("file") MultipartFile[] multipartFiles, String author, HttpServletRequest request) throws IOException{
-		// 내부 경로로 저장
-		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
-		String filePath = contextRoot + "resources/summerNoteImg/";
 
-		List<FileVO> fileList = commonService.getFileList(multipartFiles, author, "board", filePath);
-		commonService.saveNewFiles(multipartFiles, fileList);
-		
-
-		System.out.println("썸머노트 이미지 저장");
-		
-
-		String path = "/" + filePath.substring(filePath.lastIndexOf("resources")) + fileList.get(0).getSysName();
-		System.out.println("ajax로 넘겨줄 url path : " + path);
-		
-		return path;
-	}
 	
 	// 게시글 삭제
 	@ResponseBody
@@ -147,6 +150,45 @@ public class BoardController {
 //		// 아닌 데이터는 물리파일 삭제, db삭제
 //		
 //	}
+	
+	/* 
+	 * 
+	 *썸머노트 글 작성
+	@PostMapping(value="/writeSummernote.do")
+	public String writeAtricle(BoardDTO dto, Model model) throws IOException {
+		System.out.println("========== Board Controller 진입 ==========");
+		System.out.println("BoardDTO : " + dto.toString());
+		boardService.writeArticle(dto);
+		System.out.println("글 저장 완료");
+		
+		// 파일 DB의 fileparent를 게시글 seq로 변경
+		int seq = boardService.getLatestSeq(dto.getAuthor());
+		commonService.modifyFileparent(dto.getAuthor(), "board", seq);
+		
+		 return toListPage(model);
+	}
+	
+		// 썸머노트 이미지 저장
+	@ResponseBody
+	@PostMapping(value="/summernoteImgSave")
+	public String summerNoteTest(@RequestParam("file") MultipartFile[] multipartFiles, String author, HttpServletRequest request) throws IOException{
+		// 내부 경로로 저장
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		String filePath = contextRoot + "resources/summerNoteImg/";
+
+		List<FileVO> fileList = commonService.setFileList(multipartFiles, author, "board", filePath);
+		commonService.saveNewFiles(multipartFiles, fileList);
+		
+
+		System.out.println("썸머노트 이미지 저장");
+		
+
+		String path = "/" + filePath.substring(filePath.lastIndexOf("resources")) + fileList.get(0).getSysName();
+		System.out.println("ajax로 넘겨줄 url path : " + path);
+		
+		return path;
+	}
+	*/
 	
 	
 	

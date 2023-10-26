@@ -75,6 +75,12 @@ public class CommonDAOImpl implements CommonDAO {
 	// seq로 File db 찾기
 	@Override
 	public List<FileVO> SelFileById(String id) {
-		return sqlsession.selectList("commonMapper.SelFileById", id);
+		return sqlsession.selectList("commonMapper.selFileById", id);
+	}
+	
+	// seq로 File path 찾기
+	@Override
+	public List<String> SelFilePathById(String id) {
+		return sqlsession.selectList("commonMapper.selFilePathById", id);
 	}
 }

@@ -53,8 +53,13 @@
 	</update>
 	
 	<!-- seq로 File db 찾기 -->
-	<select id="SelFileById" parameterType="String" resultType="fileVo">
-		SELECT seq, fileparent as fileParent, category, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	<select id="selFileById" parameterType="String" resultType="fileVo">
+		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	</select>
+	
+	<!-- seq로 file path 찾기 -->
+	<select id="selFilePathById" parameterType="String" resultType="String">
+		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta WHERE fileparent = #{seq}
 	</select>
 
 </mapper>

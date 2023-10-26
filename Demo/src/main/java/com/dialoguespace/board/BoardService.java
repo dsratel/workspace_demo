@@ -20,16 +20,7 @@ public class BoardService {
 	
 	// 글 작성 프로세스
 	public int writeArticle(BoardDTO dto) throws IOException {
-		System.out.println("========== BoardService 진입 ==========");
-		
-		// 첨부파일이 있다면 attathyn = 'y'
-		if(dto.getContent().contains("<img")) {
-			dto.setAttachfile("y");
-			
-			// img가 몇 개인지 파악
-		} else {
-			dto.setAttachfile("n");
-		};
+		System.out.println("========== BoardService - writeArticle 진입 ==========");
 
 		System.out.println("BoardService - writeArticle() - BoardDTO" + dto.toString());
 		

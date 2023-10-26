@@ -51,5 +51,15 @@
 	<update id="modifyFileparent" parameterType="map">
 		UPDATE t_filemeta SET fileparent = #{seq} WHERE category LIKE #{category} AND fileparent LIKE #{id}
 	</update>
+	
+	<!-- seq로 File db 찾기 -->
+	<select id="selFileById" parameterType="String" resultType="fileVo">
+		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	</select>
+	
+	<!-- seq로 file path 찾기 -->
+	<select id="selFilePathById" parameterType="String" resultType="String">
+		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta WHERE fileparent = #{seq}
+	</select>
 
 </mapper>
