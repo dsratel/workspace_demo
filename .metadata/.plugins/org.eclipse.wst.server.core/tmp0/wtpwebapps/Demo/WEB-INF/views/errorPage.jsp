@@ -4,6 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="#">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>error page</title>

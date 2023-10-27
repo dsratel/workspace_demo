@@ -4,6 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="#">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>login page</title>
@@ -24,19 +25,20 @@
 				</tr>
 			</table>		
 		</form>
-	
-		<div class="row" id="signUpBox">
+		<div class="row" id="BtnBox">
 			<div class="col">
 				<span>아직 회원이 아니신가요?</span>
 				<button type="button" class="btn btn-success" id="signUpBtn">회원가입</button>
 			</div>
-		
+			<div class="col">
+				<button type="button" class="btn btn-warning" id="listBtn">글 미리보기</button>
+			</div>
 		</div>
 	</div>
 	<script>
 		$(function(){
 			// css
-			$("table, #signUpBox").css({"text-align" : "center", "vertical-align" : "middle"});
+			$("table, #BtnBox").css({"text-align" : "center", "vertical-align" : "middle"});
 			
 			// 로그인 버튼
 			$("#loginBtn").click(function(){
@@ -56,10 +58,14 @@
 			});
 			
 			// 회원가입 버튼
-			// 회원가입 화면으로 이동
 			$("#signUpBtn").click(function(){
 				alert("회원가입 화면으로 이동");
-				window.location.replace("${pageContext.request.contextPath}/member/signUp");
+				window.location.replace("/member/signUp");
+			});
+			
+			// 글 미리보기 버튼
+			$("#listBtn").click(function(){
+				window.location.replace("/board/toList");
 			});
 			
 		})	// function() end

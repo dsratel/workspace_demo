@@ -34,7 +34,7 @@ public interface CommonDAO {
 	public int modifyFileparent(Map map);
 	
 	// seq로 File db 찾기
-	public List<FileVO> SelFileById(String id);
+	public List<FileVO> SelFileById(Map map);
 	
 	// seq로 File path 찾기
 	public List<String> SelFilePathById(String id);

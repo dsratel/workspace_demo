@@ -4,12 +4,17 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="#">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>article list</title>
 </head>
 <body>
 	<h1>글 목록 - 권한에 상관 없이 모두 열람 가능</h1>
+	<c:if test="${loginId ne ''}">
+		<h1>${loginId }님 오늘도 행복한 하루 보내세요 *^^*</h1>
+		<button type="button" class="btn btn-secondary" id="logoutBtn">로그아웃</button>
+	</c:if>
 	<div class="container">
 		<!-- Article List -->
 		<div class="searchTab">
@@ -29,7 +34,16 @@
 				<c:forEach var="dto" items="${list}" varStatus="status">
 					<tr>
 						<td>${status.count }</td>
-						<td>${dto.category }</td>
+						<td>
+							<c:choose>
+								<c:when test="${dto.category eq 'free'}">
+									자유게시판
+								</c:when>
+								<c:when test="${dto.category eq 'notice'}">
+									공지사항
+								</c:when>
+							</c:choose>
+						</td>
 						<td><a class="title" href="/board/viewArticle?seq=${dto.seq }">${dto.title }</a></td>
 						<td>${dto.author }</td>
 						<td>${dto.regdate }</td>
@@ -51,6 +65,12 @@
 			$("#writeBtn").click(function(){
 				window.location.replace("/board/toWrite");
 			});
+			
+			// 로그아웃 버튼
+			$("#logoutBtn").click(function(){
+				window.location.replace("/common/logout?id=${loginId}");
+			});
+			
 			
 			// css
 			$(".title").css({"color":"black", "text-decoration":"none"});

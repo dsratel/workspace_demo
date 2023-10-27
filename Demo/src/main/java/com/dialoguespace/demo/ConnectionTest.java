@@ -24,9 +24,20 @@ public class ConnectionTest {
 		
 		*/
 		
-		String path = "D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/summerNoteImg/07092b7e-6877-4f5a-a81e-8b7ed2ccc11d";
-		File f = new File(path);
-		f.delete();
+//		String path = "D:\\workspace_demo\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\Demo\\resources/summerNoteImg/07092b7e-6877-4f5a-a81e-8b7ed2ccc11d";
+//		File f = new File(path);
+//		f.delete();
+		
+		for(int i = 0; i < 5; i++) {
+			
+			for(int j = 0; j < 5; j++) {
+				
+				if(j == 2) continue;
+				
+				System.out.println("i = " + i + " / j = " + j);
+			}
+		}
+		
 		
 
 	}	// main end

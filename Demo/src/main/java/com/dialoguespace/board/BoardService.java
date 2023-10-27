@@ -3,9 +3,10 @@ package com.dialoguespace.board;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.dialoguespace.common.CommonService;
 
@@ -17,6 +18,9 @@ public class BoardService {
 	
 	@Autowired
 	CommonService commonService;
+	
+	@Autowired
+	HttpSession session;
 	
 	// 글 작성 프로세스
 	public int writeArticle(BoardDTO dto) throws IOException {
@@ -54,8 +58,12 @@ public class BoardService {
 			commonService.delFileByIdCat(id, "board");
 		}
 		
-		// 게시글 삭제
 		return boardDAO.delArticle(seq); 
+	}
+	
+	// 게시글 수정
+	public int editArticle(BoardDTO boardDto) {
+		return boardDAO.editArticle(boardDto);
 	}
 
 }

@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.vo.FileVO;
 
 @Service
@@ -21,6 +24,9 @@ public class CommonService {
 	
 	@Autowired
 	CommonDAO commonDAO;
+	
+	@Autowired
+	HttpSession session;
 
 	// 검색 조건 Map에 담기
 	public Map makeSrchInfo(String searchType, String searchKeyword) throws Exception {
@@ -89,46 +95,48 @@ public class CommonService {
 		createTempFolder(tempPath);
 		List<Integer> filesPK = new ArrayList<>();
 		
-		try {
-			// 파일 하나씩 저장		// for문 하나에서 인덱스 지정하여 물리파일 저장-DB저장-resource로 파일 이동에서 for문 3개로 나눔
-			for(int i = 0; i < multipartFiles.length; i++) {
-				// 물리 파일 저장
-				FileUtils.copyInputStreamToFile(multipartFiles[i].getInputStream(), new File(tempPath, fileList.get(i).getSysName()));
-				System.out.println(i + "번 째 물리 파일 저장"); 
-			}
-			
-			// 파일 내용 DB에 저장
-			for(FileVO vo : fileList) {
-				commonDAO.saveNewFile(vo);
-				filesPK.add(commonDAO.selectFilePK(vo));
-			}
-			
-			// 물리파일, DB 저장 끝난 후 템프 폴더에 있는 파일을 resource로 옮기기
-			for(int i = 0; i < fileList.size(); i++) {
-				copyFile(multipartFiles, fileList);
-			}
-			
-		} catch(Exception e) {
-			System.out.println("파일 저장 실패");
-			e.printStackTrace();
-			// DB 파일 삭제
-			for(FileVO vo : fileList) {
-				try {
-					commonDAO.delFile(vo);					
-				} catch(Exception ex) {
-					ex.printStackTrace();
+			try {
+				// 파일 하나씩 저장		// for문 하나에서 인덱스 지정하여 물리파일 저장-DB저장-resource로 파일 이동에서 for문 3개로 나눔
+				for(int i = 0; i < multipartFiles.length; i++) {
+					// 물리 파일 저장
+					FileUtils.copyInputStreamToFile(multipartFiles[i].getInputStream(), new File(tempPath, fileList.get(i).getSysName()));
+					System.out.println(i + "번 째 물리 파일 저장"); 
 				}
+				
+				// 파일 내용 DB에 저장
+				for(FileVO vo : fileList) {
+					commonDAO.saveNewFile(vo);
+					filesPK.add(commonDAO.selectFilePK(vo));
+				}
+				
+				// 물리파일, DB 저장 끝난 후 템프 폴더에 있는 파일을 resource로 옮기기
+				for(int i = 0; i < fileList.size(); i++) {
+					copyFile(multipartFiles, fileList);
+				}
+				
+			} catch(Exception e) {
+				System.out.println("파일 저장 실패");
+				e.printStackTrace();
+				// DB 파일 삭제
+				for(FileVO vo : fileList) {
+					try {
+						commonDAO.delFile(vo);					
+					} catch(Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+				
+				
+			} finally {
+				// 템프 폴더 지우기
+				File folder = new File(tempPath);
+				delFilesUnderFolder(folder);	// 폴더 하위에 파일이 있으면 폴더가 삭제되지 않으므로 파일들을 우선 삭제한다.
+				folder.delete();			
 			}
 			
+			return filesPK;
 			
-		} finally {
-			// 템프 폴더 지우기
-			File folder = new File(tempPath);
-			delFilesUnderFolder(folder);	// 폴더 하위에 파일이 있으면 폴더가 삭제되지 않으므로 파일들을 우선 삭제한다.
-			folder.delete();			
-		}
-			
-		return filesPK;
+		
 		
 	}
 	
@@ -256,12 +264,24 @@ public class CommonService {
 	}
 	
 	// seq로 File db 찾기
-	public List<FileVO> SelFileById(String id) {
-		return commonDAO.SelFileById(id);
+	public List<FileVO> SelFileById(String seq, String category) {
+		Map map = new HashMap();
+		map.put("category", category);
+		map.put("seq", seq);
+		
+		return commonDAO.SelFileById(map);
 	}	
 	
 	// seq로 File path 찾기
 	public List<String> SelFilePathById(String id) {
 		return commonDAO.SelFilePathById(id);
+	}
+	
+
+	
+	// login id 불러오기
+	public String getLoginId() {
+		MemberDTO dto = (MemberDTO)session.getAttribute("loginSession");
+		return dto.getId();
 	}
 }

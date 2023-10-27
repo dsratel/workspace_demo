@@ -4,6 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link rel="shortcut icon" href="#">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>write board page</title>
@@ -65,7 +66,7 @@
 					<input class="form-control" type="file" name="upfile">
 					<input class="form-control" type="file" name="upfile">
 					<input type="hidden" name="attachfile" id="attachfile">
-					<input type="hidden" name="fileCnt" id="fileCnt">
+					<input type="hidden" id="fileCnt">
 				</div>
 				<div class="col-2"></div>
 			</div>
@@ -88,6 +89,19 @@
 			
 			// 글 작성 버튼
 			$("#writeBtn").click(function(){
+				// 유효성 검사
+				//// 제목
+				if($("#title").val().length < 1) {
+					alert("제목을 입력해주세요.");
+					return;
+				}
+				
+				//// 내용
+				if($("#content").val().length < 1) {
+					alert("내용을 입력해주세요.");
+					return;
+				}
+				
 				// 파일 개수 체크
 				var fileCnt = 0;
 				var files = $("input[type='file']");
@@ -110,7 +124,9 @@
 				// 파일 개수 입력
 				$("#fileCnt").val(fileCnt);
 				
-				$("form[name='writeBoardForm']").submit();
+				if(confirm("글 작성을 하시겠습니까?")) {
+					$("form[name='writeBoardForm']").submit();					
+				}
 			});
 			
 			// 글 목록 버튼

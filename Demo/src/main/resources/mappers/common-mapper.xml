@@ -53,8 +53,8 @@
 	</update>
 	
 	<!-- seq로 File db 찾기 -->
-	<select id="selFileById" parameterType="String" resultType="fileVo">
-		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	<select id="selFileById" parameterType="map" resultType="fileVo">
+		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName, filesize as fileSize FROM t_filemeta WHERE fileparent LIKE #{seq} AND category LIKE #{category}
 	</select>
 	
 	<!-- seq로 file path 찾기 -->

@@ -47,4 +47,9 @@ public class BoardDAOImpl implements BoardDAO {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
 		return sqlsession.delete("boardMapper.delArticle", seq);
 	}
+	
+	// 게시글 수정
+	public int editArticle(BoardDTO boardDto) {
+		return sqlsession.update("boardMapper.editArticle", boardDto);
+	}
 }

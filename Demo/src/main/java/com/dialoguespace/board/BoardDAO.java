@@ -17,5 +17,8 @@ public interface BoardDAO {
 	
 	// 게시글 삭제
 	public int delArticle(int seq);
+	
+	// 게시글 수정
+	public int editArticle(BoardDTO boardDto);
 
 }

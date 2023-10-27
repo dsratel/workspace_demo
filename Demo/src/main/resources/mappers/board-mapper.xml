@@ -28,5 +28,10 @@
 	<delete id="delArticle" parameterType="Integer">
 		DELETE FROM t_board WHERE seq = #{seq}
 	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="editArticle" parameterType="boardDto">
+		UPDATE t_board SET category = #{category}, title = #{title}, content = #{content}, attachfile = #{attachfile} 
+	</update>
 
 </mapper>
