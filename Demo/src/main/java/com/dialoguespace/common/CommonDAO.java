@@ -36,6 +36,9 @@ public interface CommonDAO {
 	// seq로 File db 찾기
 	public List<FileVO> SelFileById(Map map);
 	
-	// seq로 File path 찾기
+	// fileparent로 file path 찾기
 	public List<String> SelFilePathById(String id);
+	
+	// 삭제할 seq 찾기
+	public List<Integer> getDelSeq(Map map);
 }

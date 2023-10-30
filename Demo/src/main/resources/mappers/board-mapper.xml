@@ -10,8 +10,18 @@
 	</insert>
 	
 	<!-- 글 전체 불러오기 -->
-	<select id="selectAll" resultType="boardDto">
+	<select id="selectAll" parameterType="map" resultType="boardDto">
 		SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate FROM t_board
+		WHERE category LIKE #{category} AND
+		<choose>
+			<when test="searchType == 0">
+				title LIKE CONCAT('%', #{searchKeyword}, '%')	
+			</when>
+			<when test="searchType == 1">
+				author LIKE (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
+			</when>
+		</choose>
+		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
 	</select>
 	
 	<!-- seq로 게시글 정보 불러오기 -->
@@ -31,7 +41,22 @@
 	
 	<!-- 게시글 수정 -->
 	<update id="editArticle" parameterType="boardDto">
-		UPDATE t_board SET category = #{category}, title = #{title}, content = #{content}, attachfile = #{attachfile} 
+		UPDATE t_board SET category = #{category}, title = #{title}, content = #{content}, attachfile = #{attachfile} WHERE seq = #{seq}
 	</update>
+	
+	<!-- 조건에 맞는 게시글 개수 -->
+	<select id="countList" parameterType="map" resultType="Integer">
+		SELECT count(*) FROM t_board
+		WHERE category LIKE #{category}	AND
+		<choose>
+			<when test='searchType == 0'>
+				title
+			</when>
+			<when test='searchType == 1'>
+				author
+			</when>
+		</choose>
+			LIKE CONCAT('%', #{searchKeyword}, '%')
+	</select>
 
 </mapper>

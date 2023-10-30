@@ -60,11 +60,11 @@ public class PaginationVO {
 		this.startPage	= ((curPage-1)/rangeSize)*rangeSize +1;
 		this.endPage	= startPage + rangeSize -1;
 		this.curRange	= (startPage-1)/rangeSize +1;
-		this.startIndex	= (curPage-1)*pageSize;
 		
 		// 마지막 페이지가 총 페이지 수보다 큰 경우 마지막 페이지를 총 페이지 개수에 맞추기
 		if(endPage > pageCnt) endPage = pageCnt;
+		if(curPage > pageCnt) this.curPage = pageCnt;
+		
+		this.startIndex	= (this.curPage-1)*pageSize;
 	}
-	
-	
 }

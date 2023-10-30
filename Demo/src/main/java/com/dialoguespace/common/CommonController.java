@@ -27,5 +27,12 @@ public class CommonController {
 		System.out.println(id + "님 로그아웃 완료");
 		return "home";
 	}
+	
+	// seq로 파일 지우기
+	@GetMapping(value="/delFile")
+	public String delFileBySeq(int seq) {
+		System.out.println("========== CommonController - delFileBySeq ==========");
+		return "";
+	}
 
 }

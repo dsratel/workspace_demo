@@ -22,7 +22,7 @@
 							<span>프로필 사진</span>
 						</div>
 						<div class="col-9">
-							<img class="img-thumbnail" src="${filePath }" id="preview"/>
+							<img class="img-thumbnail" src="${filePath }" fn="${dto.fileno }" id="preview"/>
 							<input type="file" class="form-control" id="inputGroupFile02" name="profilePhoto" onchange="readURL(this)";>
 							<button type="button" class="btn btn-danger" id="delPfPhoto">프로필 사진 삭제</button>
 						</div>
@@ -114,8 +114,21 @@
 		// 프로필 사진 삭제
 		$("#delPfPhoto").click(function(){
 			alert('프로필 사진 삭제');
+			
+			$.ajax({
+				type: "get",
+				url: "/common/del",
+				data: ,
+				success: function(){
+					
+				},
+				error: function(){
+					
+				}
+			});
+			
 		});
-		
+			
 		// 휴대폰 번호 세팅
 		var phone = "${dto.phone}";
 		var p1 = phone.substring(0, phone.length-8);

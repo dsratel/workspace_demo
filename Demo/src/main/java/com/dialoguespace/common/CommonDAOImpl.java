@@ -63,7 +63,7 @@ public class CommonDAOImpl implements CommonDAO {
 	// id와 category로 파일 DB 삭제
 	@Override
 	public int delFileDbByIdCat(Map map) {
-		return sqlsession.delete("commonMapper.delFileDbByIdCat", map);
+		return sqlsession.update("commonMapper.delFileDbByIdCat", map);
 	}
 	
 	// id와 category로 fileparent update
@@ -78,9 +78,14 @@ public class CommonDAOImpl implements CommonDAO {
 		return sqlsession.selectList("commonMapper.selFileById", map);
 	}
 	
-	// seq로 File path 찾기
+	// fileparent로 file path 찾기
 	@Override
 	public List<String> SelFilePathById(String id) {
 		return sqlsession.selectList("commonMapper.selFilePathById", id);
+	}
+	
+	// 삭제할 seq 찾기
+	public List<Integer> getDelSeq(Map map) {
+		return sqlsession.selectList("commonMapper.getDelSeq", map);
 	}
 }

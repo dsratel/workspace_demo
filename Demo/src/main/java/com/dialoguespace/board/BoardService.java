@@ -1,7 +1,9 @@
 package com.dialoguespace.board;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,9 +34,9 @@ public class BoardService {
 	}
 	
 	// 글 전체 불러오기
-	public List<BoardDTO> selectAll() {
+	public List<BoardDTO> selectArticle(Map srchInfo) {
 		System.out.println("========== BoardService 진입 ==========");
-		return boardDAO.selectAll();
+		return boardDAO.selectArticle(srchInfo);
 	}
 	
 	// seq로 게시글 정보 불러오기
@@ -64,6 +66,24 @@ public class BoardService {
 	// 게시글 수정
 	public int editArticle(BoardDTO boardDto) {
 		return boardDAO.editArticle(boardDto);
+	}
+	
+	// 조건에 맞는 게시글 개수
+	public int countList(Map srchInfo) {
+		return boardDAO.countList(srchInfo);
+	}
+	
+	public Map makeSrchInfo(String category,String searchType,String searchKeyword) {
+		Map map = new HashMap();
+		map.put("category", category);
+		map.put("searchType", searchType);
+		if(searchKeyword == null) {
+			map.put("searchKeyword", "");			
+		} else {
+			map.put("searchKeyword", searchKeyword);
+		}
+		
+		return map;
 	}
 
 }

@@ -23,7 +23,7 @@
 
 	<!-- 파일 경로 찾기 -->
 	<select id="getPath" parameterType="Integer" resultType="String">
-		SELECT concat(filepath,sysname) as 'path' FROM t_filemeta WHERE seq = #{seq}
+		SELECT concat(filepath,sysname) as 'path' FROM t_filemeta WHERE seq = #{seq} AND delyn = 'N'
 	</select>
 
 	<!-- fileno로 특정 파일 DB정보 삭제 -->
@@ -39,13 +39,13 @@
 	
 	<!-- id와 category로 파일 경로 찾기 -->
 	<select id="selFilePathByIdCat" parameterType="map" resultType="String">
-		SELECT concat(filepath, sysname) AS path FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id}
+		SELECT concat(filepath, sysname) AS path FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id} AND delyn = 'N'
 	</select>
 	
 	<!-- id와 category로 파일 DB 삭제 -->
-	<delete id="delFileDbByIdCat" parameterType="map">
-		DELETE FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id} 
-	</delete>
+	<update id="delFileDbByIdCat" parameterType="map">
+		UPDATE t_filemeta SET delyn = 'Y' WHERE category LIKE #{category} AND fileparent LIKE #{id} 
+	</update>
 	
 	<!-- id와 category로 fileparent update -->
 	<update id="modifyFileparent" parameterType="map">
@@ -53,13 +53,24 @@
 	</update>
 	
 	<!-- seq로 File db 찾기 -->
-	<select id="selFileById" parameterType="String" resultType="fileVo">
-		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName FROM t_filemeta WHERE fileparent LIKE #{id}
+	<select id="selFileById" parameterType="map" resultType="fileVo">
+		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName, filesize as fileSize
+				, CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) as filepath
+		FROM t_filemeta WHERE fileparent LIKE #{seq} AND category LIKE #{category} AND delyn = 'N'
 	</select>
 	
-	<!-- seq로 file path 찾기 -->
+	<!-- fileparent로 file path 찾기 -->
 	<select id="selFilePathById" parameterType="String" resultType="String">
-		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta WHERE fileparent = #{seq}
+		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta WHERE fileparent = #{seq} AND delyn = 'N'
+	</select>
+	
+	<!-- 삭제할 seq 찾기 -->
+	<select id="getDelSeq" parameterType="map" resultType="Integer">
+		SELECT seq FROM t_filemeta WHERE fileparent = #{id} AND seq NOT IN
+		<foreach collection="arr" item="seq" open="(" close=")" separator=",">
+			#{seq}
+		</foreach>
+		AND delyn = 'N'
 	</select>
 
 </mapper>

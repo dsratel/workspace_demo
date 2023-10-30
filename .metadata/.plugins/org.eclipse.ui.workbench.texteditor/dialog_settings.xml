@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="filePath"/>
+		<item key="selection" value="delFileDbBySeq"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="filepath"/>
-			<item value="path"/>
+			<item value="delFileDbBySeq"/>
+			<item value="getPath"/>
 			<item value="SelFileById"/>
-			<item value="getfilelist"/>
-			<item value="loginId"/>
-			<item value="filelist"/>
-			<item value="fiellist"/>
-			<item value="writeArticle"/>
-			<item value="tolist"/>
-			<item value="MultipartFile"/>
-			<item value="multipart"/>
-			<item value="write"/>
-			<item value="BySeq"/>
+			<item value="map"/>
+			<item value="modifyFileparent"/>
+			<item value="selFileById"/>
+			<item value="delFileDbByIdCat"/>
+			<item value="filecnt"/>
+			<item value="filectn"/>
+			<item value="edit.do"/>
+			<item value="filepath"/>
 			<item value="byseq"/>
-			<item value="file"/>
+			<item value="edit"/>
+			<item value="redirect"/>
+			<item value="session"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>
@@ -33,8 +33,8 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item key="DIALOG_X_ORIGIN" value="1640"/>
 		<item key="DIALOG_Y_ORIGIN" value="214"/>
-		<item key="DIALOG_WIDTH" value="288"/>
-		<item key="DIALOG_HEIGHT" value="391"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_WIDTH" value="340"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 	</section>
 </section>

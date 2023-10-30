@@ -1,6 +1,7 @@
 package com.dialoguespace.board;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 글 전체 불러오기
 	@Override
-	public List<BoardDTO> selectAll() {
+	public List<BoardDTO> selectArticle(Map srchInfo) {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
-		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectAll"); 
+		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectAll", srchInfo); 
 		return list;
 	}
 	
@@ -51,5 +52,10 @@ public class BoardDAOImpl implements BoardDAO {
 	// 게시글 수정
 	public int editArticle(BoardDTO boardDto) {
 		return sqlsession.update("boardMapper.editArticle", boardDto);
+	}
+	
+	// 조건에 맞는 게시글 개수
+	public int countList(Map map) {
+		return sqlsession.selectOne("boardMapper.countList", map);
 	}
 }

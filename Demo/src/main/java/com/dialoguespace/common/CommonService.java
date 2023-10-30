@@ -272,16 +272,24 @@ public class CommonService {
 		return commonDAO.SelFileById(map);
 	}	
 	
-	// seq로 File path 찾기
+	// fileparent로 file path 찾기
 	public List<String> SelFilePathById(String id) {
 		return commonDAO.SelFilePathById(id);
 	}
-	
-
-	
+		
 	// login id 불러오기
 	public String getLoginId() {
 		MemberDTO dto = (MemberDTO)session.getAttribute("loginSession");
 		return dto.getId();
+	}
+	
+
+	
+	// 삭제할 seq 찾기
+	public List<Integer> getDelSeq(String seq, List<String> arr) {
+		Map map = new HashMap();
+		map.put("id", seq);
+		map.put("arr", arr);
+		return commonDAO.getDelSeq(map);
 	}
 }

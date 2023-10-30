@@ -206,13 +206,13 @@ public class MemberController {
 	
 	// 로그인
 	@PostMapping(value="/login.do")
-	public String loginProcess(MemberDTO memberDto, Model model) throws Exception {
+	public String loginProcess(MemberDTO memberDto, String requestURI, Model model) throws Exception {
 		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
 		MemberDTO dto = memberService.selMemberByIdPw(memberDto);
 		if(dto != null && dto.getStatus() == 1) {
 			session.setAttribute("loginSession", dto);
 			model.addAttribute("dto", dto);
-			return "redirect:/board/toList";
+			return "redirect:"+requestURI;
 		} else {
 			return "redirect:/";
 		}

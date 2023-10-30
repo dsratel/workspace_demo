@@ -20,6 +20,30 @@
 		<div class="searchTab">
 			<button class="btn btn-warning" id="writeBtn">글 작성</button>
 		</div>
+		<form method="get" action="/board/toList" name="searchForm" id="searchForm">
+			<div class="row">
+				<div class="col">
+					<select class="form-select" name="category" id="category" onchange="changeCategory(this)">
+						<option value="free">자유게시판</option>
+						<option value="notice">공지사항</option>
+					</select>
+					<select class="form-select" name="searchType" id="searchType">
+						<option value="0">제목</option>
+						<option value="1">작성자</option>
+					</select>					
+					<input type="text" class="form-control" name="searchKeyword">
+					<button type="button" class="btn btn-primary" id="searchBtn">검색</button>
+					<span>페이지 수</span>
+					<select class="form-select" name="pageSize" id="pageSize" onchange="changePageSize(this)">
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+					<input type="hidden" name="curPage" id="curPage" value="${srchInfo.pagination.curPage }">
+				</div>
+			</div>
+		</form>
 		<table class="table">
 			<thead>
 				<tr>
@@ -33,7 +57,7 @@
 			<tbody>
 				<c:forEach var="dto" items="${list}" varStatus="status">
 					<tr>
-						<td>${status.count }</td>
+						<td>${status.count + srchInfo.pagination.startIndex}</td>
 						<td>
 							<c:choose>
 								<c:when test="${dto.category eq 'free'}">
@@ -51,12 +75,17 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		
 		<!-- Pagination -->
 		<ul class="pagination">
-			<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">Next</a></li>
+			<c:if test="${srchInfo.pagination.curRange > 1}">
+				<li class="page-item"><a class="page-link" onclick="toPrevPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
+			</c:if>
+			<c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
+				<li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
+			</c:forEach>
+			<c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
+				<li class="page-item"><a class="page-link" onclick="toNextPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
+			</c:if>
 		</ul>
 	</div>
 	<script>
@@ -66,16 +95,44 @@
 				window.location.replace("/board/toWrite");
 			});
 			
+			// 검색 버튼
+			$("#searchBtn").click(function(){
+				$("#searchForm").submit();
+			});
+			
 			// 로그아웃 버튼
 			$("#logoutBtn").click(function(){
 				window.location.replace("/common/logout?id=${loginId}");
 			});
 			
+			// 초기 값 세팅
+ 			$("#category").val("${srchInfo.category}");
+			$("#searchType").val("${srchInfo.searchType}");
+			$("#pageSize").val("${srchInfo.pagination.pageSize}");
 			
 			// css
 			$(".title").css({"color":"black", "text-decoration":"none"});
+			$("input[name='searchKeyword'], select").css({"width" : "20%", "display" : "inline", "margin" : "5px"});
+			$("#searchBtn").css("margin-right", "20px");
+			
 			
 		})	// function() end
+		
+		// 카테고리 변경 시 페이지 리로드
+		function changeCategory(cate) {
+				window.location.replace("/board/toList?category="+$(cate).val());
+		}
+		
+		// 페이지 이동
+		function toPage(page) {
+			$("#curPage").val(page);
+			$("#searchForm").submit();
+		}
+		
+		// 페이지 사이즈 변경
+		function changePageSize(pageSize) {
+			$("#searchForm").submit();
+		}
 	</script>
 </body>
 </html>

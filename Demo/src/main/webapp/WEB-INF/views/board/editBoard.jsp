@@ -62,12 +62,13 @@
 					<span>첨부파일</span>
 				</div>
 				<div class="col-7 cont attachDiv">
-					<c:forEach var="file" items="${filePaths }" varStatus="status">
-						<img class="img-thumbnail" src="${file}" conFile="attachfile${status.count }">
+					<c:forEach var="file" items="${files }" varStatus="status">
+						<img class="img-thumbnail" src="${file.filePath}" conFile="attachfile${status.count }">
+						<input type="hidden" name="prevImg" value="${file.seq}">
 					</c:forEach>
-					<input class="form-control" type="file" name="upfile" id="attachfile1">
-					<input class="form-control" type="file" name="upfile" id="attachfile2">
-					<input class="form-control" type="file" name="upfile" id="attachfile3">
+					<input class="form-control" type="file" id="attachfile1">
+					<input class="form-control" type="file" id="attachfile2">
+					<input class="form-control" type="file" id="attachfile3">
 					<input type="hidden" name="attachfile" id="attachfile">	<!-- 첨부파일 유무 -->
 					<input type="hidden" name="fileCnt" id="fileCnt">		<!-- 첨부파일 개수 -->
 				</div>
@@ -79,6 +80,7 @@
 		    		<button type="button" class="btn btn-secondary" id="listBtn">글 목록으로</button>				
 				</div>
 			</div>
+			<input type="hidden" name="seq" value="${dto.seq }">
 		</form>
 	</div>
 	<script>
@@ -99,7 +101,8 @@
 			// 사진 더블클릭 시 삭제
 			$("img").dblclick(function(el){
 				$($("#"+$(this).attr("conFile"))).show();
-				$(this).remove();
+				$(this).next().remove();	// prevImg input 태그 삭제
+				$(this).remove();			// 이전 이미지 삭제
 			});
 			
 			// 글 수정 버튼
@@ -110,17 +113,19 @@
 				for(var i = 0; i < files.length; i++) {
 					if(files.get(i).files.length > 0) {
 						fileCnt++;
+						files.get(i).name= 'upfile';
 					} else {
 						files.get(i).name = '';
 					}
 				}
 				
 				// 파일이 있는 경우 attachfile에 y값 입력
-				if("${fileCnt}" == 0 && fileCnt == 0) {
+				var prevImg = $("input[name='prevImg']");
+				if(prevImg.length == 0 && fileCnt == 0) {
 					$("#attachfile").val('n');					
 				} else {
 					$("#attachfile").val('y');					
-				}				
+				}
 				
 				// 파일 개수 입력
 				$("#fileCnt").val(fileCnt);

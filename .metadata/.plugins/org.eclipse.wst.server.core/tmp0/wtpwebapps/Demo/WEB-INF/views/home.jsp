@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="#">
+	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>login page</title>
@@ -23,7 +23,10 @@
 					<td>비밀번호</td>
 					<td><input type="password" class="form-control" name="pw" id="pw"></td>
 				</tr>
-			</table>		
+			</table>	
+			<c:if test="${!requestURI.equals('') }">
+				<input type="hidden" name="requestURI" value="${requestURI }">
+			</c:if>	
 		</form>
 		<div class="row" id="BtnBox">
 			<div class="col">

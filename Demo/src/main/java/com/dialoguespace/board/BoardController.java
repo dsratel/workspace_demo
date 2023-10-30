@@ -1,8 +1,9 @@
 package com.dialoguespace.board;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dialoguespace.common.CommonService;
 import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.vo.FileVO;
+import com.dialoguespace.vo.PaginationVO;
 
 @Controller
 @RequestMapping(value="/board")
@@ -40,8 +42,8 @@ public class BoardController {
 		String loginId = commonService.getLoginId();
 		System.out.println("로그인한 ID는 " + loginId + " 입니다.");
 		
-		System.out.println("t_filemeta에 있는 저장하지 않은 이미지 파일 DB 삭제");
-		commonService.delFileByIdCat(loginId, "board");
+//		System.out.println("t_filemeta에 있는 저장하지 않은 이미지 파일 DB 삭제");
+//		commonService.delFileByIdCat(loginId, "board");
 		
 		model.addAttribute("loginId", loginId);
 		 
@@ -73,7 +75,9 @@ public class BoardController {
 	
 	// 글 목록 페이지로 이동
 	@GetMapping(value="/toList")
-	public String toListPage(Model model) {
+	public String toListPage(@RequestParam(defaultValue = "free") String category, @RequestParam(defaultValue="0")String searchType
+			, @RequestParam(defaultValue = "")String searchKeyword, @RequestParam(defaultValue="10")int pageSize
+			, @RequestParam(defaultValue = "1")int curPage, Model model) throws Exception {
 		// loginId
 		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
 		String loginId = "";
@@ -82,7 +86,15 @@ public class BoardController {
 		}
 		
 		model.addAttribute("loginId", loginId);
-		model.addAttribute("list", boardService.selectAll());
+		
+		// 검색요건 추가하여 리스트 출력
+		Map srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
+		int listCnt = boardService.countList(srchInfo);
+		srchInfo.put("pagination", new PaginationVO(listCnt,curPage,pageSize));
+		// 페이징 내용 추가
+		model.addAttribute("list", boardService.selectArticle(srchInfo));
+		model.addAttribute("srchInfo", srchInfo);
+		
 		return "listArticle";
 	}
 	
@@ -140,11 +152,10 @@ public class BoardController {
 		// 파일 있는 경우
 		if(dto.getAttachfile().contentEquals("y")) {
 			// "board"와 seq에 해당하는 파일들 가져오기
-			List<String> files = commonService.SelFilePathById(""+seq);
+			List<FileVO> files = commonService.SelFileById(""+seq, "board");
 			int fileCnt = files.size();
 			model.addAttribute("files", files);
 			model.addAttribute("fileCnt", fileCnt);
-			model.addAttribute("filePaths", commonService.SelFilePathById(""+seq));
 		}
 		
 		return "/board/editBoard";
@@ -152,67 +163,54 @@ public class BoardController {
 	
 	// 게시글 수정
 	@PostMapping(value="/edit.do")
-	public String editArticle(BoardDTO dto, int fileCnt, @RequestParam("upfile") MultipartFile[] multipartFiles, Model model, HttpServletRequest request) throws Exception {
+	public String editArticle(BoardDTO dto, int fileCnt, @RequestParam("upfile") MultipartFile[] multipartFiles
+			, @RequestParam(value="prevImg", required=false) String[] prevImgs, Model model, HttpServletRequest request) throws Exception {
 		System.out.println("========== BoardController - editArticle ==========");
 		System.out.println("BoardDTO : " + dto.toString());
+		System.out.println("*** 기존 이미지 목록 ***");
+		if(prevImgs != null) {
+			for(String p : prevImgs) {
+				System.out.println("기존 이미지 seq : " + p);
+			}			
+		}
+		
+		System.out.println("*** 첨부파일 목록 ***");
+		if(multipartFiles != null) {
+			for(MultipartFile f : multipartFiles) {
+				System.out.println("첨부파일 이름 " + f.getOriginalFilename());
+			}			
+		}
+		
 		// 게시글 db 수정
 		boardService.editArticle(dto);
 		
+		// 기존 이미지 삭제
+		if(prevImgs != null) {
+			// 기존 이미지에서 삭제할 seq 찾기
+			List<String> arr = Arrays.asList(prevImgs);
+			List<Integer> delSeq = commonService.getDelSeq(""+dto.getSeq(), arr);
+			
+			System.out.println("삭제할 seq는 " + delSeq.toString());
+			
+			// 만약 삭제할 이미지가 있다면, 기존 이미지 삭제
+			for(int seq : delSeq) {
+				commonService.delFilePhs(seq);
+				commonService.delFileDbBySeq(seq);
+			}
+		} else {
+			// 기존 이미지 전부 삭제
+			commonService.delFileByIdCat(""+dto.getSeq(), "board");
+		}
+		
 		// 이미지를 수정 했다면
 		if(dto.getAttachfile().contains("y")) {
-			// 수정했을 떄 첨부파일이 없는 경우
-			if(fileCnt == 0) {
-				commonService.delFileByIdCat(""+dto.getSeq(), "board");
-				dto.setAttachfile("n");
-			} else {
-				// 기존 파일 목록
-				List<FileVO> oldFileList = commonService.SelFileById(""+dto.getSeq(), "board");
-				
-				// 신규 파일 목록
-				String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
-				String path			= contextRoot + "resources/board/";
-				
-				List<FileVO> newFileList = commonService.setFileList(multipartFiles,""+dto.getSeq(), "board", path);
-				
-				// 수정용 List<FileVO>
-				List<Integer> delFileList = new ArrayList<>();
-				for(int i = 0; i < oldFileList.size(); i++) {
-					for(int j = 0; j < newFileList.size(); j++) {
-						if(oldFileList.get(i).getOrgName().equals(newFileList.get(j).getOrgName()) && oldFileList.get(i).getFileSize() == newFileList.get(j).getFileSize()) {
-							newFileList.remove(j);	// 기존 파일과 새로운 파일이 같다면 새로운 파일리스트에서 제거
-							
-							break;
-						} else {
-							if(j == newFileList.size()-1) {
-								delFileList.add(oldFileList.get(i).getSeq());	// 기존 파일과 새로운 파일을 비교해 보았을 때 새로운 파일이 기존 파일에 없는 내용이라면 기존 파일 제거
-							}
-						}
-					}	// newList for문 end
-				}	// oldList for문 end
-				
-				// 새로운 파일 목록에 없는 기존 파일 삭제
-				for(int seq : delFileList) {
-					commonService.delFilePhs(seq);
-					commonService.delFileDbBySeq(seq);					
-				}
-				
-				for(FileVO f : newFileList) {
-					commonService.saveNewFiles(multipartFiles, newFileList);
-				}
-				
-				
-				
-				
-				
-			}	// 첨부파일 수정 end
-			
+			// 새로운 이미지 업로드
+			String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
+			String path			= contextRoot + "resources/board/";
+			commonService.saveNewFiles(multipartFiles, commonService.setFileList(multipartFiles, ""+dto.getSeq(), "board", path));
 		}
-		// filemeta에 fileparent가 사용자 id인 걸 가져와서 content에 있는 걸 찾는다.		=> byId
 		
-		
-		// filemeta의 값과 content의 값이 같은 데이터는 바꿔주기
-		// 아닌 데이터는 물리파일 삭제, db삭제
-		return "";
+		return "redirect:/board/toList";
 	}
 	
 	/* 
