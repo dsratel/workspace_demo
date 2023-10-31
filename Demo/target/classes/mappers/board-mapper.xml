@@ -10,8 +10,8 @@
 	</insert>
 	
 	<!-- 글 전체 불러오기 -->
-	<select id="selectAll" parameterType="map" resultType="boardDto">
-		SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate FROM t_board
+	<select id="selectArticle" parameterType="map" resultType="boardDto">
+		SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc FROM t_board
 		WHERE category LIKE #{category} AND
 		<choose>
 			<when test="searchType == 0">

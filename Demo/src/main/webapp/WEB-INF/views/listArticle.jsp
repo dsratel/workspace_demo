@@ -69,12 +69,15 @@
 							</c:choose>
 						</td>
 						<td><a class="title" href="/board/viewArticle?seq=${dto.seq }">${dto.title }</a></td>
-						<td>${dto.author }</td>
+						<td class="authors" author="${dto.etc}">${dto.author }</td>
 						<td>${dto.regdate }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+		<div class="layer_popup">
+			<button type="button" class="btn btn-success" id="toMemberArticle">사용자 게시글 보기</button>
+		</div>
 		<!-- Pagination -->
 		<ul class="pagination">
 			<c:if test="${srchInfo.pagination.curRange > 1}">
@@ -114,7 +117,36 @@
 			$(".title").css({"color":"black", "text-decoration":"none"});
 			$("input[name='searchKeyword'], select").css({"width" : "20%", "display" : "inline", "margin" : "5px"});
 			$("#searchBtn").css("margin-right", "20px");
+			$(".layer_popup").hide();
 			
+			// 요소 클릭 시 클릭한 요소 위치에 레이어팝업 띄우기
+			$(".authors").on("click", function(e){
+				target = $(e.target);
+				var p = $(target).offset();
+				$("#toMemberArticle").attr("author", target.attr("author"));
+				
+				var divTop	= p.top + 30;	// 상단 좌표
+				var divLeft	= p.left;		// 좌측 좌표
+				
+				// 레이어 팝업 view
+				$(".layer_popup").css({"z-index" : "10000", "top" : divTop, "left" : divLeft, "position" : "absolute"}).show();
+			});
+			
+			// 다른 곳 클릭 시 레이어 팝업 사라짐
+			$(document).click(function(){
+				var authors = $(".authors");
+				var toMemberArticle = $("#toMemberArticle");
+				if((!authors.is(event.target) && !authors.has(event.target).length)) {
+					$(".layer_popup").hide();
+				}
+			});
+			
+			// 페이지 이동
+			$("#toMemberArticle").click(function(e){
+				console.log("사용자 게시글로 이동");
+				$("#searchType").val(1);
+				$("input[name='searchKeyword']").val($(this).attr("author"));
+			});
 			
 		})	// function() end
 		

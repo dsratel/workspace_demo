@@ -24,7 +24,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public List<BoardDTO> selectArticle(Map srchInfo) {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
-		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectAll", srchInfo); 
+		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectArticle", srchInfo); 
 		return list;
 	}
 	

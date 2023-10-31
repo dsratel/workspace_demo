@@ -13,4 +13,5 @@ public class BoardDTO {
 	private String content;
 	private String attachfile;
 	private Date regdate;
+	private String etc;
 }
