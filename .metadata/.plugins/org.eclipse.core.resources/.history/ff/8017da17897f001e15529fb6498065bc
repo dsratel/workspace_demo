@@ -1,0 +1,8 @@
+package com.dialoguespace.comment;
+
+public interface CommentDAO {
+	
+	// 댓글 작성
+	
+
+}

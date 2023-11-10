@@ -1,0 +1,22 @@
+package com.dialoguespace.comment;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dialoguespace.utils.EncryptionUtils;
+
+@Service
+public class CommentService {
+	
+	@Autowired
+	CommentDAO commentDAO;
+	
+	// 댓글 작성
+	public int wrtieComment(CommentDTO commentDto) {
+		// 비밀번호 암호화
+		EncryptionUtils encryption = new EncryptionUtils();
+		commentDto.setPw(encryption.getSHA512(commentDto.getPw()));
+		return commentDAO.writeComment(commentDto);
+	}
+
+}

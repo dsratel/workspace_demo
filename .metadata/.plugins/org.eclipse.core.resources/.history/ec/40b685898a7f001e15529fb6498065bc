@@ -1,0 +1,17 @@
+package com.dialoguespace.comment;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class CommentDAOImpl implements CommentDAO {
+	
+	@Autowired
+	SqlSession sqlsession;
+	
+	// 댓글 작성
+	@Override
+	public int writeComment(CommentDTO commentDto) {
+		return sqlsession.insert("commentMapper.writeComment", commentDto);
+	}
+
+}

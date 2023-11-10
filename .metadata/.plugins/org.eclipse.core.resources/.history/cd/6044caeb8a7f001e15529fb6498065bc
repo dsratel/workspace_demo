@@ -1,0 +1,17 @@
+package com.dialoguespace.comment;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CommentService {
+	
+	@Autowired
+	CommentDAO commentDAO;
+	
+	// 댓글 작성
+	public int wrtieComment(CommentDTO commentDto) {
+		return commentDAO.writeComment(commentDto);
+	}
+
+}

@@ -209,6 +209,10 @@ public class MemberController {
 	public String loginProcess(MemberDTO memberDto, String requestURI, Model model) throws Exception {
 		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
 		MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+		
+		// redirect할 URI가 없다면 글목록을 요청
+		requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
+		
 		if(dto != null && dto.getStatus() == 1) {
 			session.setAttribute("loginSession", dto);
 			model.addAttribute("dto", dto);

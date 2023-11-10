@@ -118,6 +118,7 @@
 			$("input[name='searchKeyword'], select").css({"width" : "20%", "display" : "inline", "margin" : "5px"});
 			$("#searchBtn").css("margin-right", "20px");
 			$(".layer_popup").hide();
+			$(".page-link").css("cursor", "pointer");
 			
 			// 요소 클릭 시 클릭한 요소 위치에 레이어팝업 띄우기
 			$(".authors").on("click", function(e){

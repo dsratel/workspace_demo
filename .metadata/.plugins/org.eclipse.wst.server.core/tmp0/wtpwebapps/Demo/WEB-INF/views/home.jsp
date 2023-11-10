@@ -17,11 +17,11 @@
 				<tr>
 					<td>아이디</td>
 					<td><input type="text" class="form-control" name="id" id="id"></td>
-					<td rowspan="2"><button type="button" class="btn btn-primary" id="loginBtn">로그인</button></td> 
+					<td rowspan="2"><button type="button" class="btn btn-primary" id="loginBtn" onclick="login()">로그인</button></td> 
 				</tr>
 				<tr>
 					<td>비밀번호</td>
-					<td><input type="password" class="form-control" name="pw" id="pw"></td>
+					<td><input type="password" class="form-control" name="pw" id="pw" onkeyup="enterkey()"></td>
 				</tr>
 			</table>	
 			<c:if test="${!requestURI.equals('') }">
@@ -43,23 +43,6 @@
 			// css
 			$("table, #BtnBox").css({"text-align" : "center", "vertical-align" : "middle"});
 			
-			// 로그인 버튼
-			$("#loginBtn").click(function(){
-				// ID 유효성 검사
-				if($("#id").val().length < 5) {
-					alert("ID를 5자 이상 입력해주세요.");
-					return ;
-				}
-				
-				if($("#pw").val().length < 8) {
-					alert("비밀번호를 8자리 이상 입력해주세요.");
-					return ;
-				}
-				
-				$("#loginForm").submit();
-				
-			});
-			
 			// 회원가입 버튼
 			$("#signUpBtn").click(function(){
 				alert("회원가입 화면으로 이동");
@@ -70,8 +53,29 @@
 			$("#listBtn").click(function(){
 				window.location.replace("/board/toList");
 			});
-			
 		})	// function() end
+		
+		// 비밀번호에서 엔터
+		function enterkey() {
+			if(window.event.keyCode == 13) login();
+		}
+		
+		// 로그인 버튼
+		function login() {
+			// ID 유효성 검사
+			if($("#id").val().length < 5) {
+				alert("ID를 5자 이상 입력해주세요.");
+				return ;
+			}
+			
+			if($("#pw").val().length < 8) {
+				alert("비밀번호를 8자리 이상 입력해주세요.");
+				return ;
+			}
+			
+			$("#loginForm").submit();	
+		}
+		
 	</script>
 </body>
 </html>

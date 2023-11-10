@@ -1,0 +1,7 @@
+package com.dialoguespace.demo;
+
+@Data
+public class Tester {
+
+	private String str;
+}
