@@ -1,6 +1,7 @@
 package com.dialoguespace.comment;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,18 @@ public class CommentDAOImpl implements CommentDAO {
 	public List<CommentDTO> cmtListByBoardseq(int boardseq) {
 		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListByBoardseq", boardseq);
 		return list;
+	}
+	
+	// 댓글 삭제
+	@Override
+	public int deleteCmt(int seq) {
+		return sqlsession.delete("commentMapper.deleteCmt", seq);
+	}
+	
+	// 댓글 비밀번호 확인
+	@Override
+	public int passwordCheck(Map map) {
+		return sqlsession.selectOne("commentMapper.passwordCheck", map);
 	}
 
 }

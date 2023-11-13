@@ -1,9 +1,7 @@
 package com.dialoguespace.comment;
 
 import java.util.List;
-
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
 
 public interface CommentDAO {
 	
@@ -12,5 +10,11 @@ public interface CommentDAO {
 	
 	// 댓글 목록
 	public List<CommentDTO> cmtListByBoardseq(int boardseq);
+	
+	// 댓글 삭제
+	public int deleteCmt(int seq);
+	
+	// 댓글 비밀번호 확인
+	public int passwordCheck(Map map);
 
 }
