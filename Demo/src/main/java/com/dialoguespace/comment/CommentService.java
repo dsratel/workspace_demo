@@ -47,5 +47,14 @@ public class CommentService {
 		
 		return commentDAO.passwordCheck(map);
 	}
+	
+	// 댓글 수정
+	public int editCmt(int seq, String content) {
+		Map map = new HashMap();
+		map.put("seq", seq);
+		map.put("content", content);
+		
+		return commentDAO.editCmt(map);
+	}
 
 }

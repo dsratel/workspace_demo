@@ -37,5 +37,11 @@ public class CommentDAOImpl implements CommentDAO {
 	public int passwordCheck(Map map) {
 		return sqlsession.selectOne("commentMapper.passwordCheck", map);
 	}
+	
+	// 댓글 수정
+	@Override
+	public int editCmt(Map map) {
+		return sqlsession.update("commentMapper.editCmt", map);
+	}
 
 }

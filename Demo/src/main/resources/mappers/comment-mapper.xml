@@ -26,4 +26,9 @@
 		SELECT count(*) FROM t_comment WHERE seq = #{seq} AND pw = #{pw}
 	</select>
 	
+	<!-- 댓글 수정 -->
+	<update id="editCmt" parameterType="map">
+		UPDATE t_comment SET content = #{content}, modifydate = sysdate() WHERE seq = #{seq}
+	</update>
+	
 </mapper>

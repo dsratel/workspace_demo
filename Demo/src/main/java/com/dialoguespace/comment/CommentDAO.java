@@ -16,5 +16,8 @@ public interface CommentDAO {
 	
 	// 댓글 비밀번호 확인
 	public int passwordCheck(Map map);
+	
+	// 댓글 수정
+	public int editCmt(Map map);
 
 }

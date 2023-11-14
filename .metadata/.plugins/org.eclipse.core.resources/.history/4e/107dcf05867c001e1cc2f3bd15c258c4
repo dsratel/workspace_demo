@@ -1,9 +1,0 @@
-package com.dialoguespace.demo;
-
-import lombok.Data;
-
-@Data
-public class Tester {
-
-	private String str;
-}

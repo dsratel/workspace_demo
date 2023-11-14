@@ -75,5 +75,24 @@ public class CommentController {
 		return "/comment/cmtPwCheck";
 	}
 	
+	// 댓글 수정 요청
+	@ResponseBody
+	@GetMapping(value="/editProc.do")
+	public int editCmt(int seq, String content) {
+		System.out.println("===== CommentController - editCmt =====");
+		System.out.println("seq : " + seq + " / content : " + content);
+		
+		return commentService.editCmt(seq, content);
+	}
+	
+	// 댓글 - 답글 요청
+	@ResponseBody
+	@PostMapping(value="/replyCmtProc.do")
+	public int writeReplyCmt(CommentDTO commentDto) {
+		System.out.println("===== CommentController - editCmt =====");
+		System.out.println("CommentDTO : " + commentDto);
+		
+		return 0;
+	}
 	
 }

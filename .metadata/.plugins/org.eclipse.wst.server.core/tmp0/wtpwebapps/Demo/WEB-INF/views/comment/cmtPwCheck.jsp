@@ -26,8 +26,8 @@
 	</table>
 <script>
 	function pwInit() {
-		$(opener.document).find("#delCmtPw").val($("#pw").val());
-		opener.parent.delPwCheck();
+		//$(opener.document).find("form[name='cmtForm'] input[name='seq']").val($("#pw").val());
+		opener.parent.delPwCheck($("#pw").val());
 		window.close();
 	}
 </script>
