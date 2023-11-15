@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
+
+import com.dialoguespace.comment.CommentDTO;
 
 public class ConnectionTest {
 	private static char map1[];
@@ -496,25 +499,68 @@ public class ConnectionTest {
 //			String arrMenu[] = (String[])hmMenu.get(obj);
 			
 			
-			System.out.println(hmTest.get(0));
-			ArrayList<String[]> listStrArr1 = hmTest.get(0);
-			ArrayList<String[]> listStrArr2 = hmTest.get(7);
-			String[] listMenu2 = lstMenu2.get(0);
+		
 			
-			ArrayList<String[]> arrList1 = new ArrayList<>();
+			CommentDTO dto = new CommentDTO();
+			List<CommentDTO> list = new ArrayList<>();
+			
+			dto.setSeq(47);
+			dto.setRootseq(47);
+			dto.setPid(0);
+			dto.setHasreply('y');
+			list.add(dto);
+			
+			dto = new CommentDTO();
+			dto.setSeq(48);
+			dto.setRootseq(47);
+			dto.setPid(47);
+			dto.setHasreply('y');
+			list.add(dto);
+			
+			dto = new CommentDTO();
+			dto.setSeq(72);
+			dto.setRootseq(47);
+			dto.setPid(47);
+			dto.setHasreply('n');
+			list.add(dto);
+			
+			dto = new CommentDTO();
+			dto.setSeq(73);
+			dto.setRootseq(47);
+			dto.setPid(47);
+			dto.setHasreply('n');
+			list.add(dto);
+			
+			dto = new CommentDTO();
+			dto.setSeq(49);
+			dto.setRootseq(47);
+			dto.setPid(48);
+			dto.setHasreply('y');
+			list.add(dto);
+			
+			dto = new CommentDTO();
+			dto.setSeq(65);
+			dto.setRootseq(47);
+			dto.setPid(48);
+			dto.setHasreply('n');
+			list.add(dto);
+			
+			for(CommentDTO cmt : list) {
+				System.out.println(cmt.getSeq() + " : " + cmt.getRootseq() + " : " + cmt.getPid() + " : " + cmt.getHasreply());
+			}
 			
 			
-			System.out.println(arrList1.toString());
+			Iterator it = list.iterator();
 			
-			String[] arrTest = new String[4];
-			arrTest[0] = "Depth1";
-			arrTest[1] = "Depth3";
-			arrTest[2] = "뎁스3 이름";
-			arrTest[3] = "Depth2";
+			while(it.hasNext()) {
+				CommentDTO cmtDto = (CommentDTO)it.next();
+				
+				
+				
+			}
 			
-			arrList1.add(arrTest);
 			
-			System.out.println(arrList1.toString());
+			
 			
 			
 

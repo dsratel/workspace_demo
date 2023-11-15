@@ -43,5 +43,11 @@ public class CommentDAOImpl implements CommentDAO {
 	public int editCmt(Map map) {
 		return sqlsession.update("commentMapper.editCmt", map);
 	}
+	
+	// rootseq 수정
+	@Override
+	public int editRootSeq() {
+		return sqlsession.update("commentMapper.editRootSeq");
+	}
 
 }

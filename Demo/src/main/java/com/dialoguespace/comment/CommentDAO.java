@@ -19,5 +19,8 @@ public interface CommentDAO {
 	
 	// 댓글 수정
 	public int editCmt(Map map);
+	
+	// rootseq 수정
+	public int editRootSeq();
 
 }

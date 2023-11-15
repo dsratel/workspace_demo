@@ -11,8 +11,11 @@ public class CommentDTO {
 	private String pw;
 	private String content;
 	private int boardseq;
+	private int rootseq;
 	private int pid;
 	private Date regdate;
 	private Date modifydate;
 	private String nickname;
+	
+	private char hasreply;
 }

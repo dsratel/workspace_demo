@@ -138,6 +138,7 @@ public class BoardController {
 		}
 		
 		return "/board/viewBoard";
+		//return "test";
 	}
 	
 
