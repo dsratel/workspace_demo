@@ -26,7 +26,13 @@ public class CommentController {
 		System.out.println("===== CommentController - writeComment =====");
 		System.out.println(commentDto);
 		
+		// 댓글 저장
 		int rs = commentService.wrtieComment(commentDto);
+		// 마지막 시퀀스 가져오기
+		int lastSeq = commentService.getLastSeq();
+		// 순서 재정렬 
+		//commentService.resort(commentDto.getBoardseq(), lastSeq);
+		
 		
 		switch(rs) {
 		case 1:
@@ -35,6 +41,7 @@ public class CommentController {
 			return "실패";
 			
 		}
+		
 	}
 	
 	// 댓글 목록

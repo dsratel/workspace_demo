@@ -91,7 +91,7 @@
 									</div>
 									<div class="col-2 cmtBtnDiv">
 									<c:if test="${loginId ne '' }">
-										<button type="button" class="btn btn-info" onclick="replyCmtForm(${cmt.seq}, ${cmt.rootseq}, this);">답글</button><br/>									
+										<button type="button" class="btn btn-info" onclick="replyCmtForm(${cmt.seq}, ${cmt.rootseq}, ${cmt.depth}, ${cmt.re_order}, this);">답글</button><br/>									
 									</c:if>
 									<c:if test="${loginId == cmt.id}">
 										<button type="button" class="btn btn-danger delCmtBtn" onclick="delPwPop(${cmt.seq})">삭제</button>
@@ -110,18 +110,10 @@
 			<div class="row">	<!-- 댓글 / 회원인 경우에만 작성 가능 -->
 				<div class="col-1"></div>
 				<div class="col-10">
-					<!-- <form name="cmtForm" action="/comment/write.do" method="post" id="cmtForm"> -->
 						<input type="text" value="${loginId}" id="cmtId" readonly>
 						<input type="password" placeholder="password" id="cmtPw" maxlength="20">
 						<textarea id="cmtContent"></textarea>
 						<button type="button" id="commentBtn" class="btn btn-primary">댓글작성</button>	
-					<!-- </form> -->				
-<!-- 				<div>
-					<input type="hidden" id="delCmtSeq">
-					<input type="hidden" id="delCmtPw">
-					<input type="hidden" id="delCmtBoardseq">
-					<input type="hidden" id="onEditing">
-				</div> -->
 				</div>
 				<div class="col-1"></div>
 				<form name="cmtForm" method="post" id="cmtForm">
@@ -131,6 +123,8 @@
 					<input type="hidden" name="boardseq" value="${dto.seq}">
 					<input type="hidden" name="seq" value="0">
 					<input type="hidden" name="rootseq" value="0">
+					<input type="hidden" name="depth" value="0">
+					<input type="hidden" name="re_order" value="0">
 					<input type="hidden" name="pid" value="0">
 				</form>
 			</div>
@@ -224,7 +218,7 @@
 													+	"</div>"
 													+	"<div class='col-2 cmtBtnDiv'>"
 													+		"<button type='button' class='btn btn-info' onclick='replyCmtForm("
-													+			data[i].seq + ", " + data[i].rootseq + ", this)'>답글</button><br/>";
+													+			data[i].seq + ", " + data[i].rootseq + ", " + data[i].depth + ", " + data[i].re_order + ", this)'>답글</button><br/>";
 							
 													if("${loginId}" == data[i].id) {
 														appendStr =	appendStr +	"<button type='button' class='btn btn-danger delCmtBtn' "
@@ -251,12 +245,6 @@
 				});
 			});
 			
-			/**********************************************************************************************************************/
-			var cl = '${cmtList}';
-			console.log(cl);
-			
-			
-			/**********************************************************************************************************************/
 			
 		})	// function end
 		
@@ -398,7 +386,7 @@
 		}
 		
 		// 댓글 - 답글
-		function replyCmtForm(cmtSeq, rootSeq, el) {
+		function replyCmtForm(cmtSeq, rootSeq, depth, re_order, el) {
 			if($("#replyDiv" + cmtSeq).length > 0) return;
 			
 			// 답글 폼 만들기
@@ -412,7 +400,8 @@
 						+				"<textarea name='content' id='replyCmtContent_" + cmtSeq + "'></textarea>"
 						+			"</div>"
 						+			"<div class='col-2 replyCmtBtnDiv'>"
-						+				"<button type='button' class='btn btn-primary' onclick='replyCmtProc(" + cmtSeq + ", " + rootSeq + ")'>대댓글</button>"
+						+				"<button type='button' class='btn btn-primary' onclick='replyCmtProc("
+						+					cmtSeq + ", " + rootSeq + ", " + depth + ", " + re_order + ")'>대댓글</button>"
 						+				"<button type='button' class='btn btn-secondary' onclick='cancelReplyCmt(this)'>취소</button>"
 						+			"</div>"
 						+			"<div>"
@@ -433,7 +422,7 @@
 		}
 		
 		// 댓글 - 답글 요청
-		function replyCmtProc(pid) {
+		function replyCmtProc(pid, rootSeq, depth, re_order) {
 			// cmtForm 초기화
 			cmtFormReset();
 			
@@ -446,7 +435,10 @@
 			// 답글 비밀번호, 내용, pid 수정
 			$("form[name='cmtForm'] input[name='pw']").val(replyCmtPw);
 			$("form[name='cmtForm'] input[name='content']").val(replyCmtContent);
+			$("form[name='cmtForm'] input[name='rootseq']").val(rootSeq);
 			$("form[name='cmtForm'] input[name='pid']").val(pid);
+			$("form[name='cmtForm'] input[name='depth']").val(depth+1);
+			$("form[name='cmtForm'] input[name='re_order']").val(re_order+1);
 			
 			
 			$.ajax({
@@ -461,6 +453,8 @@
 					alert("대댓글 요청 실패");
 				}
 			});
+			
+			
 		}
 		
 		// // cmtForm 초기화(pw, content)

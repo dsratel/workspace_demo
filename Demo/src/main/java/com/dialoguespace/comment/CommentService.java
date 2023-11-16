@@ -46,57 +46,6 @@ public class CommentService {
 	// 댓글 목록
 	public List<CommentDTO> cmtListByBoardseq(int boardseq) {
 		return commentDAO.cmtListByBoardseq(boardseq);
-		
-		  // 댓글 정렬
-		  
-		  // 전체 목록
-			//List<CommentDTO> commentList = commentDAO.cmtListByBoardseq(boardseq);
-			
-			
-//			Map<Integer, Map<Integer, List<CommentDTO>>> map = new HashMap<>();
-			
-//			Map<Integer, List<CommentDTO>> map = new HashMap<>();
-//			List<CommentDTO> list = new ArrayList<>();
-//		  
-			/*
-			 * Iterator it = commentList.iterator();
-			 * 
-			 * while(it.hasNext()) { CommentDTO cmt = (CommentDTO)it.next();
-			 * 
-			 * if(cmt.getPid() == 0) { // 최상위 댓글일 때
-			 * 
-			 * map.put(cmt.getRootseq(), )
-			 * 
-			 * }
-			 */
-			  
-			  
-//			  if(cmt.getPid() == 0) {	// 최상위 댓글일 때
-//				  
-//				  // 하위 댓글이 있는지?
-//				  if(cmt.getHasreply() == 'y') {
-//					  while(it.hasNext()) {
-//						  CommentDTO dto = (CommentDTO)it.next();
-//						  // pid가 seq와 같은 것 
-//						  for()
-//						  while(dto.getHasreply() == 'y') {
-//							  
-//						  }
-//					  }
-//					  
-//					  
-//				  } else {
-//					  Map<Integer, List<CommentDTO>> subMap = new HashMap<>();
-//					  list.add(cmt);
-//					  subMap.put(cmt.getPid(), list);
-//					  map.put(cmt.getRootseq(), subMap);
-//					  continue;
-//				  }
-//			  }
-			  
-//		  }
-		 
-		
 	}
 	
 	// 하위 댓글 확인
@@ -131,5 +80,9 @@ public class CommentService {
 		return commentDAO.editCmt(map);
 	}
 	
+	// 마지막 시퀀스 가져오기
+	public int getLastSeq() {
+		return commentDAO.getLastSeq();
+	}
 
 }

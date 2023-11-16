@@ -49,5 +49,11 @@ public class CommentDAOImpl implements CommentDAO {
 	public int editRootSeq() {
 		return sqlsession.update("commentMapper.editRootSeq");
 	}
+	
+	// 마지막 시퀀스 가져오기
+	@Override	///////////// mapper에 쿼리문 만들기 .............//////////////
+	public int getLastSeq() {
+		return sqlsession.selectOne("commentMapper.getLastSeq");
+	}
 
 }

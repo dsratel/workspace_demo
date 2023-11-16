@@ -22,5 +22,8 @@ public interface CommentDAO {
 	
 	// rootseq 수정
 	public int editRootSeq();
+	
+	// 마지막 시퀀스 가져오기
+	public int getLastSeq();
 
 }

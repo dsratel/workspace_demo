@@ -7,13 +7,15 @@
 <mapper namespace="commentMapper">
 	<!-- 댓글 등록 -->
 	<insert id="writeComment" parameterType="commentDto">
-		INSERT INTO t_comment(id, pw, content, boardseq, rootseq, pid, regdate) VALUES(#{id}, #{pw}, #{content}, #{boardseq}, #{rootseq}, #{pid}, sysdate())
+		INSERT INTO t_comment(id, pw, content, boardseq, rootseq, pid, depth, re_order, regdate)
+		VALUES(#{id}, #{pw}, #{content}, #{boardseq}, #{rootseq}, #{pid}, #{depth}, #{re_order}, sysdate())
 	</insert>
 	
 	<!-- 댓글 목록 -->
  	<select id="cmtListByBoardseq" parameterType="Integer" resultType="commentDto">
 		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname
-		FROM (SELECT seq, id, pw, content, boardseq, rootseq, pid, regdate, modifydate FROM t_comment WHERE boardseq = #{boardseq} ORDER BY rootseq, pid, seq desc) cmt;
+		FROM (SELECT seq, id, pw, content, boardseq, rootseq, pid, depth, re_order, regdate, modifydate
+				FROM t_comment WHERE boardseq = #{boardseq} ORDER BY rootseq, re_order) cmt;
 	</select>
 <!-- 		<select id="cmtListByBoardseq" parameterType="Integer" resultType="commentDto">
 			select * from test order by rootseq, pid, seq;
