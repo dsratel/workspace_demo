@@ -501,64 +501,6 @@ public class ConnectionTest {
 			
 		
 			
-			CommentDTO dto = new CommentDTO();
-			List<CommentDTO> list = new ArrayList<>();
-			
-			dto.setSeq(47);
-			dto.setRootseq(47);
-			dto.setPid(0);
-			dto.setHasreply('y');
-			list.add(dto);
-			
-			dto = new CommentDTO();
-			dto.setSeq(48);
-			dto.setRootseq(47);
-			dto.setPid(47);
-			dto.setHasreply('y');
-			list.add(dto);
-			
-			dto = new CommentDTO();
-			dto.setSeq(72);
-			dto.setRootseq(47);
-			dto.setPid(47);
-			dto.setHasreply('n');
-			list.add(dto);
-			
-			dto = new CommentDTO();
-			dto.setSeq(73);
-			dto.setRootseq(47);
-			dto.setPid(47);
-			dto.setHasreply('n');
-			list.add(dto);
-			
-			dto = new CommentDTO();
-			dto.setSeq(49);
-			dto.setRootseq(47);
-			dto.setPid(48);
-			dto.setHasreply('y');
-			list.add(dto);
-			
-			dto = new CommentDTO();
-			dto.setSeq(65);
-			dto.setRootseq(47);
-			dto.setPid(48);
-			dto.setHasreply('n');
-			list.add(dto);
-			
-			for(CommentDTO cmt : list) {
-				System.out.println(cmt.getSeq() + " : " + cmt.getRootseq() + " : " + cmt.getPid() + " : " + cmt.getHasreply());
-			}
-			
-			
-			Iterator it = list.iterator();
-			
-			while(it.hasNext()) {
-				CommentDTO cmtDto = (CommentDTO)it.next();
-				
-				
-				
-			}
-			
 			
 			
 			

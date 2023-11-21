@@ -21,26 +21,29 @@ public class CommentService {
 	
 	// 댓글 작성
 	public int wrtieComment(CommentDTO commentDto) {
+		// commentDTO 세팅
 		// 비밀번호 암호화
 		commentDto.setPw(encryption.getSHA512(commentDto.getPw()));
 		
-		/*
-		// 댓글 종류 구분
-		int seq		= commentDto.getSeq();
-		int rootseq	= commentDto.getRootseq();
-		int pid		= commentDto.getPid();
-		
-		if(rootseq == 0 && pid == 0) {	// 댓글(seq = 0, rootseq = 0, pid = 0)
+		int rs = 0;
+				
+		// 답글 인 경우
+		if(commentDto.getPid() != 0) {
+			// 답글 저장
+			rs = commentDAO.writeReplyComment(commentDto);
 			
-		} else if(rootseq > 0 && pid > 0 && rootseq == pid) {	// 대댓글(seq = 0, rootseq = x, pid = x)
 			
-		} else if(rootseq > 0 && pid > 0 && rootseq != pid) {	// 대대댓글(seq = 0, rootseq = x, pid = y)
-			
+		} else {
+			// 댓글 저장
+			 rs = commentDAO.writeComment(commentDto);
+			if(commentDto.getDepth() == 0) {
+				commentDAO.editRootSeq();	// depth 0 일 때 rootseq 수정
+			}
 		}
-		*/
 		
-		commentDAO.writeComment(commentDto);
-		return commentDAO.editRootSeq();
+		
+		
+		return rs;
 	}
 	
 	// 댓글 목록
@@ -80,9 +83,14 @@ public class CommentService {
 		return commentDAO.editCmt(map);
 	}
 	
-	// 마지막 시퀀스 가져오기
-	public int getLastSeq() {
-		return commentDAO.getLastSeq();
+	// 게시글 시퀀스로 댓글 삭제
+	public int deleteCmtByBoardseq(int boardseq) {
+		return commentDAO.deleteCmtByBoardseq(boardseq);
+	}
+	
+	// 대댓글 목록
+	public List<CommentDTO> cmtListByPid(int pid) {
+		return commentDAO.cmtListByPid(pid);
 	}
 
 }

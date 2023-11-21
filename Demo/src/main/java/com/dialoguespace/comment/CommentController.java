@@ -29,9 +29,12 @@ public class CommentController {
 		// 댓글 저장
 		int rs = commentService.wrtieComment(commentDto);
 		// 마지막 시퀀스 가져오기
-		int lastSeq = commentService.getLastSeq();
+		//int lastSeq = commentService.getLastSeq();
 		// 순서 재정렬 
 		//commentService.resort(commentDto.getBoardseq(), lastSeq);
+		
+		// 답글 저장
+		
 		
 		
 		switch(rs) {
@@ -92,5 +95,13 @@ public class CommentController {
 		return commentService.editCmt(seq, content);
 	}
 	
-	
+	// 대댓글 목록
+	@ResponseBody
+	@GetMapping(value="/listReply")
+	public List<CommentDTO> cmtListByPid(int pid) {
+		System.out.println("===== CommentController - cmtListByPid =====");
+		System.out.println("pid : " + pid);
+		
+		return commentService.cmtListByPid(pid);
+	}
 }

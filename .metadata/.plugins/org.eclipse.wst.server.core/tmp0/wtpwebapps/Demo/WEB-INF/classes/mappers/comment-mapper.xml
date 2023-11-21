@@ -15,11 +15,8 @@
  	<select id="cmtListByBoardseq" parameterType="Integer" resultType="commentDto">
 		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname
 		FROM (SELECT seq, id, pw, content, boardseq, rootseq, pid, depth, re_order, regdate, modifydate
-				FROM t_comment WHERE boardseq = #{boardseq} ORDER BY rootseq, re_order) cmt;
+				FROM t_comment WHERE boardseq = #{boardseq} ORDER BY seq desc) cmt;
 	</select>
-<!-- 		<select id="cmtListByBoardseq" parameterType="Integer" resultType="commentDto">
-			select * from test order by rootseq, pid, seq;
-		</select> -->
 	
 	<!-- 댓글 삭제 -->
 	<delete id="deleteCmt" parameterType="Integer">
@@ -36,10 +33,39 @@
 		UPDATE t_comment SET content = #{content}, modifydate = sysdate() WHERE seq = #{seq}
 	</update>
 	
-	<!-- rootseq 수정 -->
+	<!-- depth 0 댓글 rootseq 수정 -->
 	<update id="editRootSeq">
 		UPDATE t_comment SET rootseq = (select a.seq from (select seq from t_comment order by seq desc limit 1) a)
 		WHERE seq = (select a.seq from (select seq from t_comment order by seq desc limit 1) a)
 	</update>
+	
+	<!-- 동일 boardseq, depth의 마지막 시퀀스 가져오기 -->
+	<select id="getNextReorder" parameterType="map" resultType="Integer">
+		SELECT MAX(#{re_order}) FROM t_comment
+		WHERE boardseq = #{boardseq} AND depth = #{depth} BETWEEN #{re_order} AND 999999 LIMIT 2
+	</select>
+	
+	<!-- 댓글 정렬 -->
+	<update id="sortComment" parameterType="map">
+		UPDATE t_comment SET re_order = re_order+1
+		WHERE seq IN (SELECT a.seq FROM (SELECT seq FROM t_comment WHERE boardseq = #{boardseq}
+												AND re_order BETWEEN #{re_order} AND 999999)a)
+	</update>
+	
+	<!-- 게시글 시퀀스로 댓글 삭제 -->
+	<delete id="deleteCmtByBoardseq" parameterType="Integer">
+		DELETE FROM t_comment WHERE boardseq = #{boardseq}
+	</delete>
+	
+	<!-- 대댓글 작성 -->
+	<insert id="writeReplyComment" parameterType="commentDto">
+		INSERT INTO t_comment_reply(id, pw, content, pid, regdate) values(#{id}, #{pw}, #{content}, #{pid}, sysdate())
+	</insert>
+	
+	<!-- 대댓글 목록 -->
+	<select id="cmtListByPid" parameterType="Integer" resultType="commentDto">
+		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname FROM t_comment_reply cmt WHERE pid = #{pid}
+	</select>
+	
 	
 </mapper>

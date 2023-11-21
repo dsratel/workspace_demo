@@ -44,16 +44,42 @@ public class CommentDAOImpl implements CommentDAO {
 		return sqlsession.update("commentMapper.editCmt", map);
 	}
 	
-	// rootseq 수정
+	// depth 0 댓글 rootseq 수정
 	@Override
 	public int editRootSeq() {
 		return sqlsession.update("commentMapper.editRootSeq");
 	}
 	
-	// 마지막 시퀀스 가져오기
-	@Override	///////////// mapper에 쿼리문 만들기 .............//////////////
-	public int getLastSeq() {
-		return sqlsession.selectOne("commentMapper.getLastSeq");
+	// 동일 rootseq, depth의 마지막 re_order 가져오기
+	@Override
+	public int getNextReorder(Map map) {
+		return sqlsession.selectOne("commentMapper.getNextReorder", map);
 	}
+	
+	// 댓글 정렬
+	@Override
+	public int sortComment(Map map) {
+		return sqlsession.update("commentMapper.sortComment", map);
+	}
+	
+	// 게시글 시퀀스로 댓글 삭제
+	@Override
+	public int deleteCmtByBoardseq(int boardseq) {
+		return sqlsession.delete("commentMapper.deleteCmtByBoardseq", boardseq);
+	}
+	
+	// 대댓글 작성
+	@Override
+	public int writeReplyComment(CommentDTO commentDto) {
+		return sqlsession.insert("commentMapper.writeReplyComment", commentDto);
+	}
+	
+	// 대댓글 목록
+	@Override
+	public List<CommentDTO> cmtListByPid(int pid) {
+		return sqlsession.selectList("commentMapper.cmtListByPid", pid);
+	}
+	
+	
 
 }

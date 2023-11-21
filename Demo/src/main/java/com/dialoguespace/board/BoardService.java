@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dialoguespace.comment.CommentService;
 import com.dialoguespace.common.CommonService;
 
 @Service
@@ -20,6 +21,9 @@ public class BoardService {
 	
 	@Autowired
 	CommonService commonService;
+	
+	@Autowired
+	CommentService commentService;
 	
 	@Autowired
 	HttpSession session;
@@ -59,8 +63,11 @@ public class BoardService {
 			String id = "" + seq;
 			commonService.delFileByIdCat(id, "board");
 		}
+		int rs = boardDAO.delArticle(seq);
 		
-		return boardDAO.delArticle(seq); 
+		commentService.deleteCmtByBoardseq(seq);
+		
+		return  rs;
 	}
 	
 	// 게시글 수정

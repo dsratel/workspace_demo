@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="&lt;form name=&quot;cmtForm&quot;"/>
+		<item key="selection" value="onclick=&quot;replyCmtForm"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="&lt;form name=&quot;cmtForm&quot;"/>
+			<item value="onclick=&quot;replyCmtForm"/>
+			<item value="rootseq"/>
+			<item value="rootSeq"/>
+			<item value="replyCmtProc"/>
 			<item value="replyCmtForm"/>
+			<item value="function replyCmtForm"/>
+			<item value="&lt;form name=&quot;cmtForm&quot;"/>
 			<item value=".do"/>
 			<item value=".애"/>
 			<item value="is not a function"/>
@@ -18,11 +23,6 @@
 			<item value="addReplyCmt"/>
 			<item value="5px"/>
 			<item value="5pxs"/>
-			<item value="cmtBtnDiv"/>
-			<item value="console.log("/>
-			<item value="console.log"/>
-			<item value="toPwcheck"/>
-			<item value="t"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>
