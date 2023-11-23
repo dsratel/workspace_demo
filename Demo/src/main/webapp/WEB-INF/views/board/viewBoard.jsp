@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="#">
+	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>view board page</title>
@@ -117,8 +117,8 @@
 										<button type="button" class="btn btn-info" onclick="replyCmtForm(${cmt.seq}, ${cmt.depth}, this);" id="replyCmtBtn_${cmt.seq}">답글</button><br/>									
 									</c:if>
 									<c:if test="${loginId == cmt.id}">
-										<button type="button" class="btn btn-danger delCmtBtn" onclick="delPwPop(${cmt.seq})">삭제</button>
-										<button type="button" class="btn btn-success editCmtBtn" onclick="editCmt(${cmt.seq}, ${dto.seq}, this)">수정</button>											
+										<button type="button" class="btn btn-danger delCmtBtn" onclick="delPwPop(${cmt.seq}, 0)">삭제</button>
+										<button type="button" class="btn btn-success editCmtBtn" onclick="editCmt(${cmt.seq}, 0, this)">수정</button>											
 									</c:if>
 									</div>
 								</div>
@@ -171,7 +171,7 @@
 				
 			// 글 수정하기
 			$("#editBtn").click(function(){
-				window.location.replace("/board/editArticle?seq=${dto.seq}");
+				window.location.replace("/board/editArticle?seq=${dto.seq}&pid=${dto.pid}");
 			});
 			
 			// 글 삭제하기
@@ -192,23 +192,24 @@
 				var cmtPw = $("#cmtPw").val().trim();
 				var cmtContent = $("#cmtContent").val().trim();
 								
-				validCheck(cmtPw, cmtContent);
-				$("form[name='cmtForm'] input[name='pw']").val(cmtPw);
-				$("form[name='cmtForm'] input[name='content']").val(cmtContent);
-				
-				$.ajax({
-					type: "post",
-					url: "/comment/write.do",
-					data: $("#cmtForm").serialize(),
-					success: function(data){
-						$("#cmtPw, #cmtContent").val("");
-						commentReload();
-					},
-					error: function(data){
-						alert("ajax 실패");
-						console.log(data);
-					}
-				});
+				if(validCheck(cmtPw, cmtContent)){
+					$("form[name='cmtForm'] input[name='pw']").val(cmtPw);
+					$("form[name='cmtForm'] input[name='content']").val(cmtContent);
+					
+					$.ajax({
+						type: "post",
+						url: "/comment/write.do",
+						data: $("#cmtForm").serialize(),
+						success: function(data){
+							$("#cmtPw, #cmtContent").val("");
+							commentReload();
+						},
+						error: function(data){
+							alert("ajax 실패");
+							console.log(data);
+						}
+					});		
+				}
 			});
 			
 			
@@ -216,6 +217,8 @@
 		
 		// 댓글 작성 후 리로드
 		function commentReload(pid) {
+			var appendStr = "";
+			
 			$.ajax({
 				type: "post",
 				url: "/comment/list",
@@ -223,7 +226,6 @@
 					"boardseq" : "${dto.seq}"	
 				},
 				success: function(data) {
-					var appendStr = "";
 					for(var i=0; i < data.length; i++) {
 						console.log(data[i].depth == 0);
 						appendStr = appendStr + "<div class='row cmtList'>"
@@ -248,9 +250,9 @@
 						
 												if("${loginId}" == data[i].id) {
 													appendStr =	appendStr +	"<button type='button' class='btn btn-danger delCmtBtn' "
-															+ 		"onclick='delPwPop(" + data[i].seq +", " + data[i].boardseq +")'>삭제</button>"
+															+ 		"onclick='delPwPop(" + data[i].seq +",0)'>삭제</button>"
 															+		"<button type='button' class='btn btn-success editCmtBtn' "
-															+		"onclick='editCmt(" + data[i].seq + ", " + data[i].boardseq + ", this)'>수정</button>";
+															+		"onclick='editCmt(" + data[i].seq + ", 0, this)'>수정</button>";
 												}
 						appendStr = appendStr + "</div> </div> </div>";
 					}
@@ -284,11 +286,11 @@
 		}
 		
 		// 댓글 삭제
-		function delCmt(cmtSeq) {
+		function delCmt(cmtSeq, pid) {
 			$.ajax({
 				type: "get",
 				url: "/comment/delete.do",
-				data: {"seq" : cmtSeq},
+				data: {"seq" : cmtSeq, "pid" : pid, "boardseq":$("#cmtForm input[name='boardseq']").val()},
 				success: function(data){
 					commentReload();
 				},
@@ -303,6 +305,7 @@
 		// 댓글 비밀번호 체크
 		function delPwCheck (pw) {
 			var cmtSeq		= $("form[name='cmtForm'] input[name='seq']").val();
+			var pid			= $("form[name='cmtForm'] input[name='pid']").val();
 			
 			if(pw.length < 4) {
 				alert("비밀번호를 4자리 이상 입력해주세요.");
@@ -315,11 +318,12 @@
 				data:
 				{
 					"seq" : cmtSeq
+					, "pid" : pid
 					, "pw" : pw
 				},
 				success: function(data){
 					if(data > 0 && confirm("정말 댓글을 삭제하시겠습니까?")) {
-						delCmt(cmtSeq);					
+						delCmt(cmtSeq, pid);
 					} else {
 						alert("비밀번호가 일치하지 않습니다.");
 					}
@@ -333,19 +337,21 @@
 		
 		
 		// 댓글 비밀번호 팝업
-		function delPwPop(cmtSeq) {
+		function delPwPop(cmtSeq, pid) {
 			window.open("/comment/toPwCheck", "댓글 비밀번호 입력", "width=700px,height=200px,left=610,top=340,scrollbars=yes");
 			$("form[name='cmtForm'] input[name='seq']").val(cmtSeq);
+			$("form[name='cmtForm'] input[name='pid']").val(pid);
 		}
 		
 		// 댓글 수정 버튼
-		function editCmt(cmtSeq, boardSeq, el) {
+		function editCmt(cmtSeq, pid, el) {
 /* 			if($("#onEditing").val() == 1) {
 				alert("현재 수정 중인 댓글이 있습니다.");
 				return;
 			}
 			$("#onEditing").val(1); */
 			
+			// copy element
 			var ce = $(el).parents("div.cmtList").clone();
 			ce.find("div.cmtContent").append("<textarea type='text' id='editCmtContent_" + ce.find("div.cmtContent input[seq]").attr("seq")
 												+ "' style='width:100%; resize:none;'>"
@@ -357,27 +363,29 @@
 			ce.find("div.cmtContent").children().first().remove();
 			ce.find("div.cmtBtnDiv").children().remove();
 			ce.find("div.cmtBtnDiv").append("<button type='button' class='btn btn-primary editProcBtn' onclick='editCmtProc("
-											+ ce.find("div.cmtContent input[seq]").attr("seq") + ")'>수정</button>");
+											+ ce.find("div.cmtContent input[seq]").attr("seq")
+											+ ", " + ce.find("div.cmtContent input[pid]").attr("pid") +")'>수정</button>");
 			ce.find("div.cmtBtnDiv").append("<button type='button' class='btn btn-secondary' onclick='cancelEditCmt(this)'>취소</button>");
 			$(el).parents("div.cmtList").after(ce).hide();
 			$("button.editProcBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});
 		}
 		
 		// 댓글 수정 요청
-		function editCmtProc(cmtSeq) {
+		function editCmtProc(cmtSeq, pid) {
 			// cmtForm 초기화
 			cmtFormReset();
 			
 			// 수정한 댓글 내용 form에 담기
 			//$("#editCmtForm input[name='content']").val($("#editCmtContent").val());
 			$("form[name='cmtForm'] input[name='seq']").val(cmtSeq);
+			$("form[name='cmtForm'] input[name='pid']").val(pid);
 			$("form[name='cmtForm'] input[name='content']").val($("#editCmtContent_" + cmtSeq).val());
 			
 			
 			$.ajax({
 				type: "get",
 				url: "/comment/editProc.do",
-				data: $("#editCmtForm").serialize(),
+				data: $("#cmtForm").serialize(),
 				success: function(data) {
 					commentReload();
 					//$("#onEditing").val(0);	// 수정 완료 후 수정중 플래그 0으로 만들기
@@ -412,7 +420,7 @@
 						+			"<div class='col-2 replyCmtBtnDiv'>"
 						+				"<button type='button' class='btn btn-primary' onclick='replyCmtProc("
 						+					cmtSeq + ", " + depth + ")'>대댓글</button>"
-						+				"<button type='button' class='btn btn-secondary' onclick='cancelReplyCmt(this)'>취소</button>"
+						+				"<button type='button' class='btn btn-secondary' onclick='cancelReplyCmt(this, " + cmtSeq + ")'>취소</button>"
 						+			"</div>"
 						+			"<div>"
 						+				"<input type='hidden' ame='pid' value='" + cmtSeq +"'>"
@@ -431,6 +439,8 @@
 			$("div.replyCmtBtnDiv button:first-child").css({"margin-right":"5px"});
 			$("div.replyCmtContDiv").css("margin-top", "10px");
 			$("#replyCmtContent_"+cmtSeq).css({"width":"100%", "resize":"none"});
+			$("button.delCmtBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});
+			$("div[class*='replyList']").css({"margin":"10px", "background-color":"#dcdcdc"});
 			
 		}
 		
@@ -443,26 +453,26 @@
 			var replyCmtContent = $("#replyCmtContent_" + pid).val().trim();
 			
 			// 유효성 검사
-			validCheck(replyCmtPw, replyCmtContent);
-			
-			// 답글 비밀번호, 내용, pid 수정
-			$("form[name='cmtForm'] input[name='pw']").val(replyCmtPw);
-			$("form[name='cmtForm'] input[name='content']").val(replyCmtContent);
-			$("form[name='cmtForm'] input[name='pid']").val(pid);
-			$("form[name='cmtForm'] input[name='depth']").val(depth+1);
-			
-			
-			$.ajax({
-				type: "post",
-				url: "/comment/write.do",
-				data: $("#cmtForm").serialize(),
-				success: function(data) {
-					commentReload(pid);
-				},
-				error: function(data) {
-					alert("대댓글 요청 실패");
-				}
-			});
+			if(validCheck(replyCmtPw, replyCmtContent)) {
+				// 답글 비밀번호, 내용, pid 수정
+				$("form[name='cmtForm'] input[name='pw']").val(replyCmtPw);
+				$("form[name='cmtForm'] input[name='content']").val(replyCmtContent);
+				$("form[name='cmtForm'] input[name='pid']").val(pid);
+				$("form[name='cmtForm'] input[name='depth']").val(depth+1);
+				
+				
+				$.ajax({
+					type: "post",
+					url: "/comment/write.do",
+					data: $("#cmtForm").serialize(),
+					success: function(data) {
+						commentReload(pid);
+					},
+					error: function(data) {
+						alert("대댓글 요청 실패");
+					}
+				});
+			};
 		}
 		
 		// // cmtForm 초기화(pw, content)
@@ -472,8 +482,9 @@
 		}
 		
 		// 댓글 - 답글 창 닫기
-		function cancelReplyCmt(el) {
+		function cancelReplyCmt(el, pid) {
 			$(el).parents("div.replyDiv").remove();
+			$("div.replyList_" + pid).remove();
 		}
 		
 		// 댓글 유효성 검사
@@ -482,13 +493,13 @@
 			//// 댓글 비밀번호(4자리 이상)
 			if(cmtPw.length < 4) {
 				alert("댓글 비밀번호를 4자리 이상 입력해주세요.");
-				return ;
-			}
-			
-			//// 댓글 입력
-			if(cmtContent.length < 1) {
+				return false;
+			} else if(cmtContent.length < 1) {
+				//// 댓글 입력
 				alert("댓글 내용을 입력해주세요.");
-				return ;
+				return false;
+			} else {
+				return true;
 			}
 		}		
 		
@@ -515,9 +526,8 @@
 		// 대댓글 폼 만들기
 		function createReplyForm(data) {
 			var appendStr = "";
-			for(var i=0; i < data.length; i++) {
-				console.log(data[i].depth == 0);
-				appendStr = appendStr + "<div class='row cmtList' style='border:1px solid black;'>"
+			for(var i=0; i < data.length; i++) { 
+				appendStr = appendStr + "<div class='row cmtList replyList_" + data[i].pid + "' style='border:1px solid black;'>"
 										+ "<div class='row cmtIdDiv'>"
 										+	 "<span>" + data[i].nickname + "</span>"
 										+ "</div>"
@@ -525,7 +535,7 @@
 										+	"<div class='col-8 cmtContent'>"
 										+		"<span>" + data[i].content + "</span>"
 										+		"<input type='hidden' seq='" + data[i].seq + "'>"
-										+		"<input type='hidden' boardseq='" + data[i].boardseq + "'>"
+										+		"<input type='hidden' pid='" + data[i].pid + "'>"
 										+	"</div>"
 										+	"<div class='col-2 cmtTime'>"
 										+		"<span>" + cvtDateFormat(data[i].regdate) + "</span>"
@@ -534,9 +544,9 @@
 				
 										if("${loginId}" == data[i].id) {
 											appendStr =	appendStr +	"<button type='button' class='btn btn-danger delCmtBtn' "
-													+ 		"onclick='delPwPop(" + data[i].seq +", " + data[i].boardseq +")'>삭제</button>"
+													+ 		"onclick='delPwPop(" + data[i].seq +", " + data[i].pid +")'>삭제</button>"
 													+		"<button type='button' class='btn btn-success editCmtBtn' "
-													+		"onclick='editCmt(" + data[i].seq + ", " + data[i].boardseq + ", this)'>수정</button>";
+													+		"onclick='editCmt(" + data[i].seq + ", " + data[i].pid + ", this)'>수정</button>";
 										}
 				appendStr = appendStr + "</div> </div> </div>";
 			}

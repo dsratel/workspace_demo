@@ -1,6 +1,7 @@
 package com.dialoguespace.board;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,9 @@ public class BoardController {
 		Map srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
 		int listCnt = boardService.countList(srchInfo);
 		srchInfo.put("pagination", new PaginationVO(listCnt,curPage,pageSize));
+		// 검색할 글 시퀀스
+		List seqList = boardService.getSeqList(srchInfo);
+		srchInfo.put("seqList", seqList);
 		// 페이징 내용 추가
 		model.addAttribute("list", boardService.selectArticle(srchInfo));
 		model.addAttribute("srchInfo", srchInfo);
@@ -105,7 +109,7 @@ public class BoardController {
 	
 	// 글 상세보기
 	@GetMapping(value="/viewArticle")
-	public String toViewPage(int seq, Model model) {
+	public String toViewPage(int seq, int pid, Model model) {
 		System.out.println("========== Board Controller 진입 ==========");
 		
 		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
@@ -119,7 +123,7 @@ public class BoardController {
 		
 		// model에 dto 객체 담기
 		//// 글 정보  
-		BoardDTO dto = boardService.selArticleBySeq(seq);
+		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		model.addAttribute("dto", dto);
 		model.addAttribute("loginId", loginId);
 		
@@ -137,8 +141,10 @@ public class BoardController {
 			model.addAttribute("cmtList", "noComment");
 		}
 		
+		// 게시글 조회수 증가
+		boardService.addViewCnt(seq);
+		
 		return "/board/viewBoard";
-		//return "test";
 	}
 	
 
@@ -154,11 +160,11 @@ public class BoardController {
 	
 	// 게시글 수정 페이지로 이동
 	@GetMapping(value="/editArticle")
-	public String toEditPage(int seq, Model model) {
+	public String toEditPage(int seq, int pid, Model model) {
 		System.out.println("게시글 수정 페이지 이동 : seq - " + seq);
 		
 		String loginId = commonService.getLoginId();
-		BoardDTO dto = boardService.selArticleBySeq(seq);
+		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("loginId", loginId);

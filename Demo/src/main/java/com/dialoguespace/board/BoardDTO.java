@@ -12,6 +12,10 @@ public class BoardDTO {
 	private String title;
 	private String content;
 	private String attachfile;
+	private int viewcnt;
+	private int commentcnt;
+	private int pid;
 	private Date regdate;
+	private Date modifyDate;
 	private String etc;
 }

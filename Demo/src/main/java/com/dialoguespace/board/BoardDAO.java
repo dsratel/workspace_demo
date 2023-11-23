@@ -11,7 +11,7 @@ public interface BoardDAO {
 	public List<BoardDTO> selectArticle(Map srchInfo);
 	
 	// seq로 게시글 정보 불러오기
-	public BoardDTO selArticleBySeq(int seq);
+	public BoardDTO selArticleBySeq(Map map);
 
 	// 가장 최신 글 seq 불러오기
 	public int getLatestSeq(String author);
@@ -24,5 +24,17 @@ public interface BoardDAO {
 	
 	// 조건에 맞는 게시글 개수
 	public int countList(Map map);
+	
+	// 게시글 댓글 개수 증가
+	public int addCommentCnt(int boardseq);
+	
+	// 게시글 댓글 개수 감소
+	public int reduceCommentCnt(Map map);
+	
+	// 게시글 조회 수 증가
+	public int addViewCnt(int seq);
+	
+	// 게시글 시퀀스 리스트
+	public List<Integer> getSeqList(Map srchInfo);
 
 }

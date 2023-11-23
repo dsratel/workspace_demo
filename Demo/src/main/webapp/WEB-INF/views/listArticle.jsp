@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="#">
+	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>article list</title>
@@ -51,7 +52,8 @@
 					<th>게시판 종류</th>
 					<th>제목</th>
 					<th>작성자</th>
-					<th>작성일</th>				
+					<th>작성일</th>
+					<th>조회수</th>	
 				</tr>
 			</thead>
 			<tbody>
@@ -68,9 +70,16 @@
 								</c:when>
 							</c:choose>
 						</td>
-						<td><a class="title" href="/board/viewArticle?seq=${dto.seq }">${dto.title }</a></td>
+						<td>
+							<c:if test="${dto.pid > 0 }">
+								<img src="/resources/image/replyArrow.png" style="height:15px">						
+							</c:if>
+							<a class="title" href="/board/viewArticle?seq=${dto.seq }&pid=${dto.pid}">${dto.title }
+							<span class="commentCnt">[${dto.commentcnt}]</span></a>
+						</td>
 						<td class="authors" author="${dto.etc}">${dto.author }</td>
-						<td>${dto.regdate }</td>
+						<td><fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
+						<td>${dto.viewcnt }</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -112,13 +121,19 @@
  			$("#category").val("${srchInfo.category}");
 			$("#searchType").val("${srchInfo.searchType}");
 			$("#pageSize").val("${srchInfo.pagination.pageSize}");
+			$("input[name='searchKeyword']").val("${srchInfo.searchKeyword}");
 			
 			// css
-			$(".title").css({"color":"black", "text-decoration":"none"});
+			$("table").css({"text-align":"center"});
+			$("a.title").parents("td").css({"text-align":"left"});
+			$("a.title").css({"color":"black", "text-decoration":"none"});
 			$("input[name='searchKeyword'], select").css({"width" : "20%", "display" : "inline", "margin" : "5px"});
 			$("#searchBtn").css("margin-right", "20px");
 			$(".layer_popup").hide();
 			$(".page-link").css("cursor", "pointer");
+			$("span.commentCnt").css({"color":"#FF5A5A", "font-weight":"bold"});
+			
+			
 			
 			// 요소 클릭 시 클릭한 요소 위치에 레이어팝업 띄우기
 			$(".authors").on("click", function(e){

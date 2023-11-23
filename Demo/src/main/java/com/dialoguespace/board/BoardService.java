@@ -44,9 +44,12 @@ public class BoardService {
 	}
 	
 	// seq로 게시글 정보 불러오기
-	public BoardDTO selArticleBySeq(int seq) {
+	public BoardDTO selArticleBySeq(int seq, int pid) {
 		System.out.println("========== BoardService 진입 ==========");
-		return boardDAO.selArticleBySeq(seq);
+		Map map = new HashMap();
+		map.put("seq", seq);
+		map.put("pid", pid);
+		return boardDAO.selArticleBySeq(map);
 	}
 	
 	// 가장 최신 글 seq 불러오기
@@ -91,6 +94,31 @@ public class BoardService {
 		}
 		
 		return map;
+	}
+	
+	// 게시글 댓글 개수 증가
+	public int addCommentCnt(int boardseq) {
+		return boardDAO.addCommentCnt(boardseq);
+	}
+	
+	// 게시글 댓글 개수 감소
+	public int reduceCommentCnt(int seq, int pid, int boardseq) {
+		Map map = new HashMap();
+		map.put("seq", seq);
+		map.put("pid", pid);
+		map.put("boardseq", boardseq);
+		
+		return boardDAO.reduceCommentCnt(map);
+	}
+	
+	// 게시글 조회 수 증가
+	public int addViewCnt(int seq) {
+		return boardDAO.addViewCnt(seq);
+	}
+	
+	// 게시글 시퀀스 리스트
+	public List<Integer> getSeqList(Map srchInfo) {
+		return boardDAO.getSeqList(srchInfo);
 	}
 
 }

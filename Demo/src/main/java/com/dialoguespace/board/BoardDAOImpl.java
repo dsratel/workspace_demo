@@ -30,9 +30,9 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// seq로 게시글 정보 불러오기
 	@Override
-	public BoardDTO selArticleBySeq(int seq) {
+	public BoardDTO selArticleBySeq(Map map) {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
-		return sqlsession.selectOne("boardMapper.selArticleBySeq", seq);
+		return sqlsession.selectOne("boardMapper.selArticleBySeq", map);
 	}
 	
 	// 가장 최신 글 seq 불러오기
@@ -50,12 +50,38 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 	
 	// 게시글 수정
+	@Override
 	public int editArticle(BoardDTO boardDto) {
 		return sqlsession.update("boardMapper.editArticle", boardDto);
 	}
 	
 	// 조건에 맞는 게시글 개수
+	@Override
 	public int countList(Map map) {
 		return sqlsession.selectOne("boardMapper.countList", map);
+	}
+	
+	// 게시글 댓글 개수 증가
+	@Override
+	public int addCommentCnt(int boardseq) {
+		return sqlsession.update("boardMapper.addCommentCnt", boardseq);
+	}
+	
+	// 게시글 댓글 개수 감소
+	@Override
+	public int reduceCommentCnt(Map map) {
+		return sqlsession.update("boardMapper.reduceCommentCnt", map);
+	}
+	
+	// 게시글 조회 수 증가
+	@Override
+	public int addViewCnt(int seq) {
+		return sqlsession.update("boardMapper.addViewCnt", seq);
+	}
+	
+	// 게시글 시퀀스 리스트
+	@Override
+	public List<Integer> getSeqList(Map srchInfo) {
+		return sqlsession.selectList("boardMapper.getSeqList", srchInfo);
 	}
 }

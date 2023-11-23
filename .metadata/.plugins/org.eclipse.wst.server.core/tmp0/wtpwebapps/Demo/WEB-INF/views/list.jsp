@@ -4,7 +4,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link rel="shortcut icon" href="#">
+	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>member list</title>
@@ -149,7 +149,7 @@
 			});
 			
 			// 검색창에서 엔터
-			$("searchKeyword").keypress(function() {
+			$("searchKeyword").keypress(function(){
 				search();
 			});
 			
@@ -179,13 +179,13 @@
 				switch(opt) {
 				case "prev" :
 					curPage = "${(srchInfo.pagination.curRange-1)*srchInfo.pagination.rangeSize}";
-				break
+				break;
 				case "next" :
 					curPage = "${(srchInfo.pagination.curRange*srchInfo.pagination.rangeSize)+1}";
-				break
+				break;
 				default :
 					curPage = pageNo;
-				break
+				break;
 				}
 				searchType		= $("#searchType").val();
 				searchKeyword	= $("#searchKeyword").val();

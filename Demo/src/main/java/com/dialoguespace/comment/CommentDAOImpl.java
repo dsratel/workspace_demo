@@ -28,8 +28,8 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 댓글 삭제
 	@Override
-	public int deleteCmt(int seq) {
-		return sqlsession.delete("commentMapper.deleteCmt", seq);
+	public int deleteCmt(Map map) {
+		return sqlsession.delete("commentMapper.deleteCmt", map);
 	}
 	
 	// 댓글 비밀번호 확인
@@ -80,6 +80,11 @@ public class CommentDAOImpl implements CommentDAO {
 		return sqlsession.selectList("commentMapper.cmtListByPid", pid);
 	}
 	
+	// 대댓글 삭제
+	@Override
+	public int deleteReplyCmt(int seq) {
+		return sqlsession.delete("commentMapper.deleteReplyCmt", seq);
+	}
 	
 
 }

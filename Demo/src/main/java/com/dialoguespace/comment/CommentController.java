@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dialoguespace.board.BoardService;
+
 @Controller
 @RequestMapping(value="/comment")
 public class CommentController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@Autowired
+	BoardService boardService;
 	
 	
 	
@@ -28,14 +33,9 @@ public class CommentController {
 		
 		// 댓글 저장
 		int rs = commentService.wrtieComment(commentDto);
-		// 마지막 시퀀스 가져오기
-		//int lastSeq = commentService.getLastSeq();
-		// 순서 재정렬 
-		//commentService.resort(commentDto.getBoardseq(), lastSeq);
-		
-		// 답글 저장
-		
-		
+
+		// 게시글 댓글 개수 증가
+		boardService.addCommentCnt(commentDto.getBoardseq());
 		
 		switch(rs) {
 		case 1:
@@ -61,21 +61,27 @@ public class CommentController {
 	// 댓글 삭제
 	@ResponseBody
 	@GetMapping(value="/delete.do")
-	public int deleteCmt(int seq) {
+	public int deleteCmt(int seq, int pid, int boardseq) {
 		System.out.println("===== CommentController - deleteCmt =====");
-		System.out.println("seq : " + seq);
+		System.out.println("seq : " + seq + " / pid : " + pid + " / boardseq : " + boardseq);
 		
-		return commentService.deleteCmt(seq);
+		// 게시글 댓글 개수 감소
+		boardService.reduceCommentCnt(seq, pid, boardseq);
+		
+		// 댓글 삭제
+		int rs = commentService.deleteCmt(seq, pid);
+		
+		return rs;
 	}
 	
 	// 댓글 비밀번호 확인
 	@ResponseBody
 	@PostMapping(value="/passwordCheck")
-	public int passwordCheck(int seq, String pw) {
+	public int passwordCheck(int seq, int pid, String pw) {
 		System.out.println("===== CommentController - passwordCheck =====");
-		System.out.println("seq : " + seq + " / pw : " + pw);
+		System.out.println("seq : " + seq + " / pid : " + pid + " / pw : " + pw);
 		
-		return commentService.passwordCheck(seq, pw);
+		return commentService.passwordCheck(seq, pid, pw);
 	}
 	
 	// 댓글 비밀번호 입력 창으로 이동
@@ -88,11 +94,11 @@ public class CommentController {
 	// 댓글 수정 요청
 	@ResponseBody
 	@GetMapping(value="/editProc.do")
-	public int editCmt(int seq, String content) {
+	public int editCmt(int seq, int pid, String content) {
 		System.out.println("===== CommentController - editCmt =====");
-		System.out.println("seq : " + seq + " / content : " + content);
+		System.out.println("seq : " + seq + " / pid : " + pid + " / content : " + content);
 		
-		return commentService.editCmt(seq, content);
+		return commentService.editCmt(seq, pid, content);
 	}
 	
 	// 대댓글 목록

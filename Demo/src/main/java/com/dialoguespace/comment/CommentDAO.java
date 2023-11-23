@@ -12,7 +12,7 @@ public interface CommentDAO {
 	public List<CommentDTO> cmtListByBoardseq(int boardseq);
 	
 	// 댓글 삭제
-	public int deleteCmt(int seq);
+	public int deleteCmt(Map map);
 	
 	// 댓글 비밀번호 확인
 	public int passwordCheck(Map map);
@@ -37,5 +37,8 @@ public interface CommentDAO {
 	
 	// 대댓글 목록
 	public List<CommentDTO> cmtListByPid(int pid);
+	
+	// 대댓글 삭제
+	public int deleteReplyCmt(int seq);
 
 }
