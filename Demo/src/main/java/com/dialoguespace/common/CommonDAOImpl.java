@@ -80,8 +80,8 @@ public class CommonDAOImpl implements CommonDAO {
 	
 	// fileparent로 file path 찾기
 	@Override
-	public List<String> SelFilePathById(String id) {
-		return sqlsession.selectList("commonMapper.selFilePathById", id);
+	public List<String> SelFilePathById(Map map) {
+		return sqlsession.selectList("commonMapper.selFilePathById", map);
 	}
 	
 	// 삭제할 seq 찾기

@@ -27,28 +27,26 @@ public class CommentService {
 		
 		int rs = 0;
 				
-		// 답글 인 경우
+		// 대댓글 인 경우
 		if(commentDto.getPid() != 0) {
-			// 답글 저장
+			// 대댓글 저장
 			rs = commentDAO.writeReplyComment(commentDto);
-			
-			
 		} else {
 			// 댓글 저장
 			 rs = commentDAO.writeComment(commentDto);
-			if(commentDto.getDepth() == 0) {
-				commentDAO.editRootSeq();	// depth 0 일 때 rootseq 수정
-			}
 		}
-		
-		
 		
 		return rs;
 	}
 	
 	// 댓글 목록
-	public List<CommentDTO> cmtListByBoardseq(int boardseq) {
-		return commentDAO.cmtListByBoardseq(boardseq);
+	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn) {
+		// 답글 구분
+		Map map = new HashMap();
+		map.put("boardseq", boardseq);
+		map.put("replyYn", replyYn);
+		
+		return commentDAO.cmtListByBoardseq(map);
 	}
 	
 	// 하위 댓글 확인
@@ -94,8 +92,8 @@ public class CommentService {
 	}
 	
 	// 게시글 시퀀스로 댓글 삭제
-	public int deleteCmtByBoardseq(int boardseq) {
-		return commentDAO.deleteCmtByBoardseq(boardseq);
+	public int deleteCmtByBoardseq(Map map) {
+		return commentDAO.deleteCmtByBoardseq(map);
 	}
 	
 	// 대댓글 목록

@@ -273,8 +273,11 @@ public class CommonService {
 	}	
 	
 	// fileparent로 file path 찾기
-	public List<String> SelFilePathById(String id) {
-		return commonDAO.SelFilePathById(id);
+	public List<String> SelFilePathById(String id, int pid) {
+		Map map = new HashMap();
+		map.put("id", id);
+		map.put("pid", pid);
+		return commonDAO.SelFilePathById(map);
 	}
 		
 	// login id 불러오기

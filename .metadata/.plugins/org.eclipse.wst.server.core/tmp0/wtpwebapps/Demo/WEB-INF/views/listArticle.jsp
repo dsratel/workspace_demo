@@ -57,48 +57,60 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="dto" items="${list}" varStatus="status">
-					<tr>
-						<td>${status.count + srchInfo.pagination.startIndex}</td>
-						<td>
-							<c:choose>
-								<c:when test="${dto.category eq 'free'}">
-									자유게시판
-								</c:when>
-								<c:when test="${dto.category eq 'notice'}">
-									공지사항
-								</c:when>
-							</c:choose>
-						</td>
-						<td>
-							<c:if test="${dto.pid > 0 }">
-								<img src="/resources/image/replyArrow.png" style="height:15px">						
-							</c:if>
-							<a class="title" href="/board/viewArticle?seq=${dto.seq }&pid=${dto.pid}">${dto.title }
-							<span class="commentCnt">[${dto.commentcnt}]</span></a>
-						</td>
-						<td class="authors" author="${dto.etc}">${dto.author }</td>
-						<td><fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
-						<td>${dto.viewcnt }</td>
-					</tr>
-				</c:forEach>
+				<c:choose>
+					<c:when test="${list ne null }">
+						<c:forEach var="dto" items="${list}" varStatus="status">
+							<tr>
+								<%-- <td>${status.count + srchInfo.pagination.startIndex}</td> --%>
+								<td>${srchInfo.pagination.listCnt - (status.count + srchInfo.pagination.startIndex -1)}</td>
+								<td>
+									<c:choose>
+										<c:when test="${dto.category eq 'free'}">
+											자유게시판
+										</c:when>
+										<c:when test="${dto.category eq 'notice'}">
+											공지사항
+										</c:when>
+									</c:choose>
+								</td>
+								<td>
+									<c:if test="${dto.pid > 0 }">
+										<img src="/resources/image/replyArrow.png" style="height:15px">						
+									</c:if>
+									<a class="title" href="/board/viewArticle?seq=${dto.seq }&pid=${dto.pid}">${dto.title }
+									<span class="commentCnt">[${dto.commentcnt}]</span></a>
+								</td>
+								<td class="authors" author="${dto.etc}" nickname="${dto.author }">${dto.author }</td>
+								<td><fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
+								<td>${dto.viewcnt }</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="6">조건에 맞는 게시글이 없습니다.</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
 			</tbody>
 		</table>
 		<div class="layer_popup">
 			<button type="button" class="btn btn-success" id="toMemberArticle">사용자 게시글 보기</button>
 		</div>
-		<!-- Pagination -->
-		<ul class="pagination">
-			<c:if test="${srchInfo.pagination.curRange > 1}">
-				<li class="page-item"><a class="page-link" onclick="toPrevPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
-			</c:if>
-			<c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
-				<li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
-			</c:forEach>
-			<c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
-				<li class="page-item"><a class="page-link" onclick="toNextPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
-			</c:if>
-		</ul>
+		<c:if test="${srchInfo ne null}">
+			<!-- Pagination -->
+			<ul class="pagination">
+				<c:if test="${srchInfo.pagination.curRange > 1}">
+					<li class="page-item"><a class="page-link" onclick="toPrevPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
+				</c:if>
+				<c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
+					<li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
+				</c:forEach>
+				<c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
+					<li class="page-item"><a class="page-link" onclick="toNextPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
+				</c:if>
+			</ul>		
+		</c:if>
 	</div>
 	<script>
 		$(function(){
@@ -118,10 +130,13 @@
 			});
 			
 			// 초기 값 세팅
- 			$("#category").val("${srchInfo.category}");
-			$("#searchType").val("${srchInfo.searchType}");
-			$("#pageSize").val("${srchInfo.pagination.pageSize}");
-			$("input[name='searchKeyword']").val("${srchInfo.searchKeyword}");
+			if("${srchInfo}" != "") {
+	 			$("#category").val("${srchInfo.category}");
+				$("#searchType").val("${srchInfo.searchType}");
+				$("#pageSize").val("${srchInfo.pagination.pageSize}");
+				$("input[name='searchKeyword']").val("${srchInfo.searchKeyword}");
+			}
+			
 			
 			// css
 			$("table").css({"text-align":"center"});
@@ -138,8 +153,9 @@
 			// 요소 클릭 시 클릭한 요소 위치에 레이어팝업 띄우기
 			$(".authors").on("click", function(e){
 				target = $(e.target);
+				console.log(target);
 				var p = $(target).offset();
-				$("#toMemberArticle").attr("author", target.attr("author"));
+				$("#toMemberArticle").attr("author", target.attr("nickname"));
 				
 				var divTop	= p.top + 30;	// 상단 좌표
 				var divLeft	= p.left;		// 좌측 좌표

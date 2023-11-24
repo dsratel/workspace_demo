@@ -21,8 +21,8 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 댓글 목록
 	@Override
-	public List<CommentDTO> cmtListByBoardseq(int boardseq) {
-		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListByBoardseq", boardseq);
+	public List<CommentDTO> cmtListByBoardseq(Map map) {
+		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListByBoardseq", map);
 		return list;
 	}
 	
@@ -64,8 +64,8 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 게시글 시퀀스로 댓글 삭제
 	@Override
-	public int deleteCmtByBoardseq(int boardseq) {
-		return sqlsession.delete("commentMapper.deleteCmtByBoardseq", boardseq);
+	public int deleteCmtByBoardseq(Map map) {
+		return sqlsession.delete("commentMapper.deleteCmtByBoardseq", map);
 	}
 	
 	// 대댓글 작성

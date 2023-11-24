@@ -53,22 +53,32 @@ public class BoardService {
 	}
 	
 	// 가장 최신 글 seq 불러오기
-	public int getLatestSeq(String author) {
+	public int getLatestSeq(String author, int pid) {
 		System.out.println("========== BoardService 진입 ==========");
-		return boardDAO.getLatestSeq(author);
+		// 답글 구분을 위한 pid 추가
+		Map map = new HashMap();
+		map.put("author", author);
+		map.put("pid", pid);
+		return boardDAO.getLatestSeq(map);
 	}
 	
 	// 게시글 삭제
-	public int delArticle(int seq, char attachfile) {
+	public int delArticle(int seq, int pid, char attachfile) {
 		System.out.println("========== BoardService - delArticle 진입 ==========");
 		// 첨부파일이 있는 경우 filemeta의 db 삭제
 		if(attachfile == 'y') {
 			String id = "" + seq;
 			commonService.delFileByIdCat(id, "board");
 		}
-		int rs = boardDAO.delArticle(seq);
 		
-		commentService.deleteCmtByBoardseq(seq);
+		// 답글 구분을 위하여 pid 담기
+		Map map = new HashMap();
+		map.put("seq", seq);
+		map.put("pid", pid);
+		
+		int rs = boardDAO.delArticle(map);
+		
+		commentService.deleteCmtByBoardseq(map);
 		
 		return  rs;
 	}

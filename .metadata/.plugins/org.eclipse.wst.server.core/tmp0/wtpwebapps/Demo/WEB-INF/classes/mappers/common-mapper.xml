@@ -60,8 +60,20 @@
 	</select>
 	
 	<!-- fileparent로 file path 찾기 -->
-	<select id="selFilePathById" parameterType="String" resultType="String">
-		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta WHERE fileparent = #{seq} AND delyn = 'N'
+	<select id="selFilePathById" parameterType="map" resultType="String">
+		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta
+		WHERE fileparent = #{id} AND delyn = 'N' AND category =
+		<choose>
+			<when test="pid > 0">
+				'board_reply'
+			</when>
+			<when test="pid == 0">
+				'board'
+			</when>
+			<otherwise>
+				<trim prefixOverrides="AND category ="></trim>
+			</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 삭제할 seq 찾기 -->

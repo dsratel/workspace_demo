@@ -527,3 +527,7 @@
 0:0:0:0:0:0:0:1 - - [23/Nov/2023:18:59:10 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=10&curPage=1 HTTP/1.1" 200 9927
 0:0:0:0:0:0:0:1 - - [23/Nov/2023:18:59:12 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=10&curPage=2 HTTP/1.1" 200 6983
 0:0:0:0:0:0:0:1 - - [23/Nov/2023:18:59:13 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=10&curPage=1 HTTP/1.1" 200 9927
+0:0:0:0:0:0:0:1 - - [23/Nov/2023:18:59:59 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=10&curPage=2 HTTP/1.1" 200 6983
+0:0:0:0:0:0:0:1 - - [23/Nov/2023:18:59:59 +0900] "GET /resources/image/replyArrow.png HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [23/Nov/2023:19:00:01 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=10&curPage=1 HTTP/1.1" 200 9927
+0:0:0:0:0:0:0:1 - - [23/Nov/2023:19:00:04 +0900] "GET /board/toList?category=free&searchType=0&searchKeyword=%EB%8B%B5&pageSize=20&curPage=1 HTTP/1.1" 200 11987

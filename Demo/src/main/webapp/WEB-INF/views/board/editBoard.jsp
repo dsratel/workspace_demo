@@ -6,26 +6,35 @@
 	<meta charset="UTF-8">
 	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
-	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
+	<script type="text/javascript" src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>edit board page</title>
 </head>
 <body>
 	<h1>글 수정 페이지 - 본인의 글만 수정 가능</h1>
 	<div class="container">
 		<form method="post" name="editBoardForm" action="/board/edit.do" enctype="multipart/form-data">
-			<div class="row">	<!-- 카테고리 -->
-				<div class="col-2"></div>
-				<div class="col-1 tab">
-					<span>카테고리</span>
-				</div>
-				<div class="col-7 cont">
-					<select class="form-select" name="category" id="category">
-						<option value="free">자유게시판</option>
-						<option value="notice">공지사항</option>
-					</select>
-				</div>
-				<div class="col-2"></div>
-			</div>
+			<c:choose>
+				<c:when test="${dto.pid > 0}">
+					<input type="hidden" name="pid" value="${dto.pid }">
+					<input type="hidden" name="category" value="${dto.category }">					
+				</c:when>
+				<c:otherwise>
+					<div class="row">	<!-- 카테고리 -->
+						<div class="col-2"></div>
+						<div class="col-1 tab">
+							<span>카테고리</span>		
+						</div>
+						<div class="col-7 cont">
+							<select class="form-select" name="category" id="category">
+								<option value="free">자유게시판</option>
+								<option value="notice">공지사항</option>
+							</select>		
+						</div>
+						<div class="col-2"></div>
+					</div>				
+				</c:otherwise>
+			</c:choose>
+			
 			<div class="row">	<!-- 제목 -->
 				<div class="col-2"></div>
 				<div class="col-1 tab">
@@ -124,7 +133,7 @@
 				if(prevImg.length == 0 && fileCnt == 0) {
 					$("#attachfile").val('n');					
 				} else {
-					$("#attachfile").val('y');					
+					$("#attachfile").val('y');
 				}
 				
 				// 파일 개수 입력

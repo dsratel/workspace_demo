@@ -9,7 +9,7 @@ public interface CommentDAO {
 	public int writeComment(CommentDTO commentDto);
 	
 	// 댓글 목록
-	public List<CommentDTO> cmtListByBoardseq(int boardseq);
+	public List<CommentDTO> cmtListByBoardseq(Map map);
 	
 	// 댓글 삭제
 	public int deleteCmt(Map map);
@@ -30,7 +30,7 @@ public interface CommentDAO {
 	public int sortComment(Map map);
 	
 	// 게시글 시퀀스로 댓글 삭제
-	public int deleteCmtByBoardseq(int boardseq);
+	public int deleteCmtByBoardseq(Map map);
 	
 	// 대댓글 작성
 	public int writeReplyComment(CommentDTO commentDto);

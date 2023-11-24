@@ -1,0 +1,240 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
+	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
+	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
+	
+	<title>view board page</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">	<!-- 카테고리 -->
+			<div class="col-1"></div>
+			<div class="col-1 tab">
+				<span>카테고리</span>
+			</div>
+			<div class="col-9 cont">
+				<span id="category"></span>
+			</div>
+			<div class="col-1"></div>
+		</div>
+		<div class="row">	<!-- 제목 -->
+			<div class="col-1"></div>
+			<div class="col-1 tab">
+				<span>제목</span>
+			</div>
+			<div class="col-9 cont">
+				<span name="title" id="title">${dto.title}</span>
+			</div>
+			<div class="col-1"></div>
+		</div>
+		<div class="row">	<!-- 작성자 -->
+			<div class="col-1"></div>
+			<div class="col-1 tab">
+				<span>작성자</span>
+			</div>
+			<div class="col-9 cont">
+				<span id="author" readonly>${dto.author}</span>
+			</div>
+			<div class="col-1"></div>
+		</div>
+		<div class="row">	<!-- 내용 -->
+			<div class="col-1"></div>
+			<div class="col-1 tab">
+				<span>내용</span>
+			</div>
+			<div class="col-9 cont">
+				<textarea id="content" readonly>${dto.content }</textarea>
+			</div>
+			<div class="col-1"></div>
+		</div>
+		<div class="row">	<!-- 첨부파일 -->
+			<div class="col-1"></div>
+			<div class="col-1 tab">
+				<span>첨부파일</span>
+			</div>
+			<div class="col-9 cont imgDiv">
+				<c:forEach var="filePath" items="${files }">
+					<img class="img-thumbnail" src="${filePath}">
+				</c:forEach>			
+			</div>
+			<div class="col-1"></div>
+		</div>
+		<c:if test="${loginId ne '' }">
+			<div class="row" id="commentDiv">	<!-- 댓글 / 회원인 경우에만 작성 가능 -->
+				<div class="col-1"></div>
+				<div class="col-10">
+						<input type="text" value="${loginId}" id="cmtId" readonly>
+						<input type="password" placeholder="password" id="cmtPw" maxlength="20">
+						<textarea id="cmtContent"></textarea>
+						<button type="button" id="commentBtn" class="btn btn-primary">댓글작성</button>	
+				</div>
+				<div class="col-1"></div>
+				<form name="cmtForm" method="post" id="cmtForm">
+					<input type="hidden" name="id" value="${loginId}">
+					<input type="hidden" name="pw">
+					<input type="hidden" name="content">
+					<input type="hidden" name="boardseq" value="${dto.seq}">
+					<input type="hidden" name="replyboardseq" value="0">
+					<input type="hidden" name="seq" value="0">
+					<input type="hidden" name="rootseq" value="0">
+					<input type="hidden" name="depth" value="0">
+					<input type="hidden" name="re_order" value="0">
+					<input type="hidden" name="pid" value="0">
+				</form>
+			</div>
+		</c:if>
+		<div class="row" id="cmtDiv">
+			<c:choose>
+				<c:when test="${cmtList eq 'noComment'}">
+					<div class="col">
+						<span>해당 글에 작성된 댓글이 없습니다.</span>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="col-1"></div>
+					<div class="col-10 row" id="cmtListDiv">
+						<c:forEach var="cmt" items="${cmtList}">
+							<div class="row cmtList">
+								<div class="row cmtIdDiv">
+									<span>${cmt.nickname}</span>
+ 								</div>		
+								<div class="row cmtContDiv">
+									<div class="col-8 cmtContent">
+										<span>${cmt.content}</span>
+										<input type="hidden" seq="${cmt.seq }">
+										<input type="hidden" boardseq="${cmt.boardseq}">
+									</div>
+									<div class="col-2 cmtTime">
+										<span><fmt:formatDate value="${cmt.regdate}" pattern="yyyy년 MM월 dd일" /></span><br/>
+										<span><fmt:formatDate value="${cmt.regdate}" pattern="k시 m분 s초" /></span>						
+									</div>
+									<div class="col-2 cmtBtnDiv">
+									<c:if test="${loginId ne ''}">
+										<button type="button" class="btn btn-info" onclick="replyCmtForm(${cmt.seq}, ${cmt.depth}, this);" id="replyCmtBtn_${cmt.seq}">답글</button><br/>									
+									</c:if>
+									<c:if test="${loginId == cmt.id}">
+										<button type="button" class="btn btn-danger delCmtBtn" onclick="delPwPop(${cmt.seq}, 0)">삭제</button>
+										<button type="button" class="btn btn-success editCmtBtn" onclick="editCmt(${cmt.seq}, 0, this)">수정</button>											
+									</c:if>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+					<div class="col-1"></div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+
+		<div class="row" id="btnDiv">
+			<div class="col">
+				<c:if test="${loginId == dto.author}">
+			    	<button type="button" class="btn btn-success" id="editBtn">글 수정하기</button>
+			    	<button type="button" class="btn btn-danger" id="delBtn">글 삭제하기</button>				
+				</c:if>
+				<c:if test="${loginId ne '' && dto.pid == 0}">
+					<button type="button" class="btn btn-info" id="replyBtn">답글 달기</button>
+				</c:if>
+	    		<button type="button" class="btn btn-secondary" id="listBtn">글 목록으로</button>				
+			</div>
+		</div>
+	</div>
+	<script>
+		$(function(){
+			// css
+			$("div.tab, div.cont").css({"border" : "1px solid black", "padding" : "5px"});
+			$("#btnDiv button").css({"display" : "inline-block", "width" : "20%", "margin": "5px"});
+			$("#btnDiv, .tab, .imgDiv").css("text-align", "center");	
+			$(".container").css("margin-top", "20px");
+			$("#content").css({"width" : "100%", "height" : "300px", "border" : "none", "resize" : "none"});
+			$("textarea").css("outline", "none");
+			$(".img-thumbnail").css({"width":"200px", "height":"200px"});
+			$(".cmtList").css({"border":"1px black solid", "margin":"5px"});
+			$(".cmtIdDiv").css({"margin-bottom":"10px"});
+			$("#cmtForm").css({"margin-top":"10px"});
+			$("#cmtContent").css({"margin-top":"10px", "width":"80%", "height":"100px", "resize":"none"});
+			$(".delCmtBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});
+			$("#commentDiv").css({"margin":"30px 0px 30px 0px"});
+			
+			
+			// 초기 세팅
+			//// 카테고리
+			switch("${dto.category}") {
+				case 'free' :
+					$("#category").text("자유게시판");
+				break;
+				case 'notice' :
+					$("#category").text("공지사항");
+				break;
+			}
+			//// 답글인 경우
+			if("${replyBoard}" == "y") {
+				$("form[name='cmtForm'] input[name='boardseq']").val(0);
+				$("form[name='cmtForm'] input[name='replyboardseq']").val("${dto.seq}");
+			}
+				
+			// 글 수정하기
+			$("#editBtn").click(function(){
+				window.location.replace("/board/editArticle?seq=${dto.seq}&pid=${dto.pid}&title=${dto.title}&category=${dto.category}");
+			});
+			
+			// 글 삭제하기
+			$("#delBtn").click(function(){
+				window.location.replace("/board/delArticle?seq=${dto.seq}&attachfile=${dto.attachfile}&pid=${dto.pid}");
+			});
+			
+			// 글 목록으로
+			$("#listBtn").click(function(){
+				window.location.replace("/board/toList");
+			});
+			
+			// 답글 달기
+			$("#replyBtn").click(function(){
+				var cate = $("#category").text();
+				window.location.replace("/board/toWrite?pid=${dto.seq}&title=${dto.title}&category=${dto.category}");
+			});
+			
+			// 댓글 작성
+			$("#commentBtn").on("click", function() {
+				// cmtForm 초기화(pw, content)
+				cmtFormReset();
+				
+				var cmtPw = $("#cmtPw").val().trim();
+				var cmtContent = $("#cmtContent").val().trim();
+								
+				if(validCheck(cmtPw, cmtContent)){
+					$("form[name='cmtForm'] input[name='pw']").val(cmtPw);
+					$("form[name='cmtForm'] input[name='content']").val(cmtContent);
+					
+					$.ajax({
+						type: "post",
+						url: "/comment/write.do",
+						data: $("#cmtForm").serialize(),
+						success: function(data){
+							$("#cmtPw, #cmtContent").val("");
+							commentReload();
+						},
+						error: function(data){
+							alert("ajax 실패");
+							console.log(data);
+						}
+					});		
+				}
+			});
+			
+		})	// function end
+			
+			
+		
+		
+		
+	</script>
+	<script src="/resources/js/comment/comment.js"></script>
+</body>
+</html>

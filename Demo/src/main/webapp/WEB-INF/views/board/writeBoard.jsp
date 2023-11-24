@@ -10,19 +10,45 @@
 	<title>write board page</title>
 </head>
 <body>
-	<h1>글 작성 페이지 - 로그인 한 회원만 글쓰기 가능</h1>
+	<div style="text-align:center;">
+		<c:choose>
+			<c:when test="${pid > 0 }">
+				<h1>답글 작성하기</h1>
+			</c:when>
+			<c:otherwise>
+				<h1>게시글 작성하기</h1>
+			</c:otherwise>
+		</c:choose>	
+	</div>
 	<div class="container">
 		<form method="post" name="writeBoardForm" action="/board/write.do" enctype="multipart/form-data">
+			
 			<div class="row">	<!-- 카테고리 -->
 				<div class="col-2"></div>
 				<div class="col-1 tab">
-					<span>카테고리</span>
+					<c:choose>
+						<c:when test="${pid > 0}">
+							<span>원본 글 제목</span>
+						</c:when>
+						<c:otherwise>
+							<span>카테고리</span>				
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="col-7 cont">
-					<select class="form-select" name="category" id="category">
-						<option value="free">자유게시판</option>
-						<option value="notice">공지사항</option>
-					</select>
+					<c:choose>
+						<c:when test="${pid > 0 }">
+							<span>${orgTitle }</span>
+							<input type="hidden" name="pid" value="${pid }">
+							<input type="hidden" name="category" value="${category }">
+						</c:when>
+						<c:otherwise>
+							<select class="form-select" name="category" id="category">
+								<option value="free">자유게시판</option>
+								<option value="notice">공지사항</option>
+							</select>						
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="col-2"></div>
 			</div>

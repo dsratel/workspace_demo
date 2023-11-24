@@ -37,16 +37,16 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 가장 최신 글 seq 불러오기
 	@Override
-	public int getLatestSeq(String author) {
+	public int getLatestSeq(Map map) {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
-		return sqlsession.selectOne("boardMapper.getLatestSeq", author);
+		return sqlsession.selectOne("boardMapper.getLatestSeq", map);
 	}
 	
 	// 게시글 삭제
 	@Override
-	public int delArticle(int seq) {
+	public int delArticle(Map map) {
 		System.out.println("========== BoardDAOImpl 진입 ==========");
-		return sqlsession.delete("boardMapper.delArticle", seq);
+		return sqlsession.delete("boardMapper.delArticle", map);
 	}
 	
 	// 게시글 수정

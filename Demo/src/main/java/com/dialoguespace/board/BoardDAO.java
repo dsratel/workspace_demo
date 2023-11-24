@@ -14,10 +14,10 @@ public interface BoardDAO {
 	public BoardDTO selArticleBySeq(Map map);
 
 	// 가장 최신 글 seq 불러오기
-	public int getLatestSeq(String author);
+	public int getLatestSeq(Map map);
 	
 	// 게시글 삭제
-	public int delArticle(int seq);
+	public int delArticle(Map map);
 	
 	// 게시글 수정
 	public int editArticle(BoardDTO boardDto);

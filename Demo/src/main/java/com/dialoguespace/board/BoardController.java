@@ -44,14 +44,22 @@ public class BoardController {
 	
 	// 글 쓰기 페이지로 이동
 	@GetMapping(value="/toWrite")
-	public String toWritePage(Model model) {
+	public String toWritePage(@RequestParam(defaultValue = "0")int pid, @RequestParam(defaultValue = "")String title
+			, @RequestParam(defaultValue = "")String category, Model model) {
 		String loginId = commonService.getLoginId();
 		System.out.println("로그인한 ID는 " + loginId + " 입니다.");
+		System.out.println("pid : " + pid + " / title : " + title + " / category : " + category);
+		
 		
 //		System.out.println("t_filemeta에 있는 저장하지 않은 이미지 파일 DB 삭제");
 //		commonService.delFileByIdCat(loginId, "board");
 		
 		model.addAttribute("loginId", loginId);
+		if(pid > 0) {
+			model.addAttribute("pid", pid);
+			model.addAttribute("orgTitle", title);
+			model.addAttribute("category", category);
+		}
 		 
 		return "/board/writeBoard";
 	}
@@ -63,7 +71,7 @@ public class BoardController {
 		System.out.println("BoardDTO : " + boardDto.toString());
 		// board DB 저장
 		boardService.writeArticle(boardDto);
-		String seq = "" + boardService.getLatestSeq(boardDto.getAuthor());
+		String seq = "" + boardService.getLatestSeq(boardDto.getAuthor(), boardDto.getPid());
 		
 		// 첨부 파일이 있는 경우
 		if(boardDto.getAttachfile().contentEquals("y")) {
@@ -71,7 +79,8 @@ public class BoardController {
 		String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
 		String path			= contextRoot + "resources/board/";
 		
-		List<FileVO> fileList = commonService.setFileList(multipartFiles, seq, "board", path);
+		String category = (boardDto.getPid() > 0) ? "board_reply" : "board";
+		List<FileVO> fileList = commonService.setFileList(multipartFiles, seq, category, path);
 		commonService.saveNewFiles(multipartFiles, fileList);
 		}
 		
@@ -96,13 +105,15 @@ public class BoardController {
 		// 검색요건 추가하여 리스트 출력
 		Map srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
 		int listCnt = boardService.countList(srchInfo);
-		srchInfo.put("pagination", new PaginationVO(listCnt,curPage,pageSize));
-		// 검색할 글 시퀀스
-		List seqList = boardService.getSeqList(srchInfo);
-		srchInfo.put("seqList", seqList);
-		// 페이징 내용 추가
-		model.addAttribute("list", boardService.selectArticle(srchInfo));
-		model.addAttribute("srchInfo", srchInfo);
+		if(listCnt > 0) {
+			srchInfo.put("pagination", new PaginationVO(listCnt,curPage,pageSize));
+			// 검색할 글 시퀀스
+			List seqList = boardService.getSeqList(srchInfo);
+			srchInfo.put("seqList", seqList);
+			// 페이징 내용 추가
+			model.addAttribute("list", boardService.selectArticle(srchInfo));
+			model.addAttribute("srchInfo", srchInfo);			
+		}
 		
 		return "listArticle";
 	}
@@ -126,15 +137,16 @@ public class BoardController {
 		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		model.addAttribute("dto", dto);
 		model.addAttribute("loginId", loginId);
+		if(pid > 0) model.addAttribute("replyBoard", 'y');
 		
 		//// 파일 정보
 		if(dto.getAttachfile().contentEquals("y")) {
 			// "board"와 seq에 해당하는 파일들 가져오기
-			model.addAttribute("files", commonService.SelFilePathById(""+seq));
+			model.addAttribute("files", commonService.SelFilePathById(""+seq, pid));
 		}
 		
 		// 댓글 정보
-		List<CommentDTO> cmtList = commentService.cmtListByBoardseq(dto.getSeq());
+		List<CommentDTO> cmtList = commentService.cmtListByBoardseq(dto.getSeq(), 'n');
 		if(cmtList != null) {
 			model.addAttribute("cmtList", cmtList);
 		} else {
@@ -151,9 +163,9 @@ public class BoardController {
 	
 	// 게시글 삭제
 	@GetMapping(value="/delArticle")
-	public String delArticle(int seq, char attachfile) {
-		System.out.println("게시글 삭제 : seq - " + seq + " / attachfile - " + attachfile);
-		boardService.delArticle(seq, attachfile);
+	public String delArticle(int seq, int pid, char attachfile) {
+		System.out.println("게시글 삭제 : seq - " + seq + " / pid : " + pid + " / attachfile - " + attachfile);
+		boardService.delArticle(seq, pid, attachfile);
 		
 		return "redirect:/board/toList";
 	}
@@ -172,7 +184,8 @@ public class BoardController {
 		// 파일 있는 경우
 		if(dto.getAttachfile().contentEquals("y")) {
 			// "board"와 seq에 해당하는 파일들 가져오기
-			List<FileVO> files = commonService.SelFileById(""+seq, "board");
+			String category = (pid > 0) ? "board_reply" : "board";
+			List<FileVO> files = commonService.SelFileById(""+seq, category);
 			int fileCnt = files.size();
 			model.addAttribute("files", files);
 			model.addAttribute("fileCnt", fileCnt);
@@ -198,13 +211,14 @@ public class BoardController {
 		if(multipartFiles != null) {
 			for(MultipartFile f : multipartFiles) {
 				System.out.println("첨부파일 이름 " + f.getOriginalFilename());
-			}			
+			}
 		}
 		
 		// 게시글 db 수정
 		boardService.editArticle(dto);
 		
 		// 기존 이미지 삭제
+		String category = (dto.getPid() > 0) ? "board_reply" : "board";
 		if(prevImgs != null) {
 			// 기존 이미지에서 삭제할 seq 찾기
 			List<String> arr = Arrays.asList(prevImgs);
@@ -219,7 +233,7 @@ public class BoardController {
 			}
 		} else {
 			// 기존 이미지 전부 삭제
-			commonService.delFileByIdCat(""+dto.getSeq(), "board");
+			commonService.delFileByIdCat(""+dto.getSeq(), category);
 		}
 		
 		// 이미지를 수정 했다면
@@ -227,7 +241,7 @@ public class BoardController {
 			// 새로운 이미지 업로드
 			String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
 			String path			= contextRoot + "resources/board/";
-			commonService.saveNewFiles(multipartFiles, commonService.setFileList(multipartFiles, ""+dto.getSeq(), "board", path));
+			commonService.saveNewFiles(multipartFiles, commonService.setFileList(multipartFiles, ""+dto.getSeq(), category, path));
 		}
 		
 		return "redirect:/board/toList";

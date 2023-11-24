@@ -11,7 +11,7 @@ public class CommentDTO {
 	private String pw;
 	private String content;
 	private int boardseq;
-	private int rootseq;
+	private int replyboardseq;
 	private int pid;
 	private int depth;
 	private int re_order;

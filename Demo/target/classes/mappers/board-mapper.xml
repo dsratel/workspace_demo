@@ -6,7 +6,15 @@
 <mapper namespace="boardMapper">
 	<!-- 글 작성 프로세스 -->
 	<insert id="writeArticle" parameterType="boardDto">
-		INSERT INTO t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, sysdate())
+		INSERT INTO
+		<choose>
+			<when test="pid > 0">
+				t_board_reply(category, author, title, content, attachfile, pid, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, #{pid}, sysdate())
+			</when>
+			<otherwise>
+				t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, sysdate())			
+			</otherwise>		
+		</choose>
 	</insert>
 	
 	<!-- 글 전체 불러오기 -->
@@ -14,26 +22,12 @@
 		<trim suffixOverrides="UNION">
 			<foreach collection="seqList" item="seq" index="index" separator="UNION">
 				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid
-				FROM t_board WHERE category LIKE #{category} AND seq = #{seq}  AND
-				<choose>
-					<when test="searchType == 0">
-						title LIKE CONCAT('%', #{searchKeyword}, '%')	
-					</when>
-					<when test="searchType == 1">
-						author LIKE (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
-					</when>
-				</choose>
+				FROM t_board WHERE category LIKE #{category} AND seq = #{seq}
+	
 				UNION
 				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid
-				FROM t_board_reply WHERE category LIKE #{category} AND pid = #{seq} AND
-				<choose>
-					<when test="searchType == 0">
-						title LIKE CONCAT('%', #{searchKeyword}, '%')	
-					</when>
-					<when test="searchType == 1">
-						author LIKE (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
-					</when>
-				</choose>
+				FROM t_board_reply WHERE category LIKE #{category} AND pid = #{seq}
+		
 			</foreach>	
 		</trim>
 		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
@@ -68,13 +62,32 @@
 	</select>
 	
 	<!-- 가장 최신 글 seq 불러오기 -->
-	<select id="getLatestSeq" parameterType="String" resultType="Integer">
-		SELECT max(seq) FROM t_board WHERE author LIKE #{author}
+	<select id="getLatestSeq" parameterType="map" resultType="Integer">
+		SELECT max(seq) FROM
+		<choose>
+			<when test="pid > 0">
+				t_board_reply
+			</when>
+			<otherwise>
+				t_board
+			</otherwise>
+		</choose>
+		
+		WHERE author LIKE #{author}
 	</select>
 	
 	<!-- 게시글 삭제 -->
 	<delete id="delArticle" parameterType="Integer">
-		DELETE FROM t_board WHERE seq = #{seq}
+		DELETE FROM 
+		<choose>
+			<when test="pid > 0">
+				t_board_reply
+			</when>
+			<otherwise>
+				t_board
+			</otherwise>
+		</choose>
+		WHERE seq = #{seq}
 	</delete>
 	
 	<!-- 게시글 수정 -->
@@ -88,25 +101,23 @@
 			(SELECT count(*) FROM t_board_reply WHERE
 				<choose>
 					<when test='searchType == 0'>
-						title
+						title LIKE CONCAT('%', #{searchKeyword}, '%')
 					</when>
 					<when test='searchType == 1'>
-						author
+						author IN (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
 					</when>
 				</choose>
-			LIKE CONCAT('%', #{searchKeyword}, '%')
 			)
 
 		FROM t_board WHERE category LIKE #{category}	AND
 		<choose>
 			<when test='searchType == 0'>
-				title
+				title LIKE CONCAT('%', #{searchKeyword}, '%')
 			</when>
 			<when test='searchType == 1'>
-				author
+				author IN (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
 			</when>
 		</choose>
-			LIKE CONCAT('%', #{searchKeyword}, '%')
 	</select>
 	
 	<!-- 게시글 댓글 개수 증가 -->
@@ -141,7 +152,7 @@
 				title LIKE CONCAT('%', #{searchKeyword}, '%')	
 			</when>
 			<when test="searchType == 1">
-				author LIKE (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
+				author IN (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
 			</when>
 		</choose>
 		order by regdate desc

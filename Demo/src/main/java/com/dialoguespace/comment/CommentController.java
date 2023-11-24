@@ -50,11 +50,11 @@ public class CommentController {
 	// 댓글 목록
 	@ResponseBody
 	@PostMapping(value="/list")
-	public List<CommentDTO> cmtListByBoardseq(int boardseq, Model model) {
+	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn, Model model) {
 		System.out.println("===== CommentController - cmtListByBoardseq =====");
 		System.out.println("boardseq : " + boardseq);
 		
-		List<CommentDTO> list = commentService.cmtListByBoardseq(boardseq);
+		List<CommentDTO> list = commentService.cmtListByBoardseq(boardseq, replyYn);
 		return list;
 	}
 	
