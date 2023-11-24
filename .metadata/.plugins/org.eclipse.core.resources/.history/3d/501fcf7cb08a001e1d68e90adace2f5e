@@ -63,8 +63,8 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 게시글 댓글 개수 증가
 	@Override
-	public int addCommentCnt(Map map) {
-		return sqlsession.update("boardMapper.addCommentCnt", map);
+	public int addCommentCnt(int boardseq) {
+		return sqlsession.update("boardMapper.addCommentCnt", boardseq);
 	}
 	
 	// 게시글 댓글 개수 감소

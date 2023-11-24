@@ -26,7 +26,7 @@ public interface BoardDAO {
 	public int countList(Map map);
 	
 	// 게시글 댓글 개수 증가
-	public int addCommentCnt(Map map);
+	public int addCommentCnt(int boardseq);
 	
 	// 게시글 댓글 개수 감소
 	public int reduceCommentCnt(Map map);

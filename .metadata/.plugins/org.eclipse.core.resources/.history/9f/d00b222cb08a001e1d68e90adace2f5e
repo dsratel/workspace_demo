@@ -35,11 +35,7 @@ public class CommentController {
 		int rs = commentService.wrtieComment(commentDto);
 
 		// 게시글 댓글 개수 증가
-		if(commentDto.getBoardseq() > 0) {
-			boardService.addCommentCnt(commentDto.getBoardseq(), 'n');			
-		} else {
-			boardService.addCommentCnt(commentDto.getReplyboardseq(), 'y');
-		}
+		boardService.addCommentCnt(commentDto.getBoardseq());
 		
 		switch(rs) {
 		case 1:

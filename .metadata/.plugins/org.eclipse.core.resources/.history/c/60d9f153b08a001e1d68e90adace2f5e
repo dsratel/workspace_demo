@@ -107,13 +107,8 @@ public class BoardService {
 	}
 	
 	// 게시글 댓글 개수 증가
-	public int addCommentCnt(int boardseq, char replyYn) {
-		// 답글 여부
-		Map map = new HashMap();
-		map.put("boardseq", boardseq);
-		map.put("replyYn", replyYn);
-				
-		return boardDAO.addCommentCnt(map);
+	public int addCommentCnt(int boardseq) {
+		return boardDAO.addCommentCnt(boardseq);
 	}
 	
 	// 게시글 댓글 개수 감소

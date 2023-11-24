@@ -121,17 +121,8 @@
 	</select>
 	
 	<!-- 게시글 댓글 개수 증가 -->
-	<update id="addCommentCnt" parameterType="map">
-		UPDATE
-		<choose>
-			<when test="replyYn == n">
-				t_board			
-			</when>
-			<otherwise>
-				t_board_reply
-			</otherwise>
-		</choose> 
-		SET commentcnt = commentcnt+1 WHERE seq = #{boardseq}
+	<update id="addCommentCnt" parameterType="Integer">
+		UPDATE t_board SET commentcnt = commentcnt+1 WHERE seq = #{boardseq}
 	</update>
 	
 	<!-- 게시글 댓글 개수 감소 -->
