@@ -1,0 +1,83 @@
+package com.dialoguespace.master;
+
+import java.util.List;
+import java.util.Map;
+
+import com.dialoguespace.comment.CommentDAO;
+import com.dialoguespace.comment.CommentDTO;
+
+public class MasterDAOImpl implements CommentDAO {
+
+	@Override
+	public int writeComment(CommentDTO commentDto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<CommentDTO> cmtListByBoardseq(Map map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deleteCmt(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int passwordCheck(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editCmt(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int editRootSeq() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getNextReorder(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int sortComment(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteCmtByBoardseq(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int writeReplyComment(CommentDTO commentDto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<CommentDTO> cmtListByPid(int pid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deleteReplyCmt(int seq) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

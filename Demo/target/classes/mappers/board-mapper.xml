@@ -92,7 +92,16 @@
 	
 	<!-- 게시글 수정 -->
 	<update id="editArticle" parameterType="boardDto">
-		UPDATE t_board SET category = #{category}, title = #{title}, content = #{content}, attachfile = #{attachfile} WHERE seq = #{seq}
+		UPDATE
+		<choose>
+			<when test="pid > 0">
+				t_board_reply
+			</when>
+			<otherwise>
+				t_board
+			</otherwise>
+		</choose>  
+		SET category = #{category}, title = #{title}, content = #{content}, attachfile = #{attachfile} WHERE seq = #{seq}
 	</update>
 	
 	<!-- 조건에 맞는 게시글 개수 -->
@@ -125,7 +134,7 @@
 		UPDATE
 		<choose>
 			<when test="replyYn == n">
-				t_board			
+				t_board
 			</when>
 			<otherwise>
 				t_board_reply
@@ -136,7 +145,16 @@
 	
 	<!-- 게시글 댓글 개수 감소 -->
 	<update id="reduceCommentCnt" parameterType="map">
-		UPDATE t_board SET commentcnt = (commentcnt -
+		UPDATE
+		<choose>
+			<when test="replyyn eq 'n'">
+				t_board
+			</when>
+			<when test="replyyn eq 'y'">
+				t_board_reply
+			</when>
+		</choose>
+		SET commentcnt = (commentcnt -
 		<choose>
 			<when test="pid > 0">
 				1

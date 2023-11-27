@@ -113,7 +113,7 @@
 				<button class="btn btn-danger" type="button" id="testBtn">테스트 버튼</button>
 			</div>
 		</div>
-		<div id="formDiv" >
+		<div id="formDiv">
 			<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMemberForm" enctype="multipart/form-data">
 				<div class="row" style="padding: 5px 0px 5px">
 						<input type="file" name="upfile" class="form-control" id="upfile">
@@ -130,11 +130,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script>
 	$(function(){
-		
-		// context-path 체크용 테스트 버튼
-		$("#testBtn").click(function(){
-			console.log(location.href);
-		});
+		// css
+		$("#formDiv").css({"display":"none"});
 		/*
 		// 저장하기
  		$("#save").click(function(){
@@ -269,7 +266,7 @@
 		// ID 중복검사
 		$("#idCheckBtn").click(function(){
 			var testId = $("input[name='m_id']");
-			if(testId.val().length > 5) {
+			if(testId.val().length > 4) {
 				$.ajax({
 					url: "/member/checkId",
 					dataType: "text",

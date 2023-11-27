@@ -12,7 +12,7 @@
 <body>
 	<h1>로그인 페이지</h1>
 	<div class="container">
-		<form name="loginForm" method="post" action="member/login.do" id="loginForm">
+		<form name="loginForm" method="post" action="/member/login.do" id="loginForm">
 			<table class="table table-bordered">
 				<tr>
 					<td>아이디</td>

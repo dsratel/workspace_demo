@@ -65,12 +65,12 @@ public class CommentController {
 	// 댓글 삭제
 	@ResponseBody
 	@GetMapping(value="/delete.do")
-	public int deleteCmt(int seq, int pid, int boardseq) {
+	public int deleteCmt(int seq, int pid, int boardseq, char replyyn) {
 		System.out.println("===== CommentController - deleteCmt =====");
-		System.out.println("seq : " + seq + " / pid : " + pid + " / boardseq : " + boardseq);
+		System.out.println("seq : " + seq + " / pid : " + pid + " / boardseq : " + boardseq + " / replyyn : " + replyyn);
 		
 		// 게시글 댓글 개수 감소
-		boardService.reduceCommentCnt(seq, pid, boardseq);
+		boardService.reduceCommentCnt(seq, pid, boardseq, replyyn);
 		
 		// 댓글 삭제
 		int rs = commentService.deleteCmt(seq, pid);

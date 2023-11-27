@@ -125,7 +125,7 @@
 	
 	<!-- 로그인 - ID, PW로 회원 선택 -->
 	<select id="selMemberByIdPw" parameterType="memberDto" resultType="memberDto">
-		SELECT id, name, nickname, address, phone, status, fileno FROM t_member WHERE id LIKE #{id} AND pw LIKE #{pw}
+		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id LIKE #{id} AND pw LIKE #{pw}
 	</select>
 	
 

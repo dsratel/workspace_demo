@@ -16,7 +16,7 @@ public class MemberDTO {
 	private String nickname;
 	private String address;
 	private String phone;
-	private int status;
+	private int status;		// 1: 활동 / 2: 탈퇴 / 3: 휴면
 	private Date regdate;
 	private char masteryn;
 	private int fileno;

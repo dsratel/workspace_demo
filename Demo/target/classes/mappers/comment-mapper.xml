@@ -13,10 +13,10 @@
 	<!-- 댓글 목록 -->
  	<select id="cmtListByBoardseq" parameterType="map" resultType="commentDto">
 		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname
-		FROM (SELECT seq, id, pw, content, boardseq, pid, depth, re_order, regdate, modifydate
+		FROM (SELECT seq, id, pw, content, boardseq, replyboardseq, pid, depth, re_order, regdate, modifydate
 				FROM t_comment WHERE
 				<choose>
-					<when test="replyYn == n">
+					<when test="replyYn == 'N'">
 						boardseq	
 					</when>
 					<otherwise>
@@ -87,10 +87,10 @@
 		DELETE FROM
 		<choose>
 			<when test="pid > 0">
-				t_comment WHERE replyboardseq = #{pid}
+				t_comment WHERE replyboardseq = #{seq}
 			</when>
 			<otherwise>
-				t_comment WHERE boardseq = #{boardseq}			
+				t_comment WHERE boardseq = #{seq}			
 			</otherwise>
 		</choose>
 	</delete>

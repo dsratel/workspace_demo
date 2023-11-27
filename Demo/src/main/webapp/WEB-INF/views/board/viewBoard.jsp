@@ -174,7 +174,7 @@
 				break;
 			}
 			//// 답글인 경우
-			if("${replyBoard}" == "y") {
+			if("${replyBoard}" == "Y") {
 				$("form[name='cmtForm'] input[name='boardseq']").val(0);
 				$("form[name='cmtForm'] input[name='replyboardseq']").val("${dto.seq}");
 			}
@@ -186,7 +186,11 @@
 			
 			// 글 삭제하기
 			$("#delBtn").click(function(){
-				window.location.replace("/board/delArticle?seq=${dto.seq}&attachfile=${dto.attachfile}&pid=${dto.pid}");
+				var cmtYn = '';
+				if($("div.cmtContent").length > 0) cmtYn = 'Y';
+				if(confirm("정말로 게시글을 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
+					window.location.replace("/board/delArticle?seq=${dto.seq}&attachfile=${dto.attachfile}&pid=${dto.pid}&cmtYn="+cmtYn);					
+				}
 			});
 			
 			// 글 목록으로
@@ -302,10 +306,16 @@
 
 		// 댓글 삭제
 		function delCmt(cmtSeq, pid) {
+			var boardseq = $("#cmtForm input[name='boardseq']").val();
+			var replyYn = "n";
+			if(boardseq == 0) {
+				boardseq = $("#cmtForm input[name='replyboardseq']").val();
+				replyYn = "y";
+			}
 		    $.ajax({
 		        type: "get",
 		        url: "/comment/delete.do",
-		        data: {"seq" : cmtSeq, "pid" : pid, "boardseq":$("#cmtForm input[name='boardseq']").val()},
+		        data: {"seq" : cmtSeq, "pid" : pid, "boardseq" : boardseq, "replyyn" : replyYn},
 		        success: function(data){
 		            commentReload();
 		        },

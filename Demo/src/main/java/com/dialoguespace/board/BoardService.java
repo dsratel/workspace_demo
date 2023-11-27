@@ -63,12 +63,16 @@ public class BoardService {
 	}
 	
 	// 게시글 삭제
-	public int delArticle(int seq, int pid, char attachfile) {
+	public int delArticle(int seq, int pid, char attachfile, char cmtYn) {
 		System.out.println("========== BoardService - delArticle 진입 ==========");
+		// 답글일 경우 category를 board_reply로 변경
+		String category = "board";
+		if(pid > 0) category = "board_reply";
+		
 		// 첨부파일이 있는 경우 filemeta의 db 삭제
 		if(attachfile == 'y') {
-			String id = "" + seq;
-			commonService.delFileByIdCat(id, "board");
+			String id = "" + seq;			
+			commonService.delFileByIdCat(id, category);
 		}
 		
 		// 답글 구분을 위하여 pid 담기
@@ -78,8 +82,11 @@ public class BoardService {
 		
 		int rs = boardDAO.delArticle(map);
 		
-		commentService.deleteCmtByBoardseq(map);
-		
+		// 댓글 삭제
+		if(cmtYn == 'Y') {
+			commentService.deleteCmtByBoardseq(map);
+		}
+				
 		return  rs;
 	}
 	
@@ -117,11 +124,12 @@ public class BoardService {
 	}
 	
 	// 게시글 댓글 개수 감소
-	public int reduceCommentCnt(int seq, int pid, int boardseq) {
+	public int reduceCommentCnt(int seq, int pid, int boardseq, char replyyn) {
 		Map map = new HashMap();
 		map.put("seq", seq);
 		map.put("pid", pid);
 		map.put("boardseq", boardseq);
+		map.put("replyyn", replyyn);
 		
 		return boardDAO.reduceCommentCnt(map);
 	}
