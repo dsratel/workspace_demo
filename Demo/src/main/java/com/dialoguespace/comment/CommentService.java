@@ -39,7 +39,7 @@ public class CommentService {
 		return rs;
 	}
 	
-	// 댓글 목록
+	// 댓글 목록 - boardseq별
 	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn) {
 		// 답글 구분
 		Map map = new HashMap();
@@ -47,6 +47,11 @@ public class CommentService {
 		map.put("replyYn", replyYn);
 		
 		return commentDAO.cmtListByBoardseq(map);
+	}
+	
+	// 댓글 목록 - search condition 별
+	public List<CommentDTO> cmtListBySearchcondition() {
+		return commentDAO.cmtListBySearchcondition();
 	}
 	
 	// 하위 댓글 확인

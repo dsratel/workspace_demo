@@ -1,7 +1,6 @@
 package com.dialoguespace.board;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -96,11 +95,16 @@ public class BoardController {
 		// loginId
 		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
 		String loginId = "";
+		char masteryn = 'n';
 		if(loginDto != null) {
-			loginId = loginDto.getId();	  
+			loginId = loginDto.getId();
+			if(loginDto.getMasteryn() == "y".charAt(0)) {
+				masteryn = 'y';
+			}
 		}
 		
 		model.addAttribute("loginId", loginId);
+		model.addAttribute("masteryn", masteryn);
 		
 		// 검색요건 추가하여 리스트 출력
 		Map srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
@@ -181,6 +185,10 @@ public class BoardController {
 		
 		String loginId = commonService.getLoginId();
 		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
+		// 로그인한 ID가 수정 권한이 있는지 확인 - 권한이 없으면 홈으로 이동
+		if(!loginId.equals(dto.getAuthor())) {
+			return "redirect:/";
+		}
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("loginId", loginId);
@@ -203,6 +211,13 @@ public class BoardController {
 	public String editArticle(BoardDTO dto, int fileCnt, @RequestParam("upfile") MultipartFile[] multipartFiles
 			, @RequestParam(value="prevImg", required=false) String[] prevImgs, Model model, HttpServletRequest request) throws Exception {
 		System.out.println("========== BoardController - editArticle ==========");
+		// 로그인한 ID가 수정 권한이 있는지 확인 - 권한이 없으면 홈으로 이동
+		String loginId = commonService.getLoginId();
+		BoardDTO dtoCheck = boardService.selArticleBySeq(dto.getSeq(), dto.getPid());
+		if(!loginId.equals(dtoCheck.getAuthor())) {
+			return "redirect:/";
+		}
+		
 		System.out.println("BoardDTO : " + dto.toString());
 		System.out.println("*** 기존 이미지 목록 ***");
 		if(prevImgs != null) {

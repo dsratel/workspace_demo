@@ -1,0 +1,535 @@
+package com.dialoguespace.demo;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class ConnectionTest {
+	private static char map1[];
+	private static byte map2[];
+	
+	public static void main(String[] args) throws Exception {
+		HashMap hmMenu = new LinkedHashMap();
+		HashMap hmSubMenu = new LinkedHashMap();
+		
+		ArrayList<String[]> lstMenu2 = new ArrayList<String[]>();
+		HashMap<Integer, ArrayList<String[]>> hmTest = new HashMap<Integer, ArrayList<String[]>>();
+		
+		
+		/* 고객 관리 메뉴 */
+		String arrMenuItem[] = new String[2];
+		arrMenuItem[0] = "Member";
+		arrMenuItem[1] = "고객관리";
+		hmMenu.put(arrMenuItem[0],arrMenuItem);
+		
+		
+
+			/* 고객관리 sub 메뉴 */
+			String arrSubMenuItem[] = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberList";
+			arrSubMenuItem[2] = "고객조회";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(0, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+	/*
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberGroup";
+			arrSubMenuItem[2] = "그룹관리(내선/조직도)";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberAppl";
+			arrSubMenuItem[2] = "서비스신청관리";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+	*/
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "icisList";
+			arrSubMenuItem[2] = "청약상태조회";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			
+			hmTest.put(1, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberDirectJoinList";
+			arrSubMenuItem[2] = "개인가입 현황 조회";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(2, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberJoinList";
+			arrSubMenuItem[2] = "신청서조회";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(3, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+			
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberRecover";
+			arrSubMenuItem[2] = "장기미사용회원 해제";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(4, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberLogin";
+			arrSubMenuItem[2] = "로그인 기록";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(5, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberAdd";
+			arrSubMenuItem[2] = "고객등록";
+			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+			
+			hmTest.put(6, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberRefuseGroupList";
+			arrSubMenuItem[2] = "수신거부관리";
+			hmSubMenu.put("refuse",arrSubMenuItem);
+			
+			hmTest.put(7, new ArrayList<String[]>());
+			lstMenu2.add(arrSubMenuItem);
+
+			arrSubMenuItem = new String[4];
+			arrSubMenuItem[0] = "Member";
+			arrSubMenuItem[1] = "memberRefuseGroupList";
+			arrSubMenuItem[2] = "그룹관리";
+			arrSubMenuItem[3] = "refuse";
+			hmSubMenu.put("memberRefuseGroupList", arrSubMenuItem);
+			
+			hmTest.get(7).add(arrSubMenuItem);
+
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Counsel";
+//		arrMenuItem[1] = "상담관리";
+//		hmMenu.put("Counsel",arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselAdd";
+//			arrSubMenuItem[2] = "상담접수";
+//			hmSubMenu.put("counselAdd",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselList";
+//			arrSubMenuItem[2] = "상담내역조회";
+//			hmSubMenu.put("counselList",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselTrans";
+//			arrSubMenuItem[2] = "상담이관조회";
+//			hmSubMenu.put("counselTrans",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselStat";
+//			arrSubMenuItem[2] = "상담통계";
+//			hmSubMenu.put("counselStat",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselAns";
+//			arrSubMenuItem[2] = "상담도움말";
+//			hmSubMenu.put("counselAns",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Counsel";
+//			arrSubMenuItem[1] = "counselAnsPop";
+//			arrSubMenuItem[2] = "상담도움말(팝업)";
+//			hmSubMenu.put("counselAnsPop",arrSubMenuItem);
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Msg";
+//		arrMenuItem[1] = "메시지현황조회";
+//		hmMenu.put(arrMenuItem[0],arrMenuItem);
+//	/*
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "msgOutComp";
+//			arrSubMenuItem[2] = "통신사별 완료율";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//	*/
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "msgListResult";
+//			arrSubMenuItem[2] = "전송결과조회";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "msgListResultBulk";
+//			arrSubMenuItem[2] = "전송결과조회(대량)";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "msgListReserve";
+//			arrSubMenuItem[2] = "예약메시지조회";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "msgListCheckIn";
+//			arrSubMenuItem[2] = "체크인결과조회";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Call";
+//		arrMenuItem[1] = "통화내역 조회";
+//		hmMenu.put(arrMenuItem[0],arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Call";
+//			arrSubMenuItem[1] = "CtcList";
+//			arrSubMenuItem[2] = "클릭투콜 내역 조회";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Call";
+//			arrSubMenuItem[1] = "CallList";
+//			arrSubMenuItem[2] = "통화내역 조회";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Service";
+//		arrMenuItem[1] = "서비스이용현황";
+//		hmMenu.put(arrMenuItem[0],arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcManagedList";
+//			arrSubMenuItem[2] = "매니지드 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcServiceList";
+//			arrSubMenuItem[2] = "서비스형 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcServiceListBulk";
+//			arrSubMenuItem[2] = "서비스형 이용현황(대량)";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcMonthlyChargeListR";
+//			arrSubMenuItem[2] = "SAY 실적집계";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcMonthlyChargeListRBulk";
+//			arrSubMenuItem[2] = "SAY 실적집계(대량)";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Service";
+//			arrSubMenuItem[1] = "svcMonthlyCharge";
+//			arrSubMenuItem[2] = "서비스형 과금내역";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "svc2wayList";
+//			arrSubMenuItem[2] = "양방향메시지 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "svcKakaoStats";
+//			arrSubMenuItem[2] = "카카오톡 이용통계";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "svcKakaoList";
+//			arrSubMenuItem[2] = "카카오톡 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//
+//			
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "svcRcsStats";
+//			arrSubMenuItem[2] = "RCS 이용통계";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);
+//			
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = arrMenuItem[0];
+//			arrSubMenuItem[1] = "svcRcsList";
+//			arrSubMenuItem[2] = "RCS 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1],arrSubMenuItem);		
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Giftishow";
+//		arrMenuItem[1] = "기프티쇼 관리";
+//		hmMenu.put("Giftishow",arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Giftishow";
+//			arrSubMenuItem[1] = "giftishowStats";
+//			arrSubMenuItem[2] = "기프티쇼 이용통계";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Giftishow";
+//			arrSubMenuItem[1] = "giftishowList";
+//			arrSubMenuItem[2] = "기프티쇼 이용현황";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Giftishow";
+//			arrSubMenuItem[1] = "giftishowMainGoods";
+//			arrSubMenuItem[2] = "메인상품 관리";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Giftishow";
+//			arrSubMenuItem[1] = "giftishowSale";
+//			arrSubMenuItem[2] = "상품가격 관리";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Giftishow";
+//			arrSubMenuItem[1] = "giftishowGoods";
+//			arrSubMenuItem[2] = "전체상품 관리";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Manager";
+//		arrMenuItem[1] = "웹사이트관리";
+//		hmMenu.put("Manager",arrMenuItem);
+//			/* SP 관리 sub 메뉴 */
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Manager";
+//			arrSubMenuItem[1] = "managerNotice";
+//			arrSubMenuItem[2] = "공지사항";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Manager";
+//			arrSubMenuItem[1] = "faqList";
+//			arrSubMenuItem[2] = "FAQ관리";
+//			hmSubMenu.put("faqList",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Manager";
+//			arrSubMenuItem[1] = "managerQnA";
+//			arrSubMenuItem[2] = "1:1문의";
+//			hmSubMenu.put("managerQnA",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Manager";
+//			arrSubMenuItem[1] = "managerEmoticon";
+//			arrSubMenuItem[2] = "이모티콘관리";
+//			hmSubMenu.put(arrSubMenuItem[1], arrSubMenuItem);
+//
+//		/* 세이 머니 */
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "Money";
+//		arrMenuItem[1] = "Plus 머니";
+//		hmMenu.put("Money",arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyTransList";
+//			arrSubMenuItem[2] = "선불 입금내역 조회";
+//			hmSubMenu.put("moneyTransList", arrSubMenuItem);
+//			
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyChargeList";
+//			arrSubMenuItem[2] = "Plus머니 충전내역 조회";
+//			hmSubMenu.put("moneyChargeList", arrSubMenuItem);
+//			
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyPaymentList";
+//			arrSubMenuItem[2] = "PG 결제 내역 조회";
+//			hmSubMenu.put("moneyPaymentList", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyPaymentMonthList";
+//			arrSubMenuItem[2] = "PG 결제 월별 정산 내역 조회";
+//			hmSubMenu.put("moneyPaymentMonthList", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyAccountList";
+//			arrSubMenuItem[2] = "선불 계좌번호 조회";
+//			hmSubMenu.put("moneyAccountList", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "Money";
+//			arrSubMenuItem[1] = "moneyRefundList";
+//			arrSubMenuItem[2] = "환불신청 조회";
+//			hmSubMenu.put("moneyRefundList", arrSubMenuItem);
+//
+//		/* 시스템 관리 메뉴 */
+//		arrMenuItem = new String[2];
+//		arrMenuItem[0] = "System";
+//		arrMenuItem[1] = "시스템관리";
+//		hmMenu.put("System",arrMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "unumList";
+//			arrSubMenuItem[2] = "번호관리";
+//			hmSubMenu.put("unum",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "unumList";
+//			arrSubMenuItem[2] = "번호조회";
+//			arrSubMenuItem[3] = "unum";
+//			hmSubMenu.put("unumList", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "";
+//			arrSubMenuItem[2] = "계정관리(관리자)";
+//			hmSubMenu.put("login",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "loginFailCntUpdate";
+//			arrSubMenuItem[2] = "로그인 관리";
+//			arrSubMenuItem[3] = "login";
+//			hmSubMenu.put("loginFailCntUpdate", arrSubMenuItem);			
+//
+//	/*
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "loginMonitoring";
+//			arrSubMenuItem[2] = "발송현황 모니터링";
+//			hmSubMenu.put("login",arrSubMenuItem);
+//
+//				arrSubMenuItem = new String[4];
+//				arrSubMenuItem[0] = "System";
+//				arrSubMenuItem[1] = "loginMonitoring";
+//				arrSubMenuItem[2] = "로그인 모니터링";
+//				arrSubMenuItem[3] = "login";
+//				hmSubMenu.put("loginMonitoring", arrSubMenuItem);
+//	*/
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userAdd";
+//			arrSubMenuItem[2] = "관리자정보";
+//			hmSubMenu.put("user",arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userAdd";
+//			arrSubMenuItem[2] = "관리자등록";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userAdd", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userConfig";
+//			arrSubMenuItem[2] = "관리자 권한설정";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userConfig", arrSubMenuItem);
+//			
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userRequest";
+//			arrSubMenuItem[2] = "관리자 신청 관리";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userRequest", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userHistory";
+//			arrSubMenuItem[2] = "관리이력";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userHistory", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userHistorySummary";
+//			arrSubMenuItem[2] = "관리이력 통계";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userHistorySummary", arrSubMenuItem);
+//
+//			arrSubMenuItem = new String[4];
+//			arrSubMenuItem[0] = "System";
+//			arrSubMenuItem[1] = "userConnect";
+//			arrSubMenuItem[2] = "관리자 접속현황";
+//			arrSubMenuItem[3] = "user";
+//			hmSubMenu.put("userConnect", arrSubMenuItem);
+//			
+			System.out.println("zs7Pzs7O0s7LycfIyss=".length());
+			
+			
+			
+			
+
+	}	// main end
+	
+
+
+	// 임시 폴더 생성 
+	public static void createTempFolder(String tempPath) {
+		
+		File folder = new File(tempPath);
+		try {
+			if(folder.exists()) {
+				System.out.println("demo 임시 폴더가 존재합니다. 하위 파일을 삭제합니다.");
+				delFiles(folder);
+			} else {
+				folder.mkdir();
+				System.out.println("demo 임시 폴더 생성");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 하위 파일 삭제
+	public static void delFiles(File folder) {
+		File[] folder_list = folder.listFiles();
+		for(File file : folder_list) {
+			file.delete();
+			System.out.println(file + " 삭제 완료");
+		}
+	}
+	
+	// fileno로 특정 파일 삭제(물리적)
+	public static void delFilePhs(String filePath) throws Exception {
+		File f = new File(filePath);
+		f.delete();
+		System.out.println(filePath + " 삭제 완료");
+	}
+	
+}

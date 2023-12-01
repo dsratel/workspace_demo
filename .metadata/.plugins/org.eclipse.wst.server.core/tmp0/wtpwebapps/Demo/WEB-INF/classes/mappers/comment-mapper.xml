@@ -10,7 +10,7 @@
 		INSERT INTO t_comment(id, pw, content, boardseq, replyboardseq, regdate) VALUES(#{id}, #{pw}, #{content}, #{boardseq}, #{replyboardseq}, sysdate())
 	</insert>
 	
-	<!-- 댓글 목록 -->
+	<!-- 댓글 목록 - boardseq별 -->
  	<select id="cmtListByBoardseq" parameterType="map" resultType="commentDto">
 		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname
 		FROM (SELECT seq, id, pw, content, boardseq, replyboardseq, pid, depth, re_order, regdate, modifydate
@@ -24,6 +24,11 @@
 					</otherwise>
 				</choose>
 				 = #{boardseq} ORDER BY seq desc) cmt;
+	</select>
+	
+	<!-- 댓글 목록 - 검색조건별 -->
+	<select id="cmtListBySearchcondition">
+		SELECT * FROM t_comment
 	</select>
 	
 	<!-- 댓글 삭제 -->

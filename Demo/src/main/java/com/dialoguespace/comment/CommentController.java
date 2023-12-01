@@ -51,7 +51,7 @@ public class CommentController {
 		
 	}
 	
-	// 댓글 목록
+	// 댓글 목록 - boardseq별
 	@ResponseBody
 	@PostMapping(value="/list")
 	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn, Model model) {
@@ -59,6 +59,15 @@ public class CommentController {
 		System.out.println("boardseq : " + boardseq);
 		
 		List<CommentDTO> list = commentService.cmtListByBoardseq(boardseq, replyYn);
+		return list;
+	}
+	
+	// 댓글 목록 - search conditon
+	@PostMapping(value="/searchList")
+	public List<CommentDTO> cmtListBySearchcondition(Model model) {
+		System.out.println("===== CommentController - cmtListBySearchcondition =====");
+		
+		List<CommentDTO> list = commentService.cmtListBySearchcondition();
 		return list;
 	}
 	

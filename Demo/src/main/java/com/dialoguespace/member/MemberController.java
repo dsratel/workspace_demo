@@ -3,8 +3,10 @@ package com.dialoguespace.member;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +97,10 @@ public class MemberController {
 		}
 		
 		model.addAttribute("srchInfo", srchInfo);
-		System.out.println("회원 목록 조회 완료");		
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		model.addAttribute("masteryn", loginInfo.getMasteryn());
+		model.addAttribute("loginId", loginInfo.getId());
+		
 		return "list";
 	}
 	
@@ -206,12 +211,21 @@ public class MemberController {
 	
 	// 로그인
 	@PostMapping(value="/login.do")
-	public String loginProcess(MemberDTO memberDto, String requestURI, Model model) throws Exception {
+	public String loginProcess(MemberDTO memberDto, String requestURI, HttpServletResponse response, Model model) throws Exception {
 		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
 		MemberDTO dto = memberService.selMemberByIdPw(memberDto);
 		
 		// redirect할 URI가 없다면 글목록을 요청
 		requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
+		
+		// 쿠키 설정
+		/*
+		Cookie cookie = new Cookie("user", "id=" + dto.getId() + "|name=" + dto.getName());
+		cookie.setDomain("localhost");
+		cookie.setPath("/");
+		cookie.setMaxAge(2*60);
+		cookie.setSecure(true);
+		response.addCookie(cookie);*/
 		
 		if(dto != null && dto.getStatus() == 1) {
 			session.setAttribute("loginSession", dto);

@@ -19,10 +19,17 @@ public class CommentDAOImpl implements CommentDAO {
 		return sqlsession.insert("commentMapper.writeComment", commentDto);
 	}
 	
-	// 댓글 목록
+	// 댓글 목록 - boardseq 별
 	@Override
 	public List<CommentDTO> cmtListByBoardseq(Map map) {
 		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListByBoardseq", map);
+		return list;
+	}
+	
+	// 댓글 목록 - search condition 별
+	@Override
+	public List<CommentDTO> cmtListBySearchcondition() {
+		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListBySearchcondition");
 		return list;
 	}
 	

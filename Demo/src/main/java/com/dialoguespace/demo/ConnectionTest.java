@@ -3,11 +3,7 @@ package com.dialoguespace.demo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-
-import com.dialoguespace.comment.CommentDTO;
 
 public class ConnectionTest {
 	private static char map1[];
@@ -492,15 +488,7 @@ public class ConnectionTest {
 //			arrSubMenuItem[3] = "user";
 //			hmSubMenu.put("userConnect", arrSubMenuItem);
 //			
-//			Iterator it1 = hmMenu.keySet().iterator();
-//			
-//			Object obj = it1.next();
-//			
-//			String arrMenu[] = (String[])hmMenu.get(obj);
-			
-			
-		
-			
+			System.out.println("yMfPys7I".length());
 			
 			
 			

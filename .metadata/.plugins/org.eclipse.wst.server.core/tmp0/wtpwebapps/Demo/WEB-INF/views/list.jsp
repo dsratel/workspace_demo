@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,8 +11,11 @@
 	<title>member list</title>
 </head>
 <body>
-	<h1>회원 목록</h1>
  	<div class="container">
+		<c:if test="${masteryn eq 'y'.charAt(0)}">
+			<h1>[관리자 페이지]</h1>
+		</c:if>
+		<h1>회원 목록</h1>
  		<div class="row">
  			<div class="col-9">
 				<form name="searchForm" action="/member/list" method="get" id="searchForm">
@@ -37,14 +41,19 @@
 				</form>
  			</div>
  			<div class="col-3" style="text-align: right">
- 				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
-			</div>
+	 			<button class="btn btn-warning" id="logoutBtn">로그아웃</button>
+	 			<c:if test="${masteryn eq 'y'.charAt(0)}">
+	 				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
+ 				</c:if>
+			</div> 			
 		</div>
 
 		<table class="table">
 			<thead>
 				<tr>
-					<th scope="col">선택</th>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<th scope="col">선택</th>					
+					</c:if>
 					<th scope="col">#</th>
 					<th scope="col">ID</th>
 					<th scope="col">닉네임</th>
@@ -52,24 +61,34 @@
 					<th scope="col">주소</th>
 					<th scope="col">전화번호</th>
 					<th scope="col">가입일자</th>
-					<th scope="col">수정</th>
-					<th scope="col">삭제</th>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<th scope="col">수정</th>
+						<th scope="col">삭제</th>
+					</c:if>
 				</tr>
 			</thead>
 		
 			<tbody>
 				<c:forEach var="member" items="${list }" varStatus="status">
 				<tr>
-					<td><input type="checkbox" class="memCheckBox form-check-input" name="memCheckBox" value="${member.id }"></td>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<td><input type="checkbox" class="memCheckBox form-check-input" name="memCheckBox" value="${member.id }"></td>					
+					</c:if>
 					<th scope="row">${srchInfo.pagination.startIndex+status.count}</th>
 					<td><c:out value="${member.id }"/></td>
 					<td><c:out value="${member.nickname }"/></td>
 					<td><c:out value="${member.name }"/></td>
 					<td><c:out value="${member.address }"/></td>
 					<td><c:out value="${member.phone }"/></td>
-					<td><c:out value="${member.regdate }"/></td>
-					<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">수정</button></td>
-					<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>
+					<td>
+						<%-- <c:out value="${member.regdate }"/> --%>
+						<span><fmt:formatDate value="${member.regdate }" pattern="yyyy년 MM월 dd일" /></span><br/>
+						<span><fmt:formatDate value="${member.regdate }" pattern="k시 m분 s초" /></span>		
+					</td>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">수정</button></td>
+						<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>					
+					</c:if>
 				</tr>
 				</c:forEach>
 			</tbody>
@@ -220,6 +239,11 @@
 				window.location.href=url;
 			});
 			
+			// 로그아웃 버튼
+			$("#logoutBtn").click(function(){
+				window.location.replace("/common/logout?id=${loginId}");
+			});
+			
 			// css 수정
 			//// 검색
 			$("#searchKeyword").css("width","50%");
@@ -232,6 +256,8 @@
 
 			
 		});	// funcion() end
+		
+		
 		
 	</script>
 </body>

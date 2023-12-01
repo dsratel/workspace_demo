@@ -8,8 +8,11 @@ public interface CommentDAO {
 	// 댓글 작성
 	public int writeComment(CommentDTO commentDto);
 	
-	// 댓글 목록
+	// 댓글 목록 - boardseq별
 	public List<CommentDTO> cmtListByBoardseq(Map map);
+	
+	// 댓글 목록 - search condition 별
+	public List<CommentDTO> cmtListBySearchcondition();
 	
 	// 댓글 삭제
 	public int deleteCmt(Map map);

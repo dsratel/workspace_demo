@@ -11,12 +11,14 @@
 	<title>article list</title>
 </head>
 <body>
-	<h1>글 목록 - 권한에 상관 없이 모두 열람 가능</h1>
-	<c:if test="${loginId ne ''}">
-		<h1>${loginId }님 오늘도 행복한 하루 보내세요 *^^*</h1>
-		<button type="button" class="btn btn-secondary" id="logoutBtn">로그아웃</button>
-	</c:if>
 	<div class="container">
+		<c:if test="${masteryn eq 'y'.charAt(0)}">
+			<h1>[관리자 메뉴 - 게시판 관리]</h1>	
+		</c:if>
+		<c:if test="${loginId ne ''}">
+			<h1>${loginId }님 오늘도 행복한 하루 보내세요 *^^*</h1>
+			<button type="button" class="btn btn-secondary" id="logoutBtn">로그아웃</button>
+		</c:if>
 		<!-- Article List -->
 		<div class="searchTab">
 			<button class="btn btn-warning" id="writeBtn">글 작성</button>
@@ -48,12 +50,19 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<th scope="col">선택</th>					
+					</c:if>
 					<th>#</th>
 					<th>게시판 종류</th>
 					<th>제목</th>
 					<th>작성자</th>
 					<th>작성일</th>
-					<th>조회수</th>	
+					<th>조회수</th>
+					<c:if test="${masteryn eq 'y'.charAt(0)}">
+						<th scope="col">수정</th>					
+						<th scope="col">삭제</th>
+					</c:if>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,6 +71,9 @@
 						<c:forEach var="dto" items="${list}" varStatus="status">
 							<tr>
 								<%-- <td>${status.count + srchInfo.pagination.startIndex}</td> --%>
+								<c:if test="${masteryn eq 'y'.charAt(0)}">
+									<td><input type="checkbox"></td>
+								</c:if>
 								<td>${srchInfo.pagination.listCnt - (status.count + srchInfo.pagination.startIndex -1)}</td>
 								<td>
 									<c:choose>
@@ -77,12 +89,16 @@
 									<c:if test="${dto.pid > 0 }">
 										<img src="/resources/image/replyArrow.png" style="height:15px">						
 									</c:if>
-									<a class="title" href="/board/viewArticle?seq=${dto.seq }&pid=${dto.pid}">${dto.title }
+									<a class="title" href="/board/viewArticle?seq=${dto.seq}&pid=${dto.pid}">${dto.title }
 									<span class="commentCnt">[${dto.commentcnt}]</span></a>
 								</td>
 								<td class="authors" author="${dto.etc}" nickname="${dto.author }">${dto.author }</td>
 								<td><fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
 								<td>${dto.viewcnt }</td>
+								<c:if test="${masteryn eq 'y'.charAt(0)}">
+									<td><button type="button" class="btn btn-success editBtn" seq="${dto.seq}" pid="${dto.pid}">수정</button></td>					
+									<td><button type="button" class="btn btn-danger delBtn">삭제</button></td>
+								</c:if>
 							</tr>
 						</c:forEach>
 					</c:when>
@@ -95,7 +111,7 @@
 			</tbody>
 		</table>
 		<div class="layer_popup">
-			<button type="button" class="btn btn-success" id="toMemberArticle">사용자 게시글 보기</button>
+			<button type="button" class="btn btn-info" id="toMemberArticle">사용자 게시글 보기</button>
 		</div>
 		<c:if test="${srchInfo ne null}">
 			<!-- Pagination -->
@@ -113,7 +129,7 @@
 		</c:if>
 	</div>
 	<script>
-		$(function(){
+		$(function() {
 			// 글 작성 버튼
 			$("#writeBtn").click(function(){
 				window.location.replace("/board/toWrite");
@@ -180,7 +196,13 @@
 				$("input[name='searchKeyword']").val($(this).attr("author"));
 			});
 			
-		})	// function() end
+			// 수정 버튼
+			$("button.editBtn").click(function(e){
+				window.location.replace("/board/editArticle?seq=" + $(this).attr("seq") + "&pid=" + $(this).attr("pid"));
+			});
+			
+			
+		});	// function() end
 		
 		// 카테고리 변경 시 페이지 리로드
 		function changeCategory(cate) {

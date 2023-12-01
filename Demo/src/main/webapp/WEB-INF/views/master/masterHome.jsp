@@ -43,13 +43,13 @@
 		function toPage(opt) {
 			switch (opt) {
 			case 'member':
-				alert("회원 관리");
+				window.location.replace("/master/toMemberList");
 				break;
 			case 'board':
-				alert("게시글 관리");
+				window.location.replace("/master/toBoardList");
 				break;
 			case 'comment':
-				alert("댓글 관리");
+				window.location.replace("/master/toCommentList");
 				break;
 			}
 		}
