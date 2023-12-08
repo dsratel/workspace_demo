@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value="/common")
 public class CommonController {
 	
-	@Autowired
-	CommonService commonService;
+	private final HttpSession session;
 	
 	@Autowired
-	HttpSession session;
+	public CommonController(HttpSession session) {
+		this.session = session;
+	}
 	
 	// 로그아웃
 	@GetMapping(value="/logout")
@@ -34,5 +35,4 @@ public class CommonController {
 		System.out.println("========== CommonController - delFileBySeq ==========");
 		return "";
 	}
-
 }

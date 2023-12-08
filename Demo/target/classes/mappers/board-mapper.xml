@@ -13,7 +13,7 @@
 			</when>
 			<otherwise>
 				t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, sysdate())			
-			</otherwise>		
+			</otherwise>
 		</choose>
 	</insert>
 	
@@ -21,13 +21,11 @@
 	<select id="selectArticle" parameterType="map" resultType="boardDto">
 		<trim suffixOverrides="UNION">
 			<foreach collection="seqList" item="seq" index="index" separator="UNION">
-				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid
+				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
 				FROM t_board WHERE category LIKE #{category} AND seq = #{seq}
-	
 				UNION
-				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid
+				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
 				FROM t_board_reply WHERE category LIKE #{category} AND pid = #{seq}
-		
 			</foreach>	
 		</trim>
 		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
@@ -107,7 +105,7 @@
 	<!-- 조건에 맞는 게시글 개수 -->
 	<select id="countList" parameterType="map" resultType="Integer">
 		SELECT count(*) + 
-			(SELECT count(*) FROM t_board_reply WHERE
+			(SELECT count(*) FROM t_board_reply WHERE pid IN (SELECT seq FROM t_board WHERE category LIKE #{category} AND
 				<choose>
 					<when test='searchType == 0'>
 						title LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -116,7 +114,7 @@
 						author IN (SELECT id FROM t_member WHERE nickname LIKE CONCAT('%', #{searchKeyword}, '%'))
 					</when>
 				</choose>
-			)
+			))
 
 		FROM t_board WHERE category LIKE #{category}	AND
 		<choose>
@@ -133,7 +131,7 @@
 	<update id="addCommentCnt" parameterType="map">
 		UPDATE
 		<choose>
-			<when test="replyYn == n">
+			<when test="replyYn eq 'n'">
 				t_board
 			</when>
 			<otherwise>

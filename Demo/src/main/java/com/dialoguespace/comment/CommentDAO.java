@@ -43,5 +43,8 @@ public interface CommentDAO {
 	
 	// 대댓글 삭제
 	public int deleteReplyCmt(int seq);
+	
+	// 댓글 목록(댓글+대댓글)
+	public List<CommentDTO> cmtList();
 
 }

@@ -61,7 +61,7 @@
 	
 	<!-- fileparent로 file path 찾기 -->
 	<select id="selFilePathById" parameterType="map" resultType="String">
-		SELECT CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) FROM t_filemeta
+		SELECT sysname FROM t_filemeta
 		WHERE fileparent = #{id} AND delyn = 'N' AND category =
 		<choose>
 			<when test="pid > 0">

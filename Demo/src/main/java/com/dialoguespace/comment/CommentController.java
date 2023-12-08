@@ -16,13 +16,14 @@ import com.dialoguespace.board.BoardService;
 @RequestMapping(value="/comment")
 public class CommentController {
 	
-	@Autowired
-	CommentService commentService;
+	private final CommentService commentService;
+	private final BoardService boardService;
 	
 	@Autowired
-	BoardService boardService;
-	
-	
+	public CommentController(CommentService commentService, BoardService boardService) {
+		this.commentService = commentService;
+		this.boardService = boardService;
+	}
 	
 	// 댓글 작성
 	@ResponseBody
@@ -56,7 +57,7 @@ public class CommentController {
 	@PostMapping(value="/list")
 	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn, Model model) {
 		System.out.println("===== CommentController - cmtListByBoardseq =====");
-		System.out.println("boardseq : " + boardseq);
+		System.out.println("boardseq : " + boardseq + " / replyYn : " + replyYn);
 		
 		List<CommentDTO> list = commentService.cmtListByBoardseq(boardseq, replyYn);
 		return list;
@@ -122,5 +123,18 @@ public class CommentController {
 		System.out.println("pid : " + pid);
 		
 		return commentService.cmtListByPid(pid);
+	}
+	
+	// 선택 댓글 삭제
+	@PostMapping(value="/selDelComment")
+	public String selDelComment(String[] delList) {
+		for(String delInfo : delList) {
+			System.out.println("선택 댓글 삭제");
+			String[] arr = delInfo.split("#");
+			boardService.reduceCommentCnt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), arr[3].charAt(0));
+			commentService.deleteCmt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
+			System.out.println(delInfo);
+		}
+		return "redirect:/master/toCommentList";
 	}
 }

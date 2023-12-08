@@ -7,6 +7,10 @@
 	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
+	<script src="/resources/js/rsa/jsbn.js"></script>
+	<script src="/resources/js/rsa/rsa.js"></script>
+	<script src="/resources/js/rsa/prng4.js"></script>
+	<script src="/resources/js/rsa/rng.js"></script>
 	<title>Home page</title>
 </head>
 <body>
@@ -45,7 +49,9 @@
 							<span>비밀번호</span>
 						</div>
 						<div class="col-6">
-							<input type="password" class="form-control" name="m_pw">
+							<input type="password" class="form-control" id="m_pw">
+							<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModulus}">
+							<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}">
 						</div>
 						<div class="col-3">
 							<span>8자리 이상 - ??(대문자, 숫자, 특수문자 포함)</span>
@@ -160,6 +166,11 @@
 		}); 
 		*/
 		
+		const getByteLengthOfString = function (s, b, i, c) {
+			  for (b = i = 0; (c = s.charCodeAt(i++)); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+			  return b;
+			};
+		
 		// 저장할 때 모든 데이터 유효성 검사 후 input hidden에 넣고 서버로 요청
 		$("#save").click(function(){
 			// 유효성 검사
@@ -172,7 +183,7 @@
 			}
 			
 			//// 3. 비밀번호
-			var testPw = $("input[name='m_pw']").val();
+			var testPw = $("#m_pw").val();
 			var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 			if(testPw.length < 8) {
 				alert("비밀번호는 8자리 이상이어야 합니다.");
@@ -182,7 +193,21 @@
 					alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
 					return;
 				} else {
-					$("#pw").val(testPw);
+					// 비밀번호 RSA 암호화
+					//// RSAKey 객체 생성
+					const rsa = new RSAKey();
+					//// 공개키 설정 값 가져오기
+					const rsaPublicKeyModulus = $("#rsaPublicKeyModulus").val();
+					const rsaPublicKeyExponent = $("#rsaPublicKeyExponent").val();
+					//// RSAKey 객체에 공개키 설정
+					rsa.setPublic(rsaPublicKeyModulus, rsaPublicKeyExponent);
+					//// RSAKey 객체의 encrypt메서드 이용하여 비밀번호 암호화
+					const securedPassword = rsa.encrypt(testPw);
+					console.log("입력 비밀번호 : " + testPw);
+					console.log("암호화 비밀번호 : " + securedPassword);
+					console.log("암호화 길이 : " + getByteLengthOfString(securedPassword) + "Bytes");
+					
+					$("#pw").val(securedPassword);
 				}
 			}
 			
@@ -232,15 +257,10 @@
 					console.log(testPhone);
 				} else {
 					testPhone = $("#m_phone1").val() + $("#m_phone2").val() + $("#m_phone3").val();
-					console.log(testPhone);
 				}
 			}
  			
  			// <form> 값 대입
- 			
- 			//// 비밀번호
- 			$("#pw").val(testPw);
- 			
  			//// 닉네임
  			$("#nickname").val(testNickname);
  			

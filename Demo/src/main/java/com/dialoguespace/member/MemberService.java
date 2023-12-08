@@ -11,8 +11,15 @@ import com.dialoguespace.utils.EncryptionUtils;
 
 @Service
 public class MemberService {
+	
+	private final MemberDAO memberDAO;
+	private final EncryptionUtils encryptionUtils;
+	
 	@Autowired
-	private MemberDAO memberDAO;
+	public MemberService(MemberDAO memberDAO, EncryptionUtils encryptionUtils) {
+		this.memberDAO = memberDAO;
+		this.encryptionUtils = encryptionUtils;
+	}
 	
 	// 회원 추가
 	public int insertMember(MemberDTO memberDto) throws Exception {
@@ -88,8 +95,7 @@ public class MemberService {
 		if(memberDto.getAddress().length() < 2) return -1;
 		if(memberDto.getPhone().length() < 10) return -1;
 		// 비밀번호 암호화
-		EncryptionUtils encryption = new EncryptionUtils();
-		memberDto.setPw(encryption.getSHA512(memberDto.getPw()));
+		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
 		return 1;
 	}
 	
@@ -99,8 +105,7 @@ public class MemberService {
 		if(memberDto.getId().length() < 5 || memberDto.getPw().length() < 8) return null;
 		
 		// 비밀번호 암호화
-		EncryptionUtils encryption = new EncryptionUtils();
-		memberDto.setPw(encryption.getSHA512(memberDto.getPw()));
+		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
 		
 		return memberDAO.selMemberByIdPw(memberDto);
 	}

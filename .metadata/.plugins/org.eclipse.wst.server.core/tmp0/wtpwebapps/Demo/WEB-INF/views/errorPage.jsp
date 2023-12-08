@@ -6,13 +6,20 @@
 	<meta charset="UTF-8">
 	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="/resources/css/sb-admin-2.min.css">
 	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
 	<title>error page</title>
 </head>
 <body>
 	<div class="container">
-		<h1>에그머니나 에러 그만 EGG</h1>
-		<img src="https://cdn.pixabay.com/photo/2018/03/11/18/34/brown-eggs-3217675_1280.jpg">
+       <div class="container-fluid">
+          <!-- 404 Error Text -->
+          <div class="text-center">
+              <div class="error mx-auto" data-text="ERROR">ERROR</div>
+              <p class="lead text-gray-800 mb-5">에그머니나</p>
+              <p class="text-gray-500 mb-0">에러 그만.. 에그 EGG</p>
+          </div>
+      </div>
 	</div>
 </body>
 </html>

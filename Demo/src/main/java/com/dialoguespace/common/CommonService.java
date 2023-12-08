@@ -22,15 +22,18 @@ import com.dialoguespace.vo.FileVO;
 @Service
 public class CommonService {
 	
-	@Autowired
-	CommonDAO commonDAO;
+	private final CommonDAO commonDAO;
+	private final HttpSession session;
 	
 	@Autowired
-	HttpSession session;
+	public CommonService(CommonDAO commonDAO, HttpSession session) {
+		this.commonDAO = commonDAO;
+		this.session = session;
+	}
 
 	// 검색 조건 Map에 담기
-	public Map makeSrchInfo(String searchType, String searchKeyword) throws Exception {
-		Map srchInfo = new HashMap();
+	public Map<String, Object> makeSrchInfo(String searchType, String searchKeyword) throws Exception {
+		Map<String, Object> srchInfo = new HashMap<>();
 		srchInfo.put("searchType", searchType);
 		srchInfo.put("searchKeyword", searchKeyword);
 		
@@ -230,7 +233,7 @@ public class CommonService {
 	
 	// id와 category로 파일 삭제
 	public int delFileByIdCat(String id, String category) {
-		Map map = new HashMap();
+		Map<String, String> map = new HashMap<>();
 		map.put("id", id);
 		map.put("category", category);
 		
@@ -255,7 +258,7 @@ public class CommonService {
 	
 	// id와 category로 fileparent update
 	public int modifyFileparent(String id, String category, int seq) {
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("category", category);
 		map.put("seq", seq);
@@ -265,7 +268,7 @@ public class CommonService {
 	
 	// seq로 File db 찾기
 	public List<FileVO> SelFileById(String seq, String category) {
-		Map map = new HashMap();
+		Map<String, String> map = new HashMap<>();
 		map.put("category", category);
 		map.put("seq", seq);
 		
@@ -274,7 +277,7 @@ public class CommonService {
 	
 	// fileparent로 file path 찾기
 	public List<String> SelFilePathById(String id, int pid) {
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("pid", pid);
 		return commonDAO.SelFilePathById(map);
@@ -290,7 +293,7 @@ public class CommonService {
 	
 	// 삭제할 seq 찾기
 	public List<Integer> getDelSeq(String seq, List<String> arr) {
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("id", seq);
 		map.put("arr", arr);
 		return commonDAO.getDelSeq(map);

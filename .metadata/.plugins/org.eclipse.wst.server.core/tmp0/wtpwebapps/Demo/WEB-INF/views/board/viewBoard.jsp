@@ -80,7 +80,7 @@
 					<input type="hidden" name="pw">
 					<input type="hidden" name="content">
 					<input type="hidden" name="boardseq" value="${dto.seq}">
-					<input type="hidden" name="replyboardseq" value="0">
+					<input type="hidden" name="replyboardseq" value="-1">
 					<input type="hidden" name="seq" value="0">
 					<input type="hidden" name="rootseq" value="0">
 					<input type="hidden" name="depth" value="0">
@@ -175,7 +175,7 @@
 			}
 			//// 답글인 경우
 			if("${replyBoard}" == "Y") {
-				$("form[name='cmtForm'] input[name='boardseq']").val(0);
+				$("form[name='cmtForm'] input[name='boardseq']").val(-1);
 				$("form[name='cmtForm'] input[name='replyboardseq']").val("${dto.seq}");
 			}
 				
@@ -275,8 +275,6 @@
 		                                        }
 		                appendStr = appendStr + "</div> </div> </div>";
 		            }
-		            
-		            
 		            
 		            $("#cmtListDiv").children().remove();
 		            $("#cmtListDiv").append(appendStr);

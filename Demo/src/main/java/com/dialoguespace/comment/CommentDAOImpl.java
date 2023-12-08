@@ -92,6 +92,10 @@ public class CommentDAOImpl implements CommentDAO {
 	public int deleteReplyCmt(int seq) {
 		return sqlsession.delete("commentMapper.deleteReplyCmt", seq);
 	}
-	
 
+	// 댓글 목록(댓글+대댓글)
+	@Override
+	public List<CommentDTO> cmtList() {
+		return sqlsession.selectList("commentMapper.cmtList");
+	};
 }

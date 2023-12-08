@@ -16,17 +16,16 @@ import com.dialoguespace.common.CommonService;
 @Service
 public class BoardService {
 	
-	@Autowired
-	BoardDAO boardDAO;
+	private final BoardDAO boardDAO;
+	private final CommonService commonService;
+	private final CommentService commentService;
 	
 	@Autowired
-	CommonService commonService;
-	
-	@Autowired
-	CommentService commentService;
-	
-	@Autowired
-	HttpSession session;
+	public BoardService(BoardDAO boardDAO, CommonService commonService, CommentService commentService) {
+		this.boardDAO = boardDAO;
+		this.commonService = commonService;
+		this.commentService = commentService;
+	}
 	
 	// 글 작성 프로세스
 	public int writeArticle(BoardDTO dto) throws IOException {

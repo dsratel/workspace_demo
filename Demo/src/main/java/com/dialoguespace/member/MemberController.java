@@ -1,9 +1,11 @@
 package com.dialoguespace.member;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dialoguespace.common.CommonService;
+import com.dialoguespace.utils.EncryptionUtils;
 import com.dialoguespace.vo.FileVO;
 import com.dialoguespace.vo.PaginationVO;
 
@@ -29,20 +32,33 @@ import com.dialoguespace.vo.PaginationVO;
 @RequestMapping(value="/member")
 public class MemberController {
 	
-	@Autowired
-	private MemberService memberService;
+	private final MemberService memberService;
+	private final CommonService commonService;
+	private final EncryptionUtils encryptionUtils;
+	private final HttpSession session;
 	
 	@Autowired
-	private CommonService commonService;
-	
-	@Autowired
-	private HttpSession session;
+	public MemberController(MemberService memberService, CommonService commonService, EncryptionUtils encryptionUtils, HttpSession session) {
+		this.memberService = memberService;
+		this.commonService = commonService;
+		this.encryptionUtils = encryptionUtils;
+		this.session = session;
+	}
 	
 	// 회원 등록
 	@PostMapping(value="/insertMember.do")
 	public String insertMember(MemberDTO memberDto, @RequestParam("upfile") MultipartFile[] files, HttpServletRequest request) throws Exception {
 		// 회원 등록
 		System.out.println("MemberController memberDto : " + memberDto); 
+		
+		// RSA PrivateKey
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
+		if(!memberDto.getPw().equals("")) {
+			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
+			strPw = encryptionUtils.getSHA512(strPw);
+			memberDto.setPw(strPw);
+		}
+		
 		if(memberService.insertMember(memberDto) < 0) {
 			return "errorPage";
 		};
@@ -64,9 +80,6 @@ public class MemberController {
 		memberService.addFileNo(memberDto.getId(), pk.get(0));
 		}
 		
-		
-		System.out.println("프로필 파일 저장 완료");
-
 		return "redirect:/member/list";
 	}
 	
@@ -77,7 +90,7 @@ public class MemberController {
 		// 검색 조건 - 조건으로 검색 - 전체 페이지 출력 - 조건 및 페이지에 맞는 데이터만 추출 - 화면에 출력
 		// 검색 및 페이징 Map에 담기
 		// 검색조건
-		Map srchInfo = commonService.makeSrchInfo(searchType, searchKeyword);
+		Map<String, Object> srchInfo = commonService.makeSrchInfo(searchType, searchKeyword);
 		
 		// 조건에 맞는 데이터 개수
 		int listCnt = memberService.countList(srchInfo);
@@ -213,37 +226,42 @@ public class MemberController {
 	@PostMapping(value="/login.do")
 	public String loginProcess(MemberDTO memberDto, String requestURI, HttpServletResponse response, Model model) throws Exception {
 		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
-		MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+		if(memberDto != null && memberDto.getPw() != null && !memberDto.getPw().equals("")) {
 		
-		// redirect할 URI가 없다면 글목록을 요청
-		requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
-		
-		// 쿠키 설정
-		/*
-		Cookie cookie = new Cookie("user", "id=" + dto.getId() + "|name=" + dto.getName());
-		cookie.setDomain("localhost");
-		cookie.setPath("/");
-		cookie.setMaxAge(2*60);
-		cookie.setSecure(true);
-		response.addCookie(cookie);*/
-		
-		if(dto != null && dto.getStatus() == 1) {
-			session.setAttribute("loginSession", dto);
-			model.addAttribute("dto", dto);
+			// RSA 복호화
+			PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
+			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
+			// SHA-512 암호화
+			strPw = encryptionUtils.getSHA512(strPw);
+			memberDto.setPw(strPw);
 			
-			if(dto.getMasteryn() == 'y') {
-				requestURI = "/master/home";
+			MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+			
+			// redirect할 URI가 없다면 글목록을 요청
+			requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
+			
+			if(dto != null && dto.getStatus() == 1) {
+				session.setAttribute("loginSession", dto);
+				model.addAttribute("dto", dto);
+				
+				if(dto.getMasteryn() == 'y') {
+					requestURI = "/master/home";
+				}
+				return "redirect:"+requestURI;
+			} else {
+				return "redirect:/";
 			}
-			
-			return "redirect:"+requestURI;
 		} else {
-			return "redirect:/";
+			return "redirect:/"; 
 		}
 	}
 	
 	// 회원가입 페이지로 이동
 	@GetMapping(value="/signUp")
-	public String toSignUp() {
+	public String toSignUp(Model model)  throws NoSuchAlgorithmException, InvalidKeySpecException {
+		// KeyPariGenerator 인스턴스 생성(RSA 알고리즘)
+		encryptionUtils.genRsaInstance(model);
+		
 		return "signUp";
 	}
 	
