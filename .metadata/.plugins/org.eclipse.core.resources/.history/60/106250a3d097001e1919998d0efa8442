@@ -1,0 +1,132 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+<script src="/resources/js/rsa/jsbn.js"></script>
+<script src="/resources/js/rsa/rsa.js"></script>
+<script src="/resources/js/rsa/prng4.js"></script>
+<script src="/resources/js/rsa/rng.js"></script>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	
+		<!-- Sidebar -->
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <%@ include file="/WEB-INF/views/common/topbar.jsp" %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                    <!-- Content Row -->
+                    <div class="row">
+                
+						<form name="loginForm" method="post" action="/member/login.do" id="loginForm">
+						    <div class="container">
+						
+						        <!-- Outer Row -->
+						        <div class="row justify-content-center">
+						
+						            <div class="col-xl-10 col-lg-12 col-md-9">
+						
+						                <div class="card o-hidden border-0 shadow-lg my-5">
+						                    <div class="card-body p-0">
+						                        <!-- Nested Row within Card Body -->
+						                        <div class="row">
+						                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+						                            <div class="col-lg-6">
+						                                <div class="p-5">
+						                                    <div class="text-center">
+						                                        <h1 class="h4 text-gray-900 mb-4">Welcome to NOLBU!</h1>
+						                                    </div>
+						                                    <form class="user">
+						                                        <div class="form-group">
+						                                            <input type="text" class="form-control form-control-user"
+						                                                id="id" name="id" aria-describedby="emailHelp"
+						                                                placeholder="Enter id...">
+						                                        </div>
+						                                        <div class="form-group">
+						                                            <input type="password" class="form-control form-control-user" id="password" placeholder="Password" onkeyup="enterkey()">
+																	<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModulus}">
+																	<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}">
+																	<input type="hidden" name="pw" id="pw"> 
+						                                        </div>
+						                                        <c:if test="${!requestURI.equals('') }">
+																	<input type="hidden" name="requestURI" value="${requestURI }">
+																</c:if>	
+						                                        <div class="form-group">
+						                                            <div class="custom-control custom-checkbox small">
+						                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+						                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
+						                                            </div>
+						                                        </div>
+						                                        
+						                                        <button id="loginBtn" class="btn btn-primary btn-user btn-block" onclick="login();">
+						                                            Login
+						                                        </button>
+						                                        <hr>
+						                                        <button type="button" class="btn btn-red btn-user btn-block" id="signUpBtn">
+						                                            <i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;&nbsp;SignUp
+						                                        </button>
+						                                        <button type="button" class="btn btn-blue btn-user btn-block" id="listBtn">
+						                                            <i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Board List
+						                                        </button>
+						                                    </form>
+						                                    <hr>
+						                                    <div class="text-center">
+						                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+						                                    </div>
+						                                </div>
+						                            </div>
+						                        </div>
+						                    </div>
+						                </div>
+						
+						            </div>
+						
+						        </div>
+						
+						    </div>
+						</form>
+                
+                
+                
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+		
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+	
+</body>
+</html>

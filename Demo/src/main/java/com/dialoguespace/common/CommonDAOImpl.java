@@ -88,4 +88,10 @@ public class CommonDAOImpl implements CommonDAO {
 	public List<Integer> getDelSeq(Map map) {
 		return sqlsession.selectList("commonMapper.getDelSeq", map);
 	}
+	
+	// seq로 sysname 찾기
+	@Override
+	public String getSysNameBySeq(Map map) {
+		return sqlsession.selectOne("commonMapper.getSysNameBySeq", map);
+	}
 }

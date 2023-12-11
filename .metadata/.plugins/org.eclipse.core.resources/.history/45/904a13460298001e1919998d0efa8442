@@ -1,0 +1,34 @@
+table {
+	text-align:center;
+}
+a.title {
+	color : #858796;
+}
+
+#searchForm {
+	width:95%;
+}
+
+select[name='category'] {
+	width:10%;
+	display:inline;
+}
+
+select[name='searchType'] {
+	width: 10%;
+	display:inline;
+}
+
+input[name='searchKeyword'] {
+	width:30%;
+	display:inline;
+}
+
+#searchBtn {
+	margin-right: 20%;
+}
+
+select[name='pageSize'] {
+	width: 5%;
+	display:inline;
+}

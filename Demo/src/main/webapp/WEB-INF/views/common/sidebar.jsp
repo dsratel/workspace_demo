@@ -3,7 +3,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" style="cursor:default;">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-grin-squint"></i>
                 </div>
@@ -13,23 +13,18 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-            	<c:choose>
-            		<c:when test="${masteryn eq 'y'.charAt(0)}">
-						<a class="nav-link" href="/">
+            
+           	<c:choose>
+           		<c:when test="${masteryn eq 'y'.charAt(0)}">
+           			<!-- Nav Item - Dashboard -->
+		            <li class="nav-item active">
+						<a class="nav-link" href="/master/home">
 		                    <i class='fas fa-stream'></i>
 		                    <span>MASTER MENU</span>
 						</a>            		
-            		</c:when>
-            		<c:otherwise>
-            			<a class="nav-link" href="/">
-		                    <i class="fas fa-fw fa-tachometer-alt"></i>
-		                    <span>HOME</span>
-						</a>
-            		</c:otherwise>
-            	</c:choose>
-            </li>
+		            </li>
+           		</c:when>
+          	</c:choose>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -44,42 +39,30 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                    <span>${masteryn eq 'y'.charAt(0) ? 'List' : 'MyPage'}</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="#">Buttons</a>
-                        <a class="collapse-item" href="#">Cards</a>
+                        <h6 class="collapse-header">USER INFO:</h6>
+                        <a class="collapse-item" href="#">Profile</a>
+                        <a class="collapse-item" href="#">Sign out</a>
                     </div>
                 </div>
             </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
+            
+			<!-- Nav Item - Reset Password -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
+                <a class="nav-link">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span> Reset Password</span></a>
             </li>
 
-            <!-- Divider -->
+			<!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Addons
+                Board
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -87,41 +70,33 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
+                    <span>My Board</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                        <h6 class="collapse-header">Article:</h6>
+                        <a class="collapse-item">list</a>
                         <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        <h6 class="collapse-header">Comment:</h6>
+                        <a class="collapse-item" href="">list</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+            
+            <c:if test="${masteryn eq 'y'.charAt(0)}">
+	            <!-- Nav Item - attachfile -->
+	            <li class="nav-item">
+	                <a class="nav-link">
+	                    <i class="fas fa-solid fa-file"></i>
+	                    <span>files</span></a>
+	            </li>
+			</c:if>
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+            <div class="text-center d-none d-md-inline" style="padding-top:20px;">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 

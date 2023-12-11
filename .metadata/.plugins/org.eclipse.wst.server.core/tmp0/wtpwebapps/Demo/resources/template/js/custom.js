@@ -1,0 +1,1 @@
+$("#category").css("width", "60%");

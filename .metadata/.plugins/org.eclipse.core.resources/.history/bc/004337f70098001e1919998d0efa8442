@@ -1,0 +1,16 @@
+#searchForm {
+	width:95%;
+}
+
+input[name='category'] {
+	color:red;
+	width:10%;
+}
+
+input[name='searchType'] {
+	width: 5%;
+}
+
+input[name='searchKeyword'] {
+	width:10%;
+}

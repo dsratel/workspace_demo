@@ -1,0 +1,20 @@
+#searchForm {
+	width:95%;
+}
+
+select[name='category'] {
+	background-color: red;
+	width:10%;
+}
+
+select[name='searchType'] {
+	width: 5%;
+}
+
+input[name='searchKeyword'] {
+	width:10%;
+}
+
+select[name='pageSize'] {
+	width: 5%;
+}

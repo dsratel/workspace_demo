@@ -41,4 +41,7 @@ public interface CommonDAO {
 	
 	// 삭제할 seq 찾기
 	public List<Integer> getDelSeq(Map map);
+
+	// seq로 sysname 찾기
+	public String getSysNameBySeq(Map map);
 }

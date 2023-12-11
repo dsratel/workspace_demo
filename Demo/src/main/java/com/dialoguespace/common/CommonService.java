@@ -298,4 +298,12 @@ public class CommonService {
 		map.put("arr", arr);
 		return commonDAO.getDelSeq(map);
 	}
+	
+	// seq로 sysname 찾기
+	public String getSysNameBySeq(int seq, String category) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", seq);
+		map.put("category", category);
+		return commonDAO.getSysNameBySeq(map);
+	}
 }

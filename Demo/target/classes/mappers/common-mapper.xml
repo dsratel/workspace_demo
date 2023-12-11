@@ -84,5 +84,10 @@
 		</foreach>
 		AND delyn = 'N'
 	</select>
+	
+	<!-- seq로 sysname 찾기 -->
+	<select id="getSysNameBySeq" parameterType="map" resultType="String">
+		SELECT sysname FROM t_filemeta WHERE delyn = 'N' AND seq = #{seq} AND category = #{category}
+	</select>
 
 </mapper>

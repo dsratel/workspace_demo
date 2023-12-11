@@ -1,0 +1,8 @@
+#searchForm {
+	width:95%;
+}
+
+#category {
+	form-control;
+	width:60%;
+}

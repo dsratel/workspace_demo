@@ -125,7 +125,7 @@ public class BoardController {
 			model.addAttribute("srchInfo", srchInfo);			
 		}
 		
-		return "listArticle";
+		return "/board/listArticle";
 	}
 	
 	// 글 상세보기

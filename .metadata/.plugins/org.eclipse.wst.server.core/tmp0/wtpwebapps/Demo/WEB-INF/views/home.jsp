@@ -5,7 +5,10 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
-	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
+	<!-- Bootstrap core JavaScript-->
+	<script src="/resources/template/vendor/jquery/jquery.min.js"></script>
+    <script src="/resources/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
 	<!-- Custom template -->
 	<link rel="stylesheet" href="/resources/template/css/sb-admin-2.min.css">
 	<link
@@ -13,7 +16,7 @@
         rel="stylesheet">
     <link href="/resources/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	
-	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
+	<!-- Encryption -->
 	<script src="/resources/js/rsa/jsbn.js"></script>
 	<script src="/resources/js/rsa/rsa.js"></script>
 	<script src="/resources/js/rsa/prng4.js"></script>
@@ -61,7 +64,7 @@
 	                                            </div>
 	                                        </div>
 	                                        
-	                                        <button id="loginBtn" class="btn btn-primary btn-user btn-block" onclick="login();">
+	                                        <button type="button" id="loginBtn" class="btn btn-primary btn-user btn-block" onclick="login();">
 	                                            Login
 	                                        </button>
 	                                        <hr>
@@ -88,6 +91,30 @@
 	
 	    </div>
 	</form>
+	
+	<!-- validation Modal-->
+	
+	<!-- validation Modal-->
+    <div class="modal fade" id="validationModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Check your password</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalContent">You need to write more than 7 letters on password</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
+	
 	<script>
 		$(function(){
 			// css
@@ -95,7 +122,6 @@
 			
 			// 회원가입 버튼
 			$("#signUpBtn").click(function(){
-				alert("회원가입 화면으로 이동");
 				window.location.replace("/member/signUp");
 			});
 			
@@ -112,9 +138,12 @@
 		
 		// 로그인 버튼
 		function login() {
+			
 			// ID 유효성 검사
 			if($("#id").val().length < 5) {
-				alert("ID를 5자 이상 입력해주세요.");
+				$("#ModalLabel").text("Check your ID");
+				$("#modalContent").text("Required 4 or more letters for ID");
+				$("#validationModal").modal("show");
 				return ;
 			}
 			
@@ -122,11 +151,17 @@
 			var testPw = $("#password").val();
 			var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 			if(testPw.length < 8) {
-				alert("비밀번호는 8자리 이상이어야 합니다.");
+				//alert("비밀번호는 8자리 이상이어야 합니다.");
+				$("#ModalLabel").text("Check your password");
+				$("#modalContent").text("Required 8 or more letters for password");
+				$("#validationModal").modal("show");
 				return;
 			} else {
 				if(!regex.test(testPw)){
-					alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
+					//alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
+					$("#ModalLabel").text("Check your password");
+					$("#modalContent").text("Required one of each upper, lower, special characters and number for password");
+					$("#validationModal").modal("show");
 					return;
 				} else {
 					// 비밀번호 RSA 암호화

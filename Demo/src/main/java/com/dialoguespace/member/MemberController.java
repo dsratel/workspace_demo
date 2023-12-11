@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,12 @@ public class MemberController {
 	private final CommonService commonService;
 	private final EncryptionUtils encryptionUtils;
 	private final HttpSession session;
+	
+	@Value("${repo_dir}")
+	private String repo_path;
+	
+	@Value("${member_dir}")
+	private String member_path;
 	
 	@Autowired
 	public MemberController(MemberService memberService, CommonService commonService, EncryptionUtils encryptionUtils, HttpSession session) {
@@ -66,12 +73,9 @@ public class MemberController {
 		
 		// 프로필 사진 등록
 		if(files[0].getSize() > 0) {
-		//// 파일 디렉토리 변수에 담기
-		String contextRoot	= new HttpServletRequestWrapper(request).getRealPath("/");
-		String path			= contextRoot + "resources/testFolder/";
 		
 		//// 파일VO에 리스트로 정리
-		List<FileVO> fileList = commonService.setFileList(files, memberDto.getId(), "member", path);
+		List<FileVO> fileList = commonService.setFileList(files, memberDto.getId(), "member", this.member_path);
 		
 		
 		List<Integer> pk = commonService.saveNewFiles(files, fileList);			
@@ -114,7 +118,7 @@ public class MemberController {
 		model.addAttribute("masteryn", loginInfo.getMasteryn());
 		model.addAttribute("loginId", loginInfo.getId());
 		
-		return "list";
+		return "/member/list";
 	}
 	
 	// 회원 한명 삭제
@@ -147,13 +151,18 @@ public class MemberController {
 			MemberDTO dto = memberService.toEditMember(id);
 			model.addAttribute("dto", dto);
 			
+			String filePath = this.repo_path + "userIcon.png";
+			
 			if(dto.getFileno() > 0) {
-				String path = commonService.getPath(dto.getFileno());
-				String filePath = path.substring(path.lastIndexOf("resources")-1);
-				model.addAttribute("filePath", filePath);				
+				filePath = this.member_path + commonService.getSysNameBySeq(dto.getFileno(), "member");
+				
+				MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+				model.addAttribute("masteryn", loginInfo.getMasteryn());
+				model.addAttribute("loginId", loginInfo.getId());
 			}
+			model.addAttribute("filePath", filePath);				
 			// 사진 경로
-			return "memberView";
+			return "/member/memberView";
 		} else {
 			return "errorPage";
 		}
@@ -161,7 +170,7 @@ public class MemberController {
 	
 	// 회원 정보 수정
 	@PostMapping(value="/editMember.do")
-	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model, HttpServletRequest request) throws Exception {
+	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model) throws Exception {
 		
 		// 해당 회원의 프로필 사진 PK
 		int seq = memberService.selFileNo(memberDto.getId());			
@@ -169,8 +178,7 @@ public class MemberController {
 		// 새로운 사진 유무
 		if(files[0].getSize() > 0) {	
 			/* 파일 디렉토리 변수에 담기 */
-			String contextRoot		= new HttpServletRequestWrapper(request).getRealPath("/");
-			String sysPath			= contextRoot + "resources/testFolder/";
+			String sysPath			= this.member_path;
 			String tempPath			= "D:\\demoTemp\\";
 			List<FileVO> fileList	= commonService.setFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
 			
@@ -262,8 +270,11 @@ public class MemberController {
 		// KeyPariGenerator 인스턴스 생성(RSA 알고리즘)
 		encryptionUtils.genRsaInstance(model);
 		
-		return "signUp";
+		return "/member/signUp";
 	}
+	
+	// 프로필 사진 삭제
+	
 	
 	
 }
