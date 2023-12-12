@@ -38,7 +38,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-solid fa-user"></i>
                     <span>${masteryn eq 'y'.charAt(0) ? 'List' : 'MyPage'}</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -52,9 +52,10 @@
             
 			<!-- Nav Item - Reset Password -->
             <li class="nav-item">
-                <a class="nav-link">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span> Reset Password</span></a>
+                <a class="nav-link" href="/member/changePassword" onclick="window.open(this.href, 'password change popup', 'width=800, height=600'); return false;">
+                    <i class="fas fa-solid fa-key"></i>
+                    <span> Reset Password</span>
+				</a>
             </li>
 
 			<!-- Divider -->
@@ -69,7 +70,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-regular fa-clipboard"></i>
                     <span>My Board</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">

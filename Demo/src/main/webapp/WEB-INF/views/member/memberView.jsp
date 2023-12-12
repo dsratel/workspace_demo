@@ -22,24 +22,28 @@
                 <div class="container-fluid">
                 
                     <!-- Content Row -->
-                    <div class="row">
-						<div class="col-3" style="border:1px solid" id="rs">
-							
-						</div>
-						<div class="col-8" style="border:1px solid">
+                    <div class="row contentRow">
+					
 							<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>프로필 사진</span>
 									</div>
 									<div class="col-9">
 										<img class="img-thumbnail" src="${filePath  }" fn="${dto.fileno }" id="preview"/>
-										<input type="file" class="form-control" id="inputGroupFile02" name="profilePhoto" onchange="readURL(this)";>
-										<button type="button" class="btn btn-danger" id="delPfPhoto">프로필 사진 삭제</button>
+										<input type="file" class="form-control" id="profileInput" name="profilePhoto" onchange="readURL(this)";>
+										<c:choose>
+											<c:when test="${!filePath.contains('userIcon.png') }">
+												<button type="button" class="btn btn-danger" id="delPfPhoto">프로필 사진 삭제</button>
+											</c:when>
+											<c:otherwise>
+												<span>선택한 프로필 사진을 취소하고 싶은 경우 사진을 더블클릭 해주세요.</span>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</div>
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>ID</span>
 									</div>
 									<div class="col-9">
@@ -47,15 +51,7 @@
 									</div>
 								</div>
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
-										<span>비밀번호</span>
-									</div>
-									<div class="col-9">
-										<input type="password" class="form-control" name="pw" value="" placeholder="공백인 경우 이전 비밀번호 유지">
-									</div>
-								</div>
-								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>이름</span>
 									</div>
 									<div class="col-9">
@@ -63,7 +59,7 @@
 									</div>
 								</div>
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>닉네임</span>
 									</div>
 									<div class="col-9">
@@ -71,7 +67,7 @@
 									</div>
 								</div>
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>주소</span>
 									</div>
 									<div class="col-9">
@@ -79,7 +75,7 @@
 									</div>
 								</div>
 								<div class="row" style="padding: 5px 0px 5px">
-									<div class="col-3">
+									<div class="col-3 editOption">
 										<span>전화번호</span>
 									</div>
 									<div class="col-9">
@@ -100,11 +96,11 @@
 								</div>
 							</form>
 						</div>
-						<div class="col-1" style="border:1px solid; padding: 2px;">
+						<div class="row btnDiv">
 							<button class="btn btn-success" type="button" form="editMemberForm" id="save">수정하기</button>
 							<button class="btn btn-dark" type="button" id="showList">목록출력</button>
-						</div>                    
-					</div>
+						</div>
+					
                 </div>
                 <!-- /.container-fluid -->
 
@@ -139,22 +135,23 @@
 		$("#phone4, #phone").hide();
 		
 		// 프로필 사진 삭제
-/* 		$("#delPfPhoto").click(function(){
-			alert('프로필 사진 삭제');
-			
+ 		$("#delPfPhoto").click(function(){
 			$.ajax({
 				type: "get",
-				url: "/common/del",
-				data: ,
-				success: function(){
-					
+				url: "/member/delPfPhoto",
+				data: {id : $("input[name='id']").val()},
+				success: function(rs){
+					alert("프로필 사진 삭제 성공");
+					console.log(rs);
+					window.location.replace("/member/editMember?id=" + $("input[name='id']").val());
 				},
-				error: function(){
-					
+				error: function(rs){
+					alert("프로필 사진 삭제 실패");
+					console.log(rs);
 				}
 			});
 			
-		}); */
+		});
 			
 		// 휴대폰 번호 세팅
 		var phone = "${dto.phone}";
@@ -236,6 +233,16 @@
 			
 			
 			$("#editMemberForm").submit();
+		});
+		
+		// 사진 더블클릭 시 
+		$("#preview").dblclick(function(){
+			console.log("더블클릭");
+			// 기본이미지로 변경
+			$("#preview").attr("src", "/repository/userIcon.png");
+			
+			// 파일 input 초기화
+			$("#profileInput").val("");
 		});
 		
 	}); // function() end

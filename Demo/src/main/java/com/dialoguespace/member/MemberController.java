@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -151,10 +151,11 @@ public class MemberController {
 			MemberDTO dto = memberService.toEditMember(id);
 			model.addAttribute("dto", dto);
 			
-			String filePath = this.repo_path + "userIcon.png";
+			String filePath = this.repo_path.replace("D:/demo_", "/") + "userIcon.png";
 			
 			if(dto.getFileno() > 0) {
-				filePath = this.member_path + commonService.getSysNameBySeq(dto.getFileno(), "member");
+				filePath = this.member_path.replace("D:/demo_", "/") + commonService.getSysNameBySeq(dto.getFileno(), "member"); 
+//				filePath = filePath.length() > 19 ? filePath : (this.repo_path.replace("D:/demo_", "/") + "userIcon.png");  
 				
 				MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 				model.addAttribute("masteryn", loginInfo.getMasteryn());
@@ -173,13 +174,13 @@ public class MemberController {
 	public String editMember(MemberDTO memberDto, @RequestParam("profilePhoto") MultipartFile[] files, Model model) throws Exception {
 		
 		// 해당 회원의 프로필 사진 PK
-		int seq = memberService.selFileNo(memberDto.getId());			
+		int seq = memberService.selFileNo(memberDto.getId());
 		
 		// 새로운 사진 유무
-		if(files[0].getSize() > 0) {	
+		if(files[0].getSize() > 0) {
 			/* 파일 디렉토리 변수에 담기 */
 			String sysPath			= this.member_path;
-			String tempPath			= "D:\\demoTemp\\";
+			String tempPath			= "D:\\demoTemp\\" + memberDto.getId();
 			List<FileVO> fileList	= commonService.setFileList(files, memberDto.getId(), "member", sysPath);	// FileVO 정보 생성
 			
 			if(seq > 0) {
@@ -203,7 +204,7 @@ public class MemberController {
 				commonService.saveNewFiles(files, fileList);
 				
 				// 새로 등록한 fileNo MemberDTO에도 등록
-				memberDto.setFileno(commonService.selectFilePK("member", memberDto.getId()));
+				memberDto.setFileno(commonService.selectFilePK("member", memberDto.getId(), fileList.get(0).getOrgName()));
 			}
 		} else {
 			if(seq > 0) {
@@ -274,7 +275,25 @@ public class MemberController {
 	}
 	
 	// 프로필 사진 삭제
+	@Transactional
+	@GetMapping(value="/delPfPhoto")
+	public int delPfPhoto(String id) {
+		System.out.println("========== MemberController - delPfPhoto ==========");
+		System.out.println("프로필 파일을 삭제할 유저 id : " + id);
+		// t_filemeta DB, 물리파일 삭제
+		commonService.delFileByIdCat(id, "member");
+		
+		// t_member DB에서 fileno 0으로 만들기
+		return memberService.delPfPhoto(id);
+	}	
 	
-	
-	
+	// 비밀번호 변경 팝업
+	@GetMapping(value="/changePassword")
+	public String toChangePasswordPop(String id, Model model) throws NoSuchAlgorithmException, InvalidKeySpecException {
+		// KeyPariGenerator 인스턴스 생성(RSA 알고리즘)
+		encryptionUtils.genRsaInstance(model);
+		model.addAttribute("id", id);
+		
+		return "/member/changePasswordPop";
+	}
 }

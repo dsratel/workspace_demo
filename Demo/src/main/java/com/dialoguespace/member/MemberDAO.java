@@ -39,4 +39,7 @@ public interface MemberDAO {
 	
 	// 로그인 - ID, PW로 회원 선택
 	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception;
+	
+	// 프로필 사진 삭제
+	public int delPfPhoto(String id);
 }

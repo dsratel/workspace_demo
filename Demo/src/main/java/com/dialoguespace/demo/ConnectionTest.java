@@ -10,17 +10,8 @@ public class ConnectionTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-//			
-		List<String> files = Arrays.asList("aaa", "bbb", "ccc");
-		for(int i = 0; i < files.size(); i++) {
-			files.set(i, "category : " + files.get(i));
-		}
-		
-		System.out.println(files.toString());
-			
-			
-			
-			
+		String str = "D:/demo_repository/member/";
+		System.out.println(str.contains(""));
 
 	}	// main end
 	

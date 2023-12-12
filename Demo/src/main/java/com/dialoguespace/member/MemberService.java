@@ -24,7 +24,7 @@ public class MemberService {
 	// 회원 추가
 	public int insertMember(MemberDTO memberDto) throws Exception {
 		//memberDto.setRegdate(new Timestamp(System.currentTimeMillis()));
-		if(checkMemberDto(memberDto) < 0) return -1;
+		if(checkMemberDto(memberDto, true) < 0) return -1;
 		
 		System.out.println("MemberService memberDto 등록");
 		return memberDAO.insertMember(memberDto);
@@ -56,7 +56,7 @@ public class MemberService {
 	
 	// 회원 정보 수정
 	public int editMember(MemberDTO memberDto) throws Exception {
-		if(checkMemberDto(memberDto) < 0) return -1;
+		if(checkMemberDto(memberDto, false) < 0) return -1;
 		
 		return memberDAO.editMember(memberDto);
 	}
@@ -69,7 +69,7 @@ public class MemberService {
 	// 프로필 사진 PK 등록
 	public int addFileNo(String id, int seq) throws Exception {
 		// 파라미터 map에 등록
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("seq", seq);
 		return memberDAO.addFileNo(map);
@@ -86,16 +86,17 @@ public class MemberService {
 	}
 	
 	// 회원정보 유효성 체크
-	public int checkMemberDto(MemberDTO memberDto) {
+	public int checkMemberDto(MemberDTO memberDto, boolean validPw) {
 		//  체크	
 		if(memberDto.getId().length() < 5) return -1;
-		if(memberDto.getPw().length() < 8) return -1;
 		if(memberDto.getName().length() < 2) return -1;
 		if(memberDto.getNickname().length() < 2) return -1;
 		if(memberDto.getAddress().length() < 2) return -1;
 		if(memberDto.getPhone().length() < 10) return -1;
-		// 비밀번호 암호화
-		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
+
+		// 비밀번호를 체크해야 한다면? 비밀번호 유효성 검사를 하고 비밀번호를 수정해야 한다. 만일 비밀번호 유효성 검사를 하지 않아도 된다면 그냥 넘어가도 된다.
+		if(validPw) return checkPassword(memberDto);
+		
 		return 1;
 	}
 	
@@ -108,6 +109,22 @@ public class MemberService {
 		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
 		
 		return memberDAO.selMemberByIdPw(memberDto);
+	}
+	
+	// 비밀번호 체크
+	public int checkPassword(MemberDTO memberDto) {
+		// 비밀번호 암호화
+		if(memberDto.getPw().length() < 8) {
+			return -1;
+		} else {
+			memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
+			return 1;
+		}
+	}
+		
+	// 프로필 사진 삭제
+	public int delPfPhoto(String id) {
+		return memberDAO.delPfPhoto(id);
 	}
 	
 }

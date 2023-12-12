@@ -128,5 +128,9 @@
 		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id LIKE #{id} AND pw LIKE #{pw}
 	</select>
 	
+	<!-- 프로필 사진 삭제 -->
+	<update id="delPfPhoto" parameterType="String">
+		UPDATE t_member SET fileno = 0 WHERE id = #{id}
+	</update>
 
 </mapper>

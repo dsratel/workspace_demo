@@ -41,3 +41,20 @@ select[name='pageSize'] {
 div.layer_popup {
 	display: none;
 }
+
+div.contentRow {
+	padding : 0 30%;
+}
+
+div.contentRow {
+	line-height : 2.5;
+}
+
+button[type='button'] {
+	margin : 0px 5px;
+}
+
+div.btnDiv {
+	margin-top : 10px;
+	justify-content : center;
+}

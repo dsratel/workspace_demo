@@ -91,5 +91,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception {
 		return sqlsession.selectOne("memberMapper.selMemberByIdPw", memberDto);
 	}
+	
+	// 프로필 사진 삭제
+	@Override
+	public int delPfPhoto(String id) {
+		return sqlsession.update("memberMapper.delPfPhoto", id);
+	}
 
 }
