@@ -30,7 +30,6 @@ import com.dialoguespace.vo.PaginationVO;
 @RequestMapping(value="/board")
 public class BoardController {
 	
-	private final Common common;
 	private final BoardService boardService;
 	private final CommonService commonService;
 	private final CommentService commentService;
@@ -40,8 +39,7 @@ public class BoardController {
 	private String path;
 	
 	@Autowired
-	public BoardController(Common common, BoardService boardService, CommonService commonService, CommentService commentService, HttpSession session) {
-		this.common = common;
+	public BoardController(BoardService boardService, CommonService commonService, CommentService commentService, HttpSession session) {
 		this.boardService = boardService;
 		this.commonService = commonService;
 		this.commentService = commentService;
@@ -113,12 +111,12 @@ public class BoardController {
 		model.addAttribute("masteryn", masteryn);
 		
 		// 검색요건 추가하여 리스트 출력
-		Map srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
+		Map<String, Object> srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
 		int listCnt = boardService.countList(srchInfo);
 		if(listCnt > 0) {
 			srchInfo.put("pagination", new PaginationVO(listCnt,curPage,pageSize));
 			// 검색할 글 시퀀스
-			List seqList = boardService.getSeqList(srchInfo);
+			List<Integer> seqList = boardService.getSeqList(srchInfo);
 			srchInfo.put("seqList", seqList);
 			// 페이징 내용 추가
 			model.addAttribute("list", boardService.selectArticle(srchInfo));

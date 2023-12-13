@@ -1,8 +1,8 @@
 package com.dialoguespace.demo;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
 public class ConnectionTest {
 	private static char map1[];
@@ -10,8 +10,20 @@ public class ConnectionTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String str = "D:/demo_repository/member/";
-		System.out.println(str.contains(""));
+			String password = "Test123!@#";
+			MessageDigest md;
+			try {
+				md = MessageDigest.getInstance("SHA-512");
+				md.reset();
+				md.update(password.getBytes("utf8"));
+				password = String.format("%0128x", new BigInteger(1, md.digest()));
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+	
+			System.out.println(password);
+		
+		
 
 	}	// main end
 	

@@ -1,11 +1,16 @@
 package com.dialoguespace.member;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -240,14 +245,19 @@ public class MemberController {
 			// RSA 복호화
 			PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
+			System.out.println("로그인 시 입력한 비밀번호 : " + strPw);
+			
 			// SHA-512 암호화
 			strPw = encryptionUtils.getSHA512(strPw);
 			memberDto.setPw(strPw);
-			
+			System.out.println("로그인 시 입력한 암호화 SHA512 : " + strPw);
 			MemberDTO dto = memberService.selMemberByIdPw(memberDto);
 			
 			// redirect할 URI가 없다면 글목록을 요청
 			requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
+			
+			if( requestURI.equals("") ) requestURI = "/board/toList";
+			
 			
 			if(dto != null && dto.getStatus() == 1) {
 				session.setAttribute("loginSession", dto);
@@ -295,5 +305,25 @@ public class MemberController {
 		model.addAttribute("id", id);
 		
 		return "/member/changePasswordPop";
+	}
+	
+	// 비밀번호 변경
+	@PostMapping(value="/changePassword.do")
+	public String changePassword(String id, String pw, Model model) throws NoSuchPaddingException, NoSuchAlgorithmException
+				, IllegalBlockSizeException, UnsupportedEncodingException, InvalidKeyException, BadPaddingException{
+		int rs = 0;
+		// RSA PrivateKey
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
+		if(!pw.equals("")) {
+			String strPw = encryptionUtils.decryptRsa(privateKey, pw);
+			System.out.println("===== strPw : " + strPw);
+			strPw = encryptionUtils.getSHA512(strPw);
+			rs = memberService.changePassword(id, strPw);
+		}
+	
+		model.addAttribute("rs", ( rs > 0 ? "success" : "fail"));
+		
+		return "result";
+		
 	}
 }

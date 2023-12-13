@@ -105,8 +105,10 @@ public class MemberService {
 		// 유효성 검사
 		if(memberDto.getId().length() < 5 || memberDto.getPw().length() < 8) return null;
 		
+		System.out.println(memberDto.toString());
+		
 		// 비밀번호 암호화
-		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
+//		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
 		
 		return memberDAO.selMemberByIdPw(memberDto);
 	}
@@ -125,6 +127,14 @@ public class MemberService {
 	// 프로필 사진 삭제
 	public int delPfPhoto(String id) {
 		return memberDAO.delPfPhoto(id);
+	}
+	
+	// 비밀번호 변경
+	public int changePassword(String id, String pw) {
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("pw", pw);
+		return memberDAO.changePassword(map);
 	}
 	
 }

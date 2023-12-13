@@ -21,11 +21,11 @@
 	<select id="selectArticle" parameterType="map" resultType="boardDto">
 		<trim suffixOverrides="UNION">
 			<foreach collection="seqList" item="seq" index="index" separator="UNION">
-				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
-				FROM t_board WHERE category LIKE #{category} AND seq = #{seq}
+				SELECT seq, category, (SELECT nickname FROM t_member WHERE id = author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
+				FROM t_board WHERE category = #{category} AND seq = #{seq}
 				UNION
-				SELECT seq, category, (SELECT nickname FROM t_member WHERE id LIKE author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
-				FROM t_board_reply WHERE category LIKE #{category} AND pid = #{seq}
+				SELECT seq, category, (SELECT nickname FROM t_member WHERE id = author) AS author, title, content, regdate, author as etc, viewcnt, commentcnt, pid, attachfile
+				FROM t_board_reply WHERE category = #{category} AND pid = #{seq}
 			</foreach>	
 		</trim>
 		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
@@ -71,7 +71,7 @@
 			</otherwise>
 		</choose>
 		
-		WHERE author LIKE #{author}
+		WHERE author = #{author}
 	</select>
 	
 	<!-- 게시글 삭제 -->
@@ -105,7 +105,7 @@
 	<!-- 조건에 맞는 게시글 개수 -->
 	<select id="countList" parameterType="map" resultType="Integer">
 		SELECT count(*) + 
-			(SELECT count(*) FROM t_board_reply WHERE pid IN (SELECT seq FROM t_board WHERE category LIKE #{category} AND
+			(SELECT count(*) FROM t_board_reply WHERE pid IN (SELECT seq FROM t_board WHERE category = #{category} AND
 				<choose>
 					<when test='searchType == 0'>
 						title LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -116,7 +116,7 @@
 				</choose>
 			))
 
-		FROM t_board WHERE category LIKE #{category}	AND
+		FROM t_board WHERE category = #{category}	AND
 		<choose>
 			<when test='searchType == 0'>
 				title LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -171,7 +171,7 @@
 	
 	<!-- 게시글 시퀀스 리스트 -->
 	<select id="getSeqList" parameterType="map" resultType="Integer">
-		SELECT seq FROM t_board WHERE category LIKE #{category} AND
+		SELECT seq FROM t_board WHERE category = #{category} AND
 		<choose>
 			<when test="searchType == 0">
 				title LIKE CONCAT('%', #{searchKeyword}, '%')	

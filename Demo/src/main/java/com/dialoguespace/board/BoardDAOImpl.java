@@ -16,14 +16,12 @@ public class BoardDAOImpl implements BoardDAO {
 	// 글 작성 프로세스
 	@Override
 	public int writeArticle(BoardDTO boardDto) {
-		System.out.println("========== BoardDAOImpl 진입 ==========");
 		return sqlsession.insert("boardMapper.writeArticle", boardDto);
 	}
 	
 	// 글 전체 불러오기
 	@Override
 	public List<BoardDTO> selectArticle(Map srchInfo) {
-		System.out.println("========== BoardDAOImpl 진입 ==========");
 		List<BoardDTO> list = sqlsession.selectList("boardMapper.selectArticle", srchInfo); 
 		return list;
 	}
@@ -31,21 +29,18 @@ public class BoardDAOImpl implements BoardDAO {
 	// seq로 게시글 정보 불러오기
 	@Override
 	public BoardDTO selArticleBySeq(Map map) {
-		System.out.println("========== BoardDAOImpl 진입 ==========");
 		return sqlsession.selectOne("boardMapper.selArticleBySeq", map);
 	}
 	
 	// 가장 최신 글 seq 불러오기
 	@Override
 	public int getLatestSeq(Map map) {
-		System.out.println("========== BoardDAOImpl 진입 ==========");
 		return sqlsession.selectOne("boardMapper.getLatestSeq", map);
 	}
 	
 	// 게시글 삭제
 	@Override
 	public int delArticle(Map map) {
-		System.out.println("========== BoardDAOImpl 진입 ==========");
 		return sqlsession.delete("boardMapper.delArticle", map);
 	}
 	

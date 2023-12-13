@@ -97,5 +97,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public int delPfPhoto(String id) {
 		return sqlsession.update("memberMapper.delPfPhoto", id);
 	}
+	
+	// 비밀번호 변경
+	@Override
+	public int changePassword(Map map) {
+		return sqlsession.update("memberMapper.changePassword", map);
+	}
 
 }

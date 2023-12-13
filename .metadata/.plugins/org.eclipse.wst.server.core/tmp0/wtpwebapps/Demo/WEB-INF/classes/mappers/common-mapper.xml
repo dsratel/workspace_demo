@@ -13,12 +13,12 @@
 	
 	<!-- 파일 삭제 -->
 	<delete id="delFile" parameterType="fileVo">
-		DELETE FROM t_filemeta WHERE fileparent like #{fileParent} AND sysname LIKE #{sysName} 
+		DELETE FROM t_filemeta WHERE fileparent = #{fileParent} AND sysname = #{sysName} 
 	</delete>
 	
 	<!-- 파일 PK 찾기 -->
 	<select id="selectFilePK" parameterType="fileVo" resultType="Integer">
-		SELECT seq FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{fileParent} AND orgname LIKE #{orgName} AND delyn = 'N'
+		SELECT seq FROM t_filemeta WHERE category = #{category} AND fileparent = #{fileParent} AND orgname = #{orgName} AND delyn = 'N'
 	</select>
 
 	<!-- 파일 경로 찾기 -->
@@ -39,24 +39,24 @@
 	
 	<!-- id와 category로 파일 경로 찾기 -->
 	<select id="selFilePathByIdCat" parameterType="map" resultType="String">
-		SELECT concat(filepath, sysname) AS path FROM t_filemeta WHERE category LIKE #{category} AND fileparent LIKE #{id} AND delyn = 'N'
+		SELECT concat(filepath, sysname) AS path FROM t_filemeta WHERE category = #{category} AND fileparent = #{id} AND delyn = 'N'
 	</select>
 	
 	<!-- id와 category로 파일 DB 삭제 -->
 	<update id="delFileDbByIdCat" parameterType="map">
-		UPDATE t_filemeta SET delyn = 'Y' WHERE category LIKE #{category} AND fileparent LIKE #{id} 
+		UPDATE t_filemeta SET delyn = 'Y' WHERE category = #{category} AND fileparent = #{id} 
 	</update>
 	
 	<!-- id와 category로 fileparent update -->
 	<update id="modifyFileparent" parameterType="map">
-		UPDATE t_filemeta SET fileparent = #{seq} WHERE category LIKE #{category} AND fileparent LIKE #{id}
+		UPDATE t_filemeta SET fileparent = #{seq} WHERE category = #{category} AND fileparent = #{id}
 	</update>
 	
 	<!-- seq로 File db 찾기 -->
 	<select id="selFileById" parameterType="map" resultType="fileVo">
 		SELECT seq, fileparent as fileParent, category, orgname as orgName, sysname as sysName, filesize as fileSize
 				, CONCAT('/', SUBSTR(filepath, LOCATE('resources', filepath)), sysname) as filepath
-		FROM t_filemeta WHERE fileparent LIKE #{seq} AND category LIKE #{category} AND delyn = 'N'
+		FROM t_filemeta WHERE fileparent = #{seq} AND category = #{category} AND delyn = 'N'
 	</select>
 	
 	<!-- fileparent로 file path 찾기 -->

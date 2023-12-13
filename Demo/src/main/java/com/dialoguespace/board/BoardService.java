@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +35,7 @@ public class BoardService {
 	}
 	
 	// 글 전체 불러오기
-	public List<BoardDTO> selectArticle(Map srchInfo) {
+	public List<BoardDTO> selectArticle(Map<String, Object> srchInfo) {
 		System.out.println("========== BoardService 진입 ==========");
 		return boardDAO.selectArticle(srchInfo);
 	}
@@ -45,7 +43,7 @@ public class BoardService {
 	// seq로 게시글 정보 불러오기
 	public BoardDTO selArticleBySeq(int seq, int pid) {
 		System.out.println("========== BoardService 진입 ==========");
-		Map map = new HashMap();
+		Map<String, Integer> map = new HashMap<>();
 		map.put("seq", seq);
 		map.put("pid", pid);
 		return boardDAO.selArticleBySeq(map);
@@ -55,7 +53,7 @@ public class BoardService {
 	public int getLatestSeq(String author, int pid) {
 		System.out.println("========== BoardService 진입 ==========");
 		// 답글 구분을 위한 pid 추가
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("author", author);
 		map.put("pid", pid);
 		return boardDAO.getLatestSeq(map);
@@ -75,7 +73,7 @@ public class BoardService {
 		}
 		
 		// 답글 구분을 위하여 pid 담기
-		Map map = new HashMap();
+		Map<String, Integer> map = new HashMap<>();
 		map.put("seq", seq);
 		map.put("pid", pid);
 		
@@ -95,12 +93,12 @@ public class BoardService {
 	}
 	
 	// 조건에 맞는 게시글 개수
-	public int countList(Map srchInfo) {
+	public int countList(Map<String, Object> srchInfo) {
 		return boardDAO.countList(srchInfo);
 	}
 	
-	public Map makeSrchInfo(String category,String searchType,String searchKeyword) {
-		Map map = new HashMap();
+	public Map<String, Object> makeSrchInfo(String category,String searchType,String searchKeyword) {
+		Map<String, Object> map = new HashMap<>();
 		map.put("category", category);
 		map.put("searchType", searchType);
 		if(searchKeyword == null) {
@@ -115,7 +113,7 @@ public class BoardService {
 	// 게시글 댓글 개수 증가
 	public int addCommentCnt(int boardseq, char replyYn) {
 		// 답글 여부
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("boardseq", boardseq);
 		map.put("replyYn", replyYn);
 				
@@ -124,7 +122,7 @@ public class BoardService {
 	
 	// 게시글 댓글 개수 감소
 	public int reduceCommentCnt(int seq, int pid, int boardseq, char replyyn) {
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("seq", seq);
 		map.put("pid", pid);
 		map.put("boardseq", boardseq);
@@ -139,7 +137,7 @@ public class BoardService {
 	}
 	
 	// 게시글 시퀀스 리스트
-	public List<Integer> getSeqList(Map srchInfo) {
+	public List<Integer> getSeqList(Map<String, Object> srchInfo) {
 		return boardDAO.getSeqList(srchInfo);
 	}
 

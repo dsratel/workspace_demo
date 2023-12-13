@@ -52,7 +52,7 @@
             
 			<!-- Nav Item - Reset Password -->
             <li class="nav-item">
-                <a class="nav-link" href="/member/changePassword" onclick="window.open(this.href, 'password change popup', 'width=800, height=600'); return false;">
+                <a class="nav-link" href="/member/changePassword?id=${loginId}" onclick="window.open(this.href, 'password change popup', 'width=500, height=300, left=610, top=340'); return false;">
                     <i class="fas fa-solid fa-key"></i>
                     <span> Reset Password</span>
 				</a>

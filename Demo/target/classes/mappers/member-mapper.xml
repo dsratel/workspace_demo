@@ -46,7 +46,7 @@
 	
 	<!-- 회원 삭제 -->
 	<delete id="delMember" parameterType="String">
-		DELETE FROM T_MEMBER WHERE id LIKE #{id}
+		DELETE FROM T_MEMBER WHERE id = #{id}
 	</delete>
 	
 	<!-- 선택한 회원 삭제 -->
@@ -59,7 +59,7 @@
 	
 	<!-- 회원 한 명 정보 가져오기 -->
 	<select id="selectMember" parameterType="String" resultType="memberDto">
-		SELECT id, pw, nickname, name, address, phone, fileno FROM T_MEMBER WHERE id LIKE #{id}
+		SELECT id, pw, nickname, name, address, phone, fileno FROM T_MEMBER WHERE id = #{id}
 	</select>
 	
 	<!-- 회원 정보 수정 -->
@@ -73,7 +73,7 @@
 				SET name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}			
 			</otherwise>
 		</choose>
-		WHERE id LIKE #{id}
+		WHERE id = #{id}
 	</update>
 	
 	<!-- 조건에 맞는 회원 카운팅 / 회원 목록 select 부분에서 count(*)하는 차이만 있다. -->
@@ -110,27 +110,32 @@
 	
 	<!-- 프로필 사진 PK 등록 -->
 	<update id="addFileNo" parameterType="map">
-		UPDATE t_member SET fileno = #{seq} WHERE id LIKE #{id}
+		UPDATE t_member SET fileno = #{seq} WHERE id = #{id}
 	</update>
 	
 	<!-- 회원의 프로필 사진 PK 찾기 -->
 	<select id="selFileNo" parameterType="String" resultType="Integer">
-		SELECT fileno FROM t_member WHERE id LIKE #{id}
+		SELECT fileno FROM t_member WHERE id = #{id}
 	</select>
 	
 	<!-- ID 중복 검사 -->
 	<select id="checkId" parameterType="String" resultType="Integer">
-		SELECT count(*) FROM t_member WHERE id LIKE #{id}
+		SELECT count(*) FROM t_member WHERE id = #{id}
 	</select>
 	
 	<!-- 로그인 - ID, PW로 회원 선택 -->
 	<select id="selMemberByIdPw" parameterType="memberDto" resultType="memberDto">
-		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id LIKE #{id} AND pw LIKE #{pw}
+		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id = #{id} AND pw = #{pw}
 	</select>
 	
 	<!-- 프로필 사진 삭제 -->
 	<update id="delPfPhoto" parameterType="String">
 		UPDATE t_member SET fileno = 0 WHERE id = #{id}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePassword" parameterType="map">
+		UPDATE t_member SET pw = #{pw} WHERE id = #{id}
 	</update>
 
 </mapper>

@@ -1,45 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<div class="container">
-		<form name="loginForm" method="post" action="member/login.do" id="loginForm">
-			<table class="table table-bordered">
-				<tr>
-					<td>아이디</td>
-					<td><input type="text" class="form-control" name="id" value="${dto.id }"></td>
-				</tr>
-				<tr>
-					<td>이름</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.name }"></td>
-				</tr>
-				<tr>
-					<td>닉네임</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.nickname }"></td>
-				</tr>
-				<tr>
-					<td>주소</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.address }"></td>
-				</tr>
-				<tr>
-					<td>전화번호</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.phone }"></td>
-				</tr>
-				<tr>
-					<td>회원상태</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.status }"></td>
-				</tr>
-				<tr>
-					<td>파일번호</td>
-					<td><input type="text" class="form-control" name="pw" value="${dto.fileno }"></td>
-				</tr>
-			</table>		
-		</form>
-	</div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                    <!-- Content Row -->
+                    <div class="row">
+                		<h1>${rs }</h1>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+		
+	<!-- Core plugin JavaScript-->
+    <script src="/resources/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/resources/template/js/sb-admin-2.min.js"></script>
+	
 </body>
 </html>

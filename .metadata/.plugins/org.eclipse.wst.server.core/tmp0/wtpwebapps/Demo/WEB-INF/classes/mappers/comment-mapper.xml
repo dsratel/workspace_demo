@@ -12,7 +12,7 @@
 	
 	<!-- 댓글 목록 - boardseq별 -->
  	<select id="cmtListByBoardseq" parameterType="map" resultType="commentDto">
-		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname
+		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id = cmt.id) as nickname
 		FROM (SELECT seq, id, pw, content, boardseq, replyboardseq, pid, depth, re_order, regdate, modifydate
 				FROM t_comment WHERE
 				<choose>
@@ -107,7 +107,7 @@
 	
 	<!-- 대댓글 목록 -->
 	<select id="cmtListByPid" parameterType="Integer" resultType="commentDto">
-		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id LIKE cmt.id) as nickname FROM t_comment_reply cmt WHERE pid = #{pid}
+		SELECT cmt.*, (SELECT nickname FROM t_member WHERE id = cmt.id) as nickname FROM t_comment_reply cmt WHERE pid = #{pid}
 	</select>
 	
 	<!-- 댓글 전체 목록 -->
