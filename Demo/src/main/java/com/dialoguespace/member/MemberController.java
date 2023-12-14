@@ -129,10 +129,11 @@ public class MemberController {
 	// 회원 한명 삭제
 	@ResponseBody
 	@PostMapping(value="/delMember.do")
-	public void delMember(@RequestParam String id) throws Exception {
-		System.out.println("삭제할 id 값 : " + id);
-		memberService.delMember(id);
-		System.out.println("회원 삭제 완료");
+	public String delMember(@RequestParam String id, String self) throws Exception {
+		//if(!id.equals("devvv")) memberService.delMember(id);
+		System.out.println("id : " + id + " / self : " + self);
+		
+		return (self.equals("y") ?  "redirect:/" : "redirect:/member/list");
 	}
 	
 	// 선택한 회원 삭제
@@ -147,13 +148,13 @@ public class MemberController {
 		System.out.println("선택한 회원 삭제 완료");
 	}
 	
-	// 회원 수정 페이지로 이동
-	@GetMapping(value="/editMember")
-	public String toEditMember(String id, Model model) throws Exception {
-		System.out.println("수정할 회원 ID : " + id);
+	// 회원 상세보기 페이지로 이동
+	@GetMapping(value="/toViewMember")
+	public String toViewMember(String id, Model model) throws Exception {
+		System.out.println("상세 보기 회원 ID : " + id);
 		if(id != null) {
 			// 멤버 정보 Model에 담기
-			MemberDTO dto = memberService.toEditMember(id);
+			MemberDTO dto = memberService.toViewMember(id);
 			model.addAttribute("dto", dto);
 			
 			String filePath = this.repo_path.replace("D:/demo_", "/") + "userIcon.png";
@@ -162,10 +163,10 @@ public class MemberController {
 				filePath = this.member_path.replace("D:/demo_", "/") + commonService.getSysNameBySeq(dto.getFileno(), "member"); 
 //				filePath = filePath.length() > 19 ? filePath : (this.repo_path.replace("D:/demo_", "/") + "userIcon.png");  
 				
-				MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
-				model.addAttribute("masteryn", loginInfo.getMasteryn());
-				model.addAttribute("loginId", loginInfo.getId());
 			}
+			MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+			model.addAttribute("masteryn", loginInfo.getMasteryn());
+			model.addAttribute("loginId", loginInfo.getId());
 			model.addAttribute("filePath", filePath);				
 			// 사진 경로
 			return "/member/memberView";
@@ -226,7 +227,7 @@ public class MemberController {
 		}
 		System.out.println(memberDto.getId() + "님 회원정보 수정 완료");
 		
-		return toEditMember(memberDto.getId(), model);
+		return toViewMember(memberDto.getId(), model);
 	}
 	
 	// ID 중복체크
@@ -309,16 +310,23 @@ public class MemberController {
 	
 	// 비밀번호 변경
 	@PostMapping(value="/changePassword.do")
-	public String changePassword(String id, String pw, Model model) throws NoSuchPaddingException, NoSuchAlgorithmException
+	public String changePassword(String id, String pw, String curPw, Model model) throws NoSuchPaddingException, NoSuchAlgorithmException
 				, IllegalBlockSizeException, UnsupportedEncodingException, InvalidKeyException, BadPaddingException{
 		int rs = 0;
+		System.out.println("현재 str : " + curPw);
+		System.out.println("수정 str : " + pw);
 		// RSA PrivateKey
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 		if(!pw.equals("")) {
+			String strCurPw = encryptionUtils.decryptRsa(privateKey, curPw);
 			String strPw = encryptionUtils.decryptRsa(privateKey, pw);
-			System.out.println("===== strPw : " + strPw);
+			System.out.println("현재 비밀번호 : " + strCurPw);
+			System.out.println("수정 비밀번호 : " + strPw);
+			strCurPw = encryptionUtils.getSHA512(strCurPw);
 			strPw = encryptionUtils.getSHA512(strPw);
-			rs = memberService.changePassword(id, strPw);
+			System.out.println("현재 비밀번호 암호화 : " + strCurPw);
+			System.out.println("수정 비밀번호 암호화 : " + strPw);
+			rs = memberService.changePassword(id, strPw, strCurPw);
 		}
 	
 		model.addAttribute("rs", ( rs > 0 ? "success" : "fail"));

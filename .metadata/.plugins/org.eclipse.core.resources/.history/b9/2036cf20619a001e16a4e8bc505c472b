@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="memberMapper">
+	
+	<!-- 멤버 등록 -->
+	<insert id="insertMember" parameterType="memberDto">
+		INSERT INTO T_MEMBER(id, pw, name, nickname, address, phone, status, regdate) VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{address}, #{phone}, 1, sysdate())
+	</insert>
+	
+	<!-- 회원 목록 -->
+	<select id="memberList" parameterType="map" resultType="memberDto">
+		
+		SELECT * FROM t_member WHERE
+		
+			<if test="searchType != null and searchType &lt; 5">
+				<choose>
+					<when test="searchType == 0">
+						id
+					</when>
+					<when test="searchType == 1">
+						nickname
+					</when>
+					<when test="searchType == 2">
+						name
+					</when>
+					<when test="searchType == 3">
+						address
+					</when>
+					<when test="searchType == 4">
+						phone
+					</when>			
+				</choose>
+				LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchType != null and searchType == 5">
+				((id LIKE CONCAT('%',#{searchKeyword},'%')) OR (nickname LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (name LIKE CONCAT('%',#{searchKeyword},'%')) OR (address LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (phone LIKE CONCAT('%',#{searchKeyword},'%')))
+			</if>
+		ORDER BY regdate, id
+		LIMIT #{pagination.startIndex}, #{pagination.pageSize};
+	</select>
+	
+	<!-- 회원 삭제 -->
+	<update id="delMember" parameterType="String">
+		UPDATE t_member SET status = 2, modifydate = sysdate() WHERE id = #{id}
+	</update>
+	
+	<!-- 선택한 회원 삭제 -->
+	<update id="selDelMember" parameterType="map">
+		UPDATE t_member SET status = 2, modifydate = sysdate() WHERE id IN
+		<foreach collection="selectedMember" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+	
+	<!-- 회원 한 명 정보 가져오기 -->
+	<select id="selectMember" parameterType="String" resultType="memberDto">
+		SELECT id, pw, nickname, name, address, phone, fileno FROM T_MEMBER WHERE id = #{id}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="editMember" parameterType="memberDto">
+		UPDATE T_MEMBER
+		<choose>
+			<when test="#{pw}.equals('')">
+				SET pw=#{pw}, name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}
+			</when>
+			<otherwise>			
+				SET name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}			
+			</otherwise>
+		</choose>
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 조건에 맞는 회원 카운팅 / 회원 목록 select 부분에서 count(*)하는 차이만 있다. -->
+	<select id="countList" parameterType="map" resultType="Integer">
+			SELECT count(*) FROM t_member WHERE
+		
+			<if test="searchType != null and searchType &lt; 5">
+				<choose>
+					<when test="searchType == 0">
+						id
+					</when>
+					<when test="searchType == 1">
+						nickname
+					</when>
+					<when test="searchType == 2">
+						name
+					</when>
+					<when test="searchType == 3">
+						address
+					</when>
+					<when test="searchType == 4">
+						phone
+					</when>			
+				</choose>
+				LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchType != null and searchType == 5">
+				((id LIKE CONCAT('%',#{searchKeyword},'%')) OR (nickname LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (name LIKE CONCAT('%',#{searchKeyword},'%')) OR (address LIKE CONCAT('%',#{searchKeyword},'%'))
+				OR (phone LIKE CONCAT('%',#{searchKeyword},'%')))
+			</if>
+		ORDER BY regdate;
+	</select>
+	
+	<!-- 프로필 사진 PK 등록 -->
+	<update id="addFileNo" parameterType="map">
+		UPDATE t_member SET fileno = #{seq} WHERE id = #{id}
+	</update>
+	
+	<!-- 회원의 프로필 사진 PK 찾기 -->
+	<select id="selFileNo" parameterType="String" resultType="Integer">
+		SELECT fileno FROM t_member WHERE id = #{id}
+	</select>
+	
+	<!-- ID 중복 검사 -->
+	<select id="checkId" parameterType="String" resultType="Integer">
+		SELECT count(*) FROM t_member WHERE id = #{id}
+	</select>
+	
+	<!-- 로그인 - ID, PW로 회원 선택 -->
+	<select id="selMemberByIdPw" parameterType="memberDto" resultType="memberDto">
+		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id = #{id} AND pw = #{pw}
+	</select>
+	
+	<!-- 프로필 사진 삭제 -->
+	<update id="delPfPhoto" parameterType="String">
+		UPDATE t_member SET fileno = 0 WHERE id = #{id}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePassword" parameterType="map">
+		UPDATE t_member SET pw = #{pw} WHERE id = #{id} AND pw = #{curPw}
+	</update>
+
+</mapper>

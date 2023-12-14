@@ -31,7 +31,7 @@ public class MemberService {
 	}
 	
 	// 회원 목록 출력
-	public List<MemberDTO> toMemberList(Map srchInfo) throws Exception {
+	public List<MemberDTO> toMemberList(Map<String, Object> srchInfo) throws Exception {
 		List<MemberDTO> list = memberDAO.memberList(srchInfo);
 		return list;
 	}
@@ -49,8 +49,8 @@ public class MemberService {
 		return memberDAO.selDelMember(map);
 	}
 	
-	// 회원 수정 페이지로 이동 - 회원 한 명 정보 가져오기
-	public MemberDTO toEditMember(String id) throws Exception {
+	// // 회원 상세보기 페이지로 이동 - 회원 한 명 정보 가져오기
+	public MemberDTO toViewMember(String id) throws Exception {
 		return memberDAO.selectMember(id);
 	}
 	
@@ -62,7 +62,7 @@ public class MemberService {
 	}
 	
 	// 조건에 맞는 회원 카운팅
-	public int countList(Map srchInfo) throws Exception {
+	public int countList(Map<String, Object> srchInfo) throws Exception {
 		return memberDAO.countList(srchInfo);
 	}
 	
@@ -130,10 +130,11 @@ public class MemberService {
 	}
 	
 	// 비밀번호 변경
-	public int changePassword(String id, String pw) {
+	public int changePassword(String id, String pw, String curPw) {
 		Map<String, String> map = new HashMap<>();
 		map.put("id", id);
 		map.put("pw", pw);
+		map.put("curPw", curPw);
 		return memberDAO.changePassword(map);
 	}
 	

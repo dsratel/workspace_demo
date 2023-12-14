@@ -68,7 +68,7 @@
 								<th scope="col">전화번호</th>
 								<th scope="col">가입일자</th>
 								<c:if test="${masteryn eq 'y'.charAt(0)}">
-									<th scope="col">수정</th>
+									<th scope="col">보기</th>
 									<th scope="col">삭제</th>
 								</c:if>
 							</tr>
@@ -92,7 +92,7 @@
 									<span><fmt:formatDate value="${member.regdate }" pattern="k시 m분 s초" /></span>		
 								</td>
 								<c:if test="${masteryn eq 'y'.charAt(0)}">
-									<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">수정</button></td>
+									<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">보기</button></td>
 									<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>					
 								</c:if>
 							</tr>
@@ -181,9 +181,9 @@
 				});
 			});
 			
-			// 수정 버튼 클릭
+			// 보기 버튼 클릭
  			$(".BtnEditMember").on("click", function(){
- 				window.location.replace("/member/editMember?id="+$(this).val());
+ 				window.location.replace("/member/toViewMember?id="+$(this).val());
  			});
 			
 			// 검색 버튼 클릭

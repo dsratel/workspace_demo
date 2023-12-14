@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dialoguespace.comment.CommentDTO;
 import com.dialoguespace.comment.CommentService;
-import com.dialoguespace.common.Common;
 import com.dialoguespace.common.CommonService;
 import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.vo.FileVO;

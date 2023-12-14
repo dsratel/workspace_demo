@@ -18,6 +18,7 @@ public class MemberDTO {
 	private String phone;
 	private int status;		// 1: 활동 / 2: 탈퇴 / 3: 휴면
 	private Date regdate;
+	private Date modifydate;
 	private char masteryn;
 	private int fileno;
 }

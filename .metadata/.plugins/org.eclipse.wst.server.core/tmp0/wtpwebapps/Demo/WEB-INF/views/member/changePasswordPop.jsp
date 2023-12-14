@@ -26,16 +26,21 @@
                     </div>
                     <div class="row" style="margin-top:10px;justify-content:center;">
                     	<form name="chgPwForm" action="/member/changePassword.do" method="post">
-                			<div class="row">
-                				<div class="col">비밀번호</div>
+                    		<div class="row">
+                				<div class="col">현재 비밀번호</div>
+                				<div class="col"><input class="form-control" type="password" id="curPassword"></div>
+                			</div>
+                			<div class="row" style="margin-top:10px;">
+                				<div class="col">수정 비밀번호</div>
                 				<div class="col"><input class="form-control" type="password" id="password"></div>
                 			</div>
                 			<div class="row" style="margin-top:10px;">
-                				<div class="col">비밀번호 확인</div>
+                				<div class="col">수정 비밀번호 확인</div>
                 				<div class="col"><input class="form-control" type="password" id="password2" onKeyup="editPassword(event);"></div>
                 			</div>
 	                		<input type="hidden" id="id" name="id" value="${id}">
-	                		<input type="hidden" id="pw" name="pw">            
+	                		<input type="hidden" id="pw" name="pw">
+	                		<input type="hidden" id="curPw" name="curPw">
 							<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModulus}">
 							<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}">    		
                 		</form>
@@ -73,24 +78,14 @@
 		};
 		
 		// 유효성 검사
-		function validCheck() {
+		function validCheck(testPw, kind) {
 			// 비밀번호 유효성 검사
-			var testPw = $("#password").val();
-			if(!new RegExp(testPw).test($("#password2").val())) {
-				alert("비밀번호와 비밀번호 확인이 일치해야 합니다.");
-				return false;
-			}
-			
 			var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 			
 			if(testPw.length < 8) {
 				alert("비밀번호는 8자리 이상이어야 합니다.");
 				return false;
 			} else {
-				if(!new RegExp(testPw).test($("#password2").val())) {
-					alert("비밀번호와 비밀번호 확인이 일치해야 합니다.");
-					return false;
-				} else {
 					if(!regex.test(testPw)) {
 						alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
 						return false;
@@ -109,23 +104,38 @@
 						console.log("암호화 비밀번호 : " + securedPassword);
 						console.log("암호화 길이 : " + getByteLengthOfString(securedPassword) + "Bytes"); */
 						
-						$("#pw").val(securedPassword);
+						$("#"+kind).val(securedPassword);
 						return true;
 					}
-				}
+				
 			}
 		}
 		
 		// 저장할 때 모든 데이터 유효성 검사 후 input hidden에 넣고 서버로 요청
 		function editPassword(e) {
-			if(e.keyCode == 13 || e.type == 'click') {
-				console.log("비밀번호 수정");
-				if(validCheck() && confirm("비밀번호를 수정하시겠습니까?")) {
-					$("form[name='chgPwForm']").submit();
+			if(e.keyCode == 13 || e.type == "click") {
+				var curPw = $("#curPassword").val();
+				var pw1 = $("#password").val();
+				var pw2 = $("#password2").val();
+				
+				// 1. 현재 비밀번호 유효성 검사
+				if(!validCheck(curPw, "curPw")) {
+					alert("현재 비밀번호를 다시 입력해 주세요.");
+					return ;
+				} else {
+					// 2. 수정 비밀번호와 비밀번호 확인 일치 여부 검사
+					if(!new RegExp(pw1).test(pw2)) {
+						alert("비밀번호와 비밀번호 확인이 일치해야 합니다.");
+						return false;
+					} else {
+						// 3. 비밀번호 유효성 검사
+						if(validCheck(pw1, "pw")) {
+							console.log("비밀번호 수정");
+							if(confirm("비밀번호를 수정하시겠습니까?")) $("form[name='chgPwForm']").submit();							
+						}
+					}
 				}
 			}
-			
-
 		};
     </script>
 	

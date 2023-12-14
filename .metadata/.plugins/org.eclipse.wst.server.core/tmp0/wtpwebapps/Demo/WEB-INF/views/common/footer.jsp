@@ -8,3 +8,6 @@
                 </div>
             </footer>
             <!-- End of Footer -->
+            
+    <input type="hidden" id="loginId" value="${loginId }">       
+    <script src="/resources/template/js/custom.js"></script>

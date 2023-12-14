@@ -9,19 +9,19 @@ public interface CommentDAO {
 	public int writeComment(CommentDTO commentDto);
 	
 	// 댓글 목록 - boardseq별
-	public List<CommentDTO> cmtListByBoardseq(Map map);
+	public List<CommentDTO> cmtListByBoardseq(Map<String, Object> map);
 	
 	// 댓글 목록 - search condition 별
 	public List<CommentDTO> cmtListBySearchcondition();
 	
 	// 댓글 삭제
-	public int deleteCmt(Map map);
+	public int deleteCmt(Map<String, Integer> map);
 	
 	// 댓글 비밀번호 확인
-	public int passwordCheck(Map map);
+	public int passwordCheck(Map<String, Object> map);
 	
 	// 댓글 수정
-	public int editCmt(Map map);
+	public int editCmt(Map<String, Object> map);
 	
 	// depth 0 댓글 rootseq 수정
 	public int editRootSeq();
@@ -33,7 +33,7 @@ public interface CommentDAO {
 	public int sortComment(Map map);
 	
 	// 게시글 시퀀스로 댓글 삭제
-	public int deleteCmtByBoardseq(Map map);
+	public int deleteCmtByBoardseq(Map<String, Integer> map);
 	
 	// 대댓글 작성
 	public int writeReplyComment(CommentDTO commentDto);

@@ -25,23 +25,23 @@ public interface CommonDAO {
 	public int updateFileDB(FileVO file) throws Exception;
 	
 	// id와 category로 파일 경로 찾기
-	public List<String> selFilePathByIdCat(Map map);
+	public List<String> selFilePathByIdCat(Map<String, String> map);
 	
 	// id와 category로 파일 DB 삭제
-	public int delFileDbByIdCat(Map map);
+	public int delFileDbByIdCat(Map<String, String> map);
 	
 	// id와 category로 fileparent update
-	public int modifyFileparent(Map map);
+	public int modifyFileparent(Map<String, Object> map);
 	
 	// seq로 File db 찾기
-	public List<FileVO> SelFileById(Map map);
+	public List<FileVO> SelFileById(Map<String, String> map);
 	
 	// fileparent로 file path 찾기
-	public List<String> SelFilePathById(Map map);
+	public List<String> SelFilePathById(Map<String, Object> map);
 	
 	// 삭제할 seq 찾기
-	public List<Integer> getDelSeq(Map map);
+	public List<Integer> getDelSeq(Map<String, Object> map);
 
 	// seq로 sysname 찾기
-	public String getSysNameBySeq(Map map);
+	public String getSysNameBySeq(Map<String, Object> map);
 }

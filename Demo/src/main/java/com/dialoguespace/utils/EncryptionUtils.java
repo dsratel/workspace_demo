@@ -58,7 +58,6 @@ public class EncryptionUtils {
 
 			byte[] digest = md.digest();
 			String tmp = "";
-			String EncodePassword = "";
 
 			for( int i = 0; i < digest.length; i++ ) {
 				tmp = Integer.toHexString(digest[i] & 0xFF);

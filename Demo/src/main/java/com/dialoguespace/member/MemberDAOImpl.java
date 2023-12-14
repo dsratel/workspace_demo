@@ -21,7 +21,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 회원 목록
 	@Override
-	public List<MemberDTO> memberList(Map srchInfo) throws Exception {
+	public List<MemberDTO> memberList(Map<String, Object> srchInfo) throws Exception {
 		List<MemberDTO> list = sqlsession.selectList("memberMapper.memberList", srchInfo);
 		return list;
 	}
@@ -29,13 +29,13 @@ public class MemberDAOImpl implements MemberDAO {
 	// 회원 삭제
 	@Override
 	public int delMember(String id) throws Exception {
-		return sqlsession.delete("memberMapper.delMember", id);
+		return sqlsession.update("memberMapper.delMember", id);
 	}
 	
 	// 선택한 회원 삭제
 	@Override
 	public int selDelMember(Map<String, Object> map) throws Exception {
-		int rs = sqlsession.delete("memberMapper.selDelMember", map);
+		int rs = sqlsession.update("memberMapper.selDelMember", map);
 		System.out.println(rs);
 		return rs;
 	}
@@ -56,19 +56,19 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 데이터 개수
 	@Override
-	public int totalCnt(Map srchInfo) throws Exception {
+	public int totalCnt(Map<String, Object> srchInfo) throws Exception {
 		return sqlsession.selectOne("memberMapper.totalCnt", srchInfo);
 	}
 	
 	// 조건에 맞는 회원 카운팅
 	@Override
-	public int countList(Map srchInfo) throws Exception {
+	public int countList(Map<String, Object> srchInfo) throws Exception {
 		return sqlsession.selectOne("memberMapper.countList", srchInfo);
 	}
 	
 	// 프로필 사진 PK 등록
 	@Override
-	public int addFileNo(Map map) throws Exception {
+	public int addFileNo(Map<String, Object> map) throws Exception {
 		return sqlsession.update("memberMapper.addFileNo", map);
 	}
 	
@@ -100,7 +100,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 비밀번호 변경
 	@Override
-	public int changePassword(Map map) {
+	public int changePassword(Map<String, String> map) {
 		return sqlsession.update("memberMapper.changePassword", map);
 	}
 

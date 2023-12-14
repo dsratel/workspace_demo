@@ -44,8 +44,6 @@ public class CommentService {
 	
 	// 댓글 목록 - boardseq별
 	public List<CommentDTO> cmtListByBoardseq(int boardseq, char replyYn) {
-		System.out.println("========== CommentService - cmtListByBoardseq ==========");
-		System.out.println("boardseq : " + boardseq + " / replyYn : " +replyYn);
 		// 답글 구분
 		Map<String, Object> map = new HashMap<>();
 		map.put("boardseq", boardseq);
@@ -75,9 +73,6 @@ public class CommentService {
 	
 	// 댓글 비밀번호 확인
 	public int passwordCheck(int seq, int pid, String pw) {
-		System.out.println("========== CommentService - passwordCheck ==========");
-		System.out.println("seq : " + seq + " / pid : " + pid + " / pw : " + pw);
-		
 		Map<String, Object> map = new HashMap<>();
 		
 		// 비밀번호 암호화
@@ -102,7 +97,7 @@ public class CommentService {
 	}
 	
 	// 게시글 시퀀스로 댓글 삭제
-	public int deleteCmtByBoardseq(Map map) {
+	public int deleteCmtByBoardseq(Map<String, Integer> map) {
 		return commentDAO.deleteCmtByBoardseq(map);
 	}
 	

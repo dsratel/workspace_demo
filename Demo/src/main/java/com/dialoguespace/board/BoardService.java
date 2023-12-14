@@ -26,23 +26,17 @@ public class BoardService {
 	}
 	
 	// 글 작성 프로세스
-	public int writeArticle(BoardDTO dto) throws IOException {
-		System.out.println("========== BoardService - writeArticle 진입 ==========");
-
-		System.out.println("BoardService - writeArticle() - BoardDTO" + dto.toString());
-		
+	public int writeArticle(BoardDTO dto) throws IOException {		
 		return boardDAO.writeArticle(dto);
 	}
 	
 	// 글 전체 불러오기
 	public List<BoardDTO> selectArticle(Map<String, Object> srchInfo) {
-		System.out.println("========== BoardService 진입 ==========");
 		return boardDAO.selectArticle(srchInfo);
 	}
 	
 	// seq로 게시글 정보 불러오기
 	public BoardDTO selArticleBySeq(int seq, int pid) {
-		System.out.println("========== BoardService 진입 ==========");
 		Map<String, Integer> map = new HashMap<>();
 		map.put("seq", seq);
 		map.put("pid", pid);
@@ -51,7 +45,6 @@ public class BoardService {
 	
 	// 가장 최신 글 seq 불러오기
 	public int getLatestSeq(String author, int pid) {
-		System.out.println("========== BoardService 진입 ==========");
 		// 답글 구분을 위한 pid 추가
 		Map<String, Object> map = new HashMap<>();
 		map.put("author", author);
@@ -61,7 +54,6 @@ public class BoardService {
 	
 	// 게시글 삭제
 	public int delArticle(int seq, int pid, char attachfile, char cmtYn) {
-		System.out.println("========== BoardService - delArticle 진입 ==========");
 		// 답글일 경우 category를 board_reply로 변경
 		String category = "board";
 		if(pid > 0) category = "board_reply";

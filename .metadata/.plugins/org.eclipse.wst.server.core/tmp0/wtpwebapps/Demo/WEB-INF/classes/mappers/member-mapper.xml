@@ -13,7 +13,7 @@
 	<!-- 회원 목록 -->
 	<select id="memberList" parameterType="map" resultType="memberDto">
 		
-		SELECT * FROM t_member WHERE
+		SELECT * FROM t_member WHERE status = 1 AND
 		
 			<if test="searchType != null and searchType &lt; 5">
 				<choose>
@@ -45,17 +45,17 @@
 	</select>
 	
 	<!-- 회원 삭제 -->
-	<delete id="delMember" parameterType="String">
-		DELETE FROM T_MEMBER WHERE id = #{id}
-	</delete>
+	<update id="delMember" parameterType="String">
+		UPDATE t_member SET status = 2, modifydate = sysdate() WHERE status = 1 AND id != 'devvv' AND id = #{id}
+	</update>
 	
 	<!-- 선택한 회원 삭제 -->
-	<delete id="selDelMember" parameterType="map">
-		DELETE FROM T_MEMBER WHERE id IN
+	<update id="selDelMember" parameterType="map">
+		UPDATE t_member SET status = 2, modifydate = sysdate() WHERE status = 1 AND id != 'devvv' id IN
 		<foreach collection="selectedMember" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
-	</delete>
+	</update>
 	
 	<!-- 회원 한 명 정보 가져오기 -->
 	<select id="selectMember" parameterType="String" resultType="memberDto">
@@ -135,7 +135,7 @@
 	
 	<!-- 비밀번호 변경 -->
 	<update id="changePassword" parameterType="map">
-		UPDATE t_member SET pw = #{pw} WHERE id = #{id}
+		UPDATE t_member SET pw = #{pw} WHERE id = #{id} AND pw = #{curPw}
 	</update>
 
 </mapper>

@@ -58,3 +58,7 @@ div.btnDiv {
 	margin-top : 10px;
 	justify-content : center;
 }
+
+#signOut {
+	cursor : pointer;
+}

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dialoguespace.board.BoardController;
-import com.dialoguespace.comment.CommentController;
 import com.dialoguespace.comment.CommentDTO;
 import com.dialoguespace.comment.CommentService;
 import com.dialoguespace.common.CommonService;

@@ -21,7 +21,7 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 댓글 목록 - boardseq 별
 	@Override
-	public List<CommentDTO> cmtListByBoardseq(Map map) {
+	public List<CommentDTO> cmtListByBoardseq(Map<String, Object> map) {
 		List<CommentDTO> list = sqlsession.selectList("commentMapper.cmtListByBoardseq", map);
 		return list;
 	}
@@ -35,19 +35,19 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 댓글 삭제
 	@Override
-	public int deleteCmt(Map map) {
+	public int deleteCmt(Map<String, Integer> map) {
 		return sqlsession.delete("commentMapper.deleteCmt", map);
 	}
 	
 	// 댓글 비밀번호 확인
 	@Override
-	public int passwordCheck(Map map) {
+	public int passwordCheck(Map<String, Object> map) {
 		return sqlsession.selectOne("commentMapper.passwordCheck", map);
 	}
 	
 	// 댓글 수정
 	@Override
-	public int editCmt(Map map) {
+	public int editCmt(Map<String, Object> map) {
 		return sqlsession.update("commentMapper.editCmt", map);
 	}
 	

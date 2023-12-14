@@ -21,64 +21,71 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                 
+					<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
                     <!-- Content Row -->
-                    <div class="row contentRow">
-					
-							<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
-								<div class="row" style="padding: 5px 0px 5px">
+                    <div class="contentRow">
+								<div class="row">
 									<div class="col-3 editOption">
-										<span>프로필 사진</span>
+										<span>프로필 사진 ${loginId }</span>
 									</div>
 									<div class="col-9">
-										<img class="img-thumbnail" src="${filePath  }" fn="${dto.fileno }" id="preview"/>
-										<input type="file" class="form-control" id="profileInput" name="profilePhoto" onchange="readURL(this)";>
+										<img class="img-thumbnail view" src="${filePath}" />
+										<img class="img-thumbnail edit" src="${filePath}" fn="${dto.fileno }" id="preview"/>
+										<input type="file" class="form-control edit" id="profileInput" name="profilePhoto" onchange="readURL(this)";>
 										<c:choose>
 											<c:when test="${!filePath.contains('userIcon.png') }">
-												<button type="button" class="btn btn-danger" id="delPfPhoto">프로필 사진 삭제</button>
+												<button type="button" class="btn btn-danger edit" id="delPfPhoto">프로필 사진 삭제</button>
 											</c:when>
 											<c:otherwise>
-												<span>선택한 프로필 사진을 취소하고 싶은 경우 사진을 더블클릭 해주세요.</span>
+												<span class="edit">선택한 프로필 사진을 취소하고 싶은 경우 사진을 더블클릭 해주세요.</span>
 											</c:otherwise>
 										</c:choose>
 									</div>
 								</div>
-								<div class="row" style="padding: 5px 0px 5px">
+								<div class="row">
 									<div class="col-3 editOption">
 										<span>ID</span>
 									</div>
 									<div class="col-9">
-										<input type="text" class="form-control" name="id" value="${dto.id }" readonly>
+										<span class="view">${dto.id}</span>
+										<input type="text" class="form-control edit" name="id" value="${dto.id }">
 									</div>
 								</div>
-								<div class="row" style="padding: 5px 0px 5px">
+								<div class="row">
 									<div class="col-3 editOption">
 										<span>이름</span>
 									</div>
 									<div class="col-9">
-										<input type="text" class="form-control" name="name" value="${dto.name }">
+										<span class="view">${dto.name}</span>
+										<input type="text" class="form-control edit" name="name" value="${dto.name }">
 									</div>
 								</div>
-								<div class="row" style="padding: 5px 0px 5px">
+								<div class="row">
 									<div class="col-3 editOption">
 										<span>닉네임</span>
 									</div>
 									<div class="col-9">
-										<input type="text" class="form-control" name="nickname" value="${dto.nickname }">
+										<span class="view">${dto.nickname}</span>
+										<input type="text" class="form-control edit" name="nickname" value="${dto.nickname }">
 									</div>
 								</div>
-								<div class="row" style="padding: 5px 0px 5px">
+								<div class="row">
 									<div class="col-3 editOption">
 										<span>주소</span>
 									</div>
 									<div class="col-9">
-										<input type="text" class="form-control" name="address" value="${dto.address }">
+										<span class="view">${dto.address}</span>
+										<input type="text" class="form-control edit" name="address" value="${dto.address }">
 									</div>
 								</div>
-								<div class="row" style="padding: 5px 0px 5px">
+								<div class="row">
 									<div class="col-3 editOption">
 										<span>전화번호</span>
 									</div>
-									<div class="col-9">
+									<div class="col-9 view">
+										<span>${dto.phone.substring(0,3)} - ${dto.phone.substring(3,7)} - ${dto.phone.substring(7) }</span>
+									</div>
+									<div class="col-9 edit">
 										<select class="form-select phone" id="phone1" onchange="changePhone(this)">
 											<option value="010">010</option>
 											<option value="070">070</option>
@@ -94,13 +101,17 @@
 										<input type="text" class="form-control" name="phone" id="phone" value="">
 									</div>
 								</div>
-							</form>
 						</div>
 						<div class="row btnDiv">
-							<button class="btn btn-success" type="button" form="editMemberForm" id="save">수정하기</button>
-							<button class="btn btn-dark" type="button" id="showList">목록출력</button>
+							<button class="btn btn-success view" type="button" id="toEdit">수정하기</button>
+							<c:if test="${loginId.equals('devvv')}">
+								<button class="btn btn-dark view" type="button" id="showList">목록출력</button>							
+							</c:if>
+							<button class="btn btn-info edit" type="button" form="editMemberForm" id="save">수정요청</button>
+							<button class="btn btn-secondary edit" type="button" id="editCancel">취소</button>
 						</div>
 					
+						</form>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -130,9 +141,10 @@
 		// css
 		//// ID input 태그 색상 변경
 		$("input[name='id']").css({"background-color":"grey", "color":"white"});
-		$("#preview").css({"width" : "200px", "height" : "200px"});
+		$(".img-thumbnail").css({"width" : "200px", "height" : "200px"});
 		$(".phone").css({"width" : "30%", "display" : "inline"});
 		$("#phone4, #phone").hide();
+		$(".edit").hide();
 		
 		// 프로필 사진 삭제
  		$("#delPfPhoto").click(function(){
@@ -166,24 +178,7 @@
 		// 수정하기
 		$("#save").on("click", function(){
 			// 유효성 검사
-			//// 1. 비밀번호
-			var testPw = $("input[name='pw']").val();
-			var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-			if(testPw.length > 0) {
-				if(testPw.length < 8) {
-					alert("비밀번호는 8자리 이상이어야 합니다.");
-					return;
-				} else {
-					if(!regex.test(testPw)){
-						alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
-						return;
-					} else {
-						$("#pw").val(testPw);
-					}
-				}				
-			}
-			
-			//// 2. 이름
+			//// 1. 이름
 			var testName = $("input[name='name']").val();
 			if(testName.length < 2) {
 				alert("이름은 2자리 이상이어야 합니다.");
@@ -192,7 +187,7 @@
 				$("#name").val($("input[name='name']").val());
 			}
 			
-			//// 3. 닉네임
+			//// 2. 닉네임
 			var testNickname = $("input[name='nickname']").val();
 			if(testNickname.length < 2) {
 				alert("닉네임은 2자리 이상이어야 합니다.");
@@ -201,7 +196,7 @@
 				$("#nickname").val($("input[name='nickname']").val());
 			}
 			
-			//// 4. 주소
+			//// 3. 주소
 			var testAddress = $("input[name='address']").val();
 			if(testAddress.length < 1) {
 				alert("주소를 입력해주세요.");
@@ -210,7 +205,7 @@
 				$("#address").val($("input[name='address']").val());
 			}
 			
-			//// 5. 전화번호
+			//// 4. 전화번호
 			var regExp = /^[0-9]{4}$/;
 			var testPhone = "";
  			if(!regExp.test($("#phone2").val()) || $("#phone2").val().length < 4 || !regExp.test($("#phone3").val()) || $("#phone3").val().length < 4) {
@@ -236,13 +231,27 @@
 		});
 		
 		// 사진 더블클릭 시 
-		$("#preview").dblclick(function(){
-			console.log("더블클릭");
-			// 기본이미지로 변경
-			$("#preview").attr("src", "/repository/userIcon.png");
-			
-			// 파일 input 초기화
-			$("#profileInput").val("");
+		if($("#preview").attr("src").indexOf("/userIcon.png") > 0) {
+			$("#preview").dblclick(function(){
+				console.log("더블클릭");
+				// 기본이미지로 변경
+				$("#preview").attr("src", "/repository/userIcon.png");
+				
+				// 파일 input 초기화
+				$("#profileInput").val("");
+			});			
+		}
+		
+		// 수정하기 버튼
+		$("#toEdit").click(function(){
+			$(".view").hide();
+			$(".edit").show();	
+		});
+		
+		// 수정 취소 버튼
+		$("#editCancel").click(function(){
+			$(".edit").hide();
+			$(".view").show();
 		});
 		
 	}); // function() end

@@ -44,15 +44,15 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">USER INFO:</h6>
-                        <a class="collapse-item" href="#">Profile</a>
-                        <a class="collapse-item" href="#">Sign out</a>
+                        <a class="collapse-item" href="/member/toViewMember?id=${loginId}">Profile</a>
+                        <a class="collapse-item" id="signOut">Sign out</a>
                     </div>
                 </div>
             </li>
             
 			<!-- Nav Item - Reset Password -->
             <li class="nav-item">
-                <a class="nav-link" href="/member/changePassword?id=${loginId}" onclick="window.open(this.href, 'password change popup', 'width=500, height=300, left=610, top=340'); return false;">
+                <a class="nav-link" href="/member/changePassword?id=${loginId}" onclick="window.open(this.href, 'password change popup', 'width=540, height=350, left=610, top=340'); return false;">
                     <i class="fas fa-solid fa-key"></i>
                     <span> Reset Password</span>
 				</a>

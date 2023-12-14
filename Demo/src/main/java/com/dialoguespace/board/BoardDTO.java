@@ -16,6 +16,6 @@ public class BoardDTO {
 	private int commentcnt;
 	private int pid;
 	private Date regdate;
-	private Date modifyDate;
+	private Date modifydate;
 	private String etc;
 }

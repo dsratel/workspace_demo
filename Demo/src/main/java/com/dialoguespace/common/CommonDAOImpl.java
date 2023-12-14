@@ -56,42 +56,42 @@ public class CommonDAOImpl implements CommonDAO {
 	
 	// id와 category로 파일 경로 찾기
 	@Override
-	public List<String> selFilePathByIdCat(Map map) {
+	public List<String> selFilePathByIdCat(Map<String, String> map) {
 		return sqlsession.selectList("commonMapper.selFilePathByIdCat", map);
 	}
 	
 	// id와 category로 파일 DB 삭제
 	@Override
-	public int delFileDbByIdCat(Map map) {
+	public int delFileDbByIdCat(Map<String, String> map) {
 		return sqlsession.update("commonMapper.delFileDbByIdCat", map);
 	}
 	
 	// id와 category로 fileparent update
 	@Override
-	public int modifyFileparent(Map map) { 
+	public int modifyFileparent(Map<String, Object> map) { 
 		return sqlsession.update("commonMapper.modifyFileparent", map);
 	}
 	
 	// seq로 File db 찾기
 	@Override
-	public List<FileVO> SelFileById(Map map) {
+	public List<FileVO> SelFileById(Map<String, String> map) {
 		return sqlsession.selectList("commonMapper.selFileById", map);
 	}
 	
 	// fileparent로 file path 찾기
 	@Override
-	public List<String> SelFilePathById(Map map) {
+	public List<String> SelFilePathById(Map<String, Object> map) {
 		return sqlsession.selectList("commonMapper.selFilePathById", map);
 	}
 	
 	// 삭제할 seq 찾기
-	public List<Integer> getDelSeq(Map map) {
+	public List<Integer> getDelSeq(Map<String, Object> map) {
 		return sqlsession.selectList("commonMapper.getDelSeq", map);
 	}
 	
 	// seq로 sysname 찾기
 	@Override
-	public String getSysNameBySeq(Map map) {
+	public String getSysNameBySeq(Map<String, Object> map) {
 		return sqlsession.selectOne("commonMapper.getSysNameBySeq", map);
 	}
 }
