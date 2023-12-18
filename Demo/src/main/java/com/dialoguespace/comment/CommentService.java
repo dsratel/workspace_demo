@@ -22,6 +22,8 @@ public class CommentService {
 		this.encryption = encryption; 
 	}
 	
+
+	
 	// 댓글 작성
 	public int wrtieComment(CommentDTO commentDto) {
 		// commentDTO 세팅
@@ -107,8 +109,29 @@ public class CommentService {
 	}
 	
 	// 댓글 목록(댓글+대댓글)
-	public List<CommentDTO> cmtList() {
-		return commentDAO.cmtList();
+	public List<CommentDTO> cmtList(String id) {
+		return commentDAO.cmtList(id);
 	}
+	
+	// 댓글 검색 조건 만들기
+	public Map<String, Object> makeSrchInfo(String id, String searchType, String searchKeyword) {
+		// 검색 조건 map 생성
+		Map<String, Object> map = new HashMap<>();
+		
+		// map에 검색 조건 담기
+		map.put("id", id);
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		
+		return map;
+	}
+	
+	// 조건에 맞는 댓글 개수
+	public List<CommentDTO> countList(Map<String, Object> srchInfo) {
+		return commentDAO.countList(srchInfo);
+	}
+	
+	// 검색 조건에 맞는 댓글 시퀀스
+
 
 }

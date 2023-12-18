@@ -26,7 +26,7 @@
                     <div class="contentRow">
 								<div class="row">
 									<div class="col-3 editOption">
-										<span>프로필 사진 ${loginId }</span>
+										<span>프로필 사진</span>
 									</div>
 									<div class="col-9">
 										<img class="img-thumbnail view" src="${filePath}" />

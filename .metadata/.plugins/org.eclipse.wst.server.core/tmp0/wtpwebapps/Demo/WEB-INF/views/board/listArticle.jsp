@@ -37,18 +37,18 @@
 						<form method="get" action="/board/toList" name="searchForm" id="searchForm">
 			 				<div class="row">
 								<div class="col">
-									<select class="form-select" name="category" id="category" onchange="changeCategory(this)">
+									<select class="form-control" name="category" id="" onchange="changeCategory(this)">
 										<option value="free">자유게시판</option>
 										<option value="notice">공지사항</option>
 									</select>
-									<select class="form-select" name="searchType" id="searchType">
+									<select class="form-control" name="searchType" id="searchType">
 										<option value="0">제목</option>
 										<option value="1">작성자</option>
 									</select>					
 									<input type="text" class="form-control" name="searchKeyword">
 									<button type="button" class="btn btn-primary" id="searchBtn">검색</button>
 									<span>페이지 수</span>
-									<select class="form-select" name="pageSize" id="pageSize" onchange="changePageSize(this)">
+									<select class="form-control" name="pageSize" id="pageSize" onchange="changePageSize(this)">
 										<option value="10">10</option>
 										<option value="20">20</option>
 										<option value="50">50</option>
@@ -210,7 +210,7 @@
 			var divLeft	= p.left;		// 좌측 좌표
 			
 			// 레이어 팝업 view
-		//	$(".layer_popup").css({"z-index" : "10000", "top" : divTop, "left" : divLeft, "position" : "absolute"}).show();
+			$(".layer_popup").css({"z-index" : "10000", "top" : divTop, "left" : divLeft, "position" : "absolute"}).show();
 		});
 		
 		// 다른 곳 클릭 시 레이어 팝업 사라짐

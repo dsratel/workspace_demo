@@ -45,6 +45,9 @@ public interface CommentDAO {
 	public int deleteReplyCmt(int seq);
 	
 	// 댓글 목록(댓글+대댓글)
-	public List<CommentDTO> cmtList();
+	public List<CommentDTO> cmtList(String id);
+	
+	// 조건에 맞는 댓글 개수
+	public List<CommentDTO> countList(Map<String, Object> srchInfo);
 
 }

@@ -152,27 +152,30 @@ public class MemberController {
 	@GetMapping(value="/toViewMember")
 	public String toViewMember(String id, Model model) throws Exception {
 		System.out.println("상세 보기 회원 ID : " + id);
-		if(id != null) {
-			// 멤버 정보 Model에 담기
-			MemberDTO dto = memberService.toViewMember(id);
-			model.addAttribute("dto", dto);
-			
-			String filePath = this.repo_path.replace("D:/demo_", "/") + "userIcon.png";
-			
-			if(dto.getFileno() > 0) {
-				filePath = this.member_path.replace("D:/demo_", "/") + commonService.getSysNameBySeq(dto.getFileno(), "member"); 
-//				filePath = filePath.length() > 19 ? filePath : (this.repo_path.replace("D:/demo_", "/") + "userIcon.png");  
-				
-			}
-			MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
-			model.addAttribute("masteryn", loginInfo.getMasteryn());
-			model.addAttribute("loginId", loginInfo.getId());
-			model.addAttribute("filePath", filePath);				
-			// 사진 경로
-			return "/member/memberView";
-		} else {
-			return "errorPage";
+		
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		
+		if(id == null) {
+			id =  loginInfo.getId();
 		}
+		
+		// 멤버 정보 Model에 담기
+		MemberDTO dto = memberService.toViewMember(id);
+		model.addAttribute("dto", dto);
+		
+		String filePath = this.repo_path.replace("D:/demo_", "/") + "userIcon.png";
+		
+		if(dto.getFileno() > 0) {
+			filePath = this.member_path.replace("D:/demo_", "/") + commonService.getSysNameBySeq(dto.getFileno(), "member"); 
+//				filePath = filePath.length() > 19 ? filePath : (this.repo_path.replace("D:/demo_", "/") + "userIcon.png");  
+			
+		}
+		// 사진 경로
+		model.addAttribute("masteryn", loginInfo.getMasteryn());
+		model.addAttribute("loginId", loginInfo.getId());
+		model.addAttribute("filePath", filePath);
+		return "/member/memberView";
+		
 	}
 	
 	// 회원 정보 수정
@@ -245,29 +248,34 @@ public class MemberController {
 		
 			// RSA 복호화
 			PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
-			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
-			System.out.println("로그인 시 입력한 비밀번호 : " + strPw);
-			
-			// SHA-512 암호화
-			strPw = encryptionUtils.getSHA512(strPw);
-			memberDto.setPw(strPw);
-			System.out.println("로그인 시 입력한 암호화 SHA512 : " + strPw);
-			MemberDTO dto = memberService.selMemberByIdPw(memberDto);
-			
-			// redirect할 URI가 없다면 글목록을 요청
-			requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
-			
-			if( requestURI.equals("") ) requestURI = "/board/toList";
-			
-			
-			if(dto != null && dto.getStatus() == 1) {
-				session.setAttribute("loginSession", dto);
-				model.addAttribute("dto", dto);
+			if(privateKey != null) {
+				String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
+				System.out.println("로그인 시 입력한 비밀번호 : " + strPw);
 				
-				if(dto.getMasteryn() == 'y') {
-					requestURI = "/master/home";
+				// SHA-512 암호화
+				strPw = encryptionUtils.getSHA512(strPw);
+				memberDto.setPw(strPw);
+				System.out.println("로그인 시 입력한 암호화 SHA512 : " + strPw);
+				MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+				
+				// redirect할 URI가 없다면 글목록을 요청
+				requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
+				
+				if( requestURI.equals("") ) requestURI = "/board/toList";
+				
+				
+				if(dto != null && dto.getStatus() == 1) {
+					session.setAttribute("loginSession", dto);
+					model.addAttribute("dto", dto);
+					
+					if(dto.getMasteryn() == 'y') {
+						requestURI = "/master/home";
+					}
+					return "redirect:"+requestURI;
+				} else {
+					return "redirect:/";
 				}
-				return "redirect:"+requestURI;
+				
 			} else {
 				return "redirect:/";
 			}

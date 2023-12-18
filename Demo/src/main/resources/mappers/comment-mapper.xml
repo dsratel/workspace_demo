@@ -111,11 +111,38 @@
 	</select>
 	
 	<!-- 댓글 전체 목록 -->
-	<select id="cmtList" resultType="commentDto">
-		SELECT seq, pid, id, content, boardseq, replyboardseq, regdate FROM t_comment
+	<select id="cmtList" parameterType="String" resultType="commentDto">
+		SELECT a.* FROM (
+		SELECT seq, pid, id, content, boardseq, replyboardseq, regdate FROM t_comment WHERE id = #{id}
 		UNION
 		SELECT seq, pid, id, content, (SELECT boardseq FROM t_comment tc WHERE tc.seq = tcr.pid)
-				, (SELECT replyboardseq FROM t_comment tc WHERE tc.seq = tcr.pid), regdate FROM t_comment_reply tcr
+				, (SELECT replyboardseq FROM t_comment tc WHERE tc.seq = tcr.pid), regdate FROM t_comment_reply tcr WHERE id = #{id}) a
+		ORDER BY regdate
+	</select>
+	
+	<!-- 조건에 맞는 댓글 개수 -->
+	<select id="countList" parameterType="map" resultType="commentDto">
+		SELECT seq, id, content, boardseq, replyboardseq, pid, regdate FROM t_comment
+		WHERE id = #{id} AND
+  		<choose>
+			<when test="searchType == 0">
+				content LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<otherwise>
+				boardseq = #{searchKeyword}
+			</otherwise>		
+		</choose>
+		UNION
+		SELECT seq, id, content, -1, -1, pid, regdate FROM t_comment_reply
+		WHERE id = #{id} AND
+  		<choose>
+			<when test="searchType == 0">
+				content LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<otherwise>
+				pid IN (SELECT seq FROM t_comment WHERE id = #{id} AND boardseq = #{searchKeyword})
+			</otherwise>		
+		</choose>
 	</select>
 
 </mapper>

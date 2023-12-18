@@ -78,7 +78,7 @@ public class MasterController {
 		// 만약 세션에 저장되어 있는 로그인 정보가 관리자라면
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo.getMasteryn() == 'y') {
-			List<CommentDTO> list = commentService.cmtList();
+			List<CommentDTO> list = commentService.cmtList(loginInfo.getId());
 			model.addAttribute("list", list);
 			return "/comment/commentList";
 		} else {

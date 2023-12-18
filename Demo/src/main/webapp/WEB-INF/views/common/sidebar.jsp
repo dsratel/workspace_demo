@@ -76,10 +76,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Article:</h6>
-                        <a class="collapse-item">list</a>
+                        <a class="collapse-item" href="/board/toList">list</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Comment:</h6>
-                        <a class="collapse-item" href="">list</a>
+                        <a class="collapse-item" href="/comment/myList?id=${loginId}">list</a>
                     </div>
                 </div>
             </li>
@@ -92,7 +92,8 @@
 	            <li class="nav-item">
 	                <a class="nav-link">
 	                    <i class="fas fa-solid fa-file"></i>
-	                    <span>files</span></a>
+	                    <span>files</span>
+                    </a>
 	            </li>
 			</c:if>
 

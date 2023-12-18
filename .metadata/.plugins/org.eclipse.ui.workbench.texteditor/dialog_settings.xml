@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="aafbac52-7331-469b-ad6f-0c3ecd8839dc"/>
+		<item key="selection" value="Cipher"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="aafbac52-7331-469b-ad6f-0c3ecd8839dc"/>
-			<item value="7f62e61b-f3cb-4362-8146-71736684c64f"/>
-			<item value="72"/>
-			<item value="d:"/>
-			<item value="path"/>
+			<item value="cipher"/>
+			<item value="return"/>
+			<item value="login.do"/>
+			<item value="loginId"/>
+			<item value="sign out"/>
 			<item value="view"/>
-			<item value="SelFilePathById"/>
-			<item value=" view"/>
-			<item value="/demo/"/>
-			<item value="/resources"/>
-			<item value="catalina_home"/>
-			<item value="appb"/>
-			<item value="servlet-mapping"/>
-			<item value="servlet-class"/>
-			<item value="dispatcherservlet"/>
+			<item value="delMember"/>
+			<item value="삭제"/>
+			<item value="tkrwp"/>
+			<item value="// 보기 버튼 클릭"/>
+			<item value="$(&quot;#save&quot;)"/>
+			<item value="취소"/>
+			<item value=" style=&quot;padding: 5px 0px 5px&quot;"/>
+			<item value="col-9"/>
+			<item value="toview"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value="/"/>
 			<item value="/demo/resources"/>
 			<item value="src=&quot;/resources/template/img"/>
 			<item value="src=&quot;/img"/>
 			<item value="/resources/template/img"/>
 			<item value="${masteryn == &apos;y&apos;}"/>
-			<item value=""/>
 			<item value="id"/>
 			<item value="dto"/>
 		</list>

@@ -1,18 +1,29 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
-	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
-	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 	
-	<title>view board page</title>
-</head>
-<body>
-	<div class="container">
+		<!-- Sidebar -->
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="main_content">
+
+                <!-- Topbar -->
+                <%@ include file="/WEB-INF/views/common/topbar.jsp" %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                    <!-- Content Row -->
+                    <div class="">
+                
 		<div class="row">	<!-- 카테고리 -->
 			<div class="col-1"></div>
 			<div class="col-1 tab">
@@ -59,7 +70,7 @@
 				<span>첨부파일</span>
 			</div>
 			<div class="col-9 cont imgDiv">
-				<c:forEach var="filePath" items="${files }">
+				<c:forEach var="filePath" items="${files}">
 					<img class="img-thumbnail" src="${filePath}">
 				</c:forEach>			
 			</div>
@@ -69,10 +80,12 @@
 			<div class="row" id="commentDiv">	<!-- 댓글 / 회원인 경우에만 작성 가능 -->
 				<div class="col-1"></div>
 				<div class="col-10">
+					<div class="row" >
 						<input type="text" value="${loginId}" id="cmtId" readonly>
 						<input type="password" placeholder="password" id="cmtPw" maxlength="20">
 						<textarea id="cmtContent"></textarea>
-						<button type="button" id="commentBtn" class="btn btn-primary">댓글작성</button>	
+						<button type="button" id="commentBtn" class="btn btn-primary">댓글작성</button>						
+					</div>
 				</div>
 				<div class="col-1"></div>
 				<form name="cmtForm" method="post" id="cmtForm">
@@ -98,11 +111,13 @@
 				</c:when>
 				<c:otherwise>
 					<div class="col-1"></div>
-					<div class="col-10 row" id="cmtListDiv">
+					<div class="col-10" id="cmtListDiv">
 						<c:forEach var="cmt" items="${cmtList}">
-							<div class="row cmtList">
+							<div class="cmtList">
 								<div class="row cmtIdDiv">
-									<span>${cmt.nickname}</span>
+									<div class="col">
+										<span>${cmt.nickname}</span>
+									</div>
  								</div>		
 								<div class="row cmtContDiv">
 									<div class="col-8 cmtContent">
@@ -143,9 +158,35 @@
 				</c:if>
 	    		<button type="button" class="btn btn-secondary" id="listBtn">글 목록으로</button>				
 			</div>
-		</div>
-	</div>
-	<script>
+		</div>                
+                
+                
+                
+                
+                
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+		
+	<!-- Core plugin JavaScript-->
+    <script src="/resources/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/resources/template/js/sb-admin-2.min.js"></script>
+    
+    <script>
 		$(function(){
 			// css
 			$("div.tab, div.cont").css({"border" : "1px solid black", "padding" : "5px"});
@@ -155,10 +196,11 @@
 			$("#content").css({"width" : "100%", "height" : "300px", "border" : "none", "resize" : "none"});
 			$("textarea").css("outline", "none");
 			$(".img-thumbnail").css({"width":"200px", "height":"200px"});
-			$(".cmtList").css({"border":"1px black solid", "margin":"5px"});
+			$(".cmtList").css({"border":"1px black solid", "margin":"5px", "padding":"10px"});	// bootstrap row,col로 테이블 형태를 만들 때 row-col-row-col 순으로 써야 한다.
+			$("#cmtId").css({"margin-right":"10px"});
 			$(".cmtIdDiv").css({"margin-bottom":"10px"});
 			$("#cmtForm").css({"margin-top":"10px"});
-			$("#cmtContent").css({"margin-top":"10px", "width":"80%", "height":"100px", "resize":"none"});
+			$("#cmtContent").css({"margin-top":"10px", "width":"90%", "height":"100px", "resize":"none"});
 			$(".delCmtBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});
 			$("#commentDiv").css({"margin":"30px 0px 30px 0px"});
 			
@@ -186,10 +228,10 @@
 			
 			// 글 삭제하기
 			$("#delBtn").click(function(){
-				var cmtYn = '';
+				var cmtYn = 'N';
 				if($("div.cmtContent").length > 0) cmtYn = 'Y';
 				if(confirm("정말로 게시글을 삭제하시겠습니까?\n삭제 후에는 복구할 수 없습니다.")) {
-					window.location.replace("/board/delArticle?seq=${dto.seq}&attachfile=${dto.attachfile}&pid=${dto.pid}&cmtYn="+cmtYn);					
+					window.location.replace("/board/delArticle?seq=${dto.seq}&attachfile=${dto.attachfile}&pid=${dto.pid}&cmtYn="+cmtYn);
 				}
 			});
 			
@@ -247,7 +289,7 @@
 		        success: function(data) {
 		            for(var i=0; i < data.length; i++) {
 		                console.log(data[i].depth == 0);
-		                appendStr = appendStr + "<div class='row cmtList'>"
+		                appendStr = appendStr + "<div class='cmtList'>"
 		                                        + "<div class='row cmtIdDiv'>"
 		                                        +	 "<span>" + data[i].nickname + "</span>"
 		                                        + "</div>"
@@ -464,6 +506,7 @@
 		    $("#replyCmtContent_"+cmtSeq).css({"width":"100%", "resize":"none"});
 		    $("button.delCmtBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});
 		    $("div[class*='replyList']").css({"margin":"10px", "background-color":"#dcdcdc"});
+		    $("div.cmtList").css({"border":"1px black solid", "margin":"5px", "padding":"10px"});
 		    
 		}
 
@@ -550,9 +593,11 @@
 		function createReplyForm(data) {
 		    var appendStr = "";
 		    for(var i=0; i < data.length; i++) { 
-		        appendStr = appendStr + "<div class='row cmtList replyList_" + data[i].pid + "' style='border:1px solid black;'>"
+		        appendStr = appendStr + "<div class='cmtList replyList_" + data[i].pid + "' style='border:1px solid black;'>"
 		                                + "<div class='row cmtIdDiv'>"
-		                                +	 "<span>" + data[i].nickname + "</span>"
+		                                +	"<div class='col'>"
+		                                +		"<span>" + data[i].nickname + "</span>"
+		                                +	"</div>"
 		                                + "</div>"
 		                                + "<div class='row cmtContDiv'>"
 		                                +	"<div class='col-8 cmtContent'>"
@@ -580,6 +625,6 @@
 		
 			
 	</script>
-
+	
 </body>
 </html>
