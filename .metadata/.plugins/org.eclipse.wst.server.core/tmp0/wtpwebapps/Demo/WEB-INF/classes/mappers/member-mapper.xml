@@ -13,7 +13,7 @@
 	<!-- 회원 목록 -->
 	<select id="memberList" parameterType="map" resultType="memberDto">
 		
-		SELECT * FROM t_member WHERE status = 1 AND
+		SELECT * FROM t_member WHERE status = #{status} AND
 		
 			<if test="searchType != null and searchType &lt; 5">
 				<choose>
@@ -59,7 +59,7 @@
 	
 	<!-- 회원 한 명 정보 가져오기 -->
 	<select id="selectMember" parameterType="String" resultType="memberDto">
-		SELECT id, pw, nickname, name, address, phone, fileno FROM T_MEMBER WHERE id = #{id}
+		SELECT id, pw, nickname, name, address, phone, fileno, status FROM T_MEMBER WHERE id = #{id}
 	</select>
 	
 	<!-- 회원 정보 수정 -->
@@ -78,9 +78,10 @@
 	
 	<!-- 조건에 맞는 회원 카운팅 / 회원 목록 select 부분에서 count(*)하는 차이만 있다. -->
 	<select id="countList" parameterType="map" resultType="Integer">
-			SELECT count(*) FROM t_member WHERE
+			SELECT count(*) FROM t_member WHERE status = #{status}
 		
 			<if test="searchType != null and searchType &lt; 5">
+				AND
 				<choose>
 					<when test="searchType == 0">
 						id
@@ -101,6 +102,7 @@
 				LIKE CONCAT('%',#{searchKeyword},'%')
 			</if>
 			<if test="searchType != null and searchType == 5">
+				AND
 				((id LIKE CONCAT('%',#{searchKeyword},'%')) OR (nickname LIKE CONCAT('%',#{searchKeyword},'%'))
 				OR (name LIKE CONCAT('%',#{searchKeyword},'%')) OR (address LIKE CONCAT('%',#{searchKeyword},'%'))
 				OR (phone LIKE CONCAT('%',#{searchKeyword},'%')))

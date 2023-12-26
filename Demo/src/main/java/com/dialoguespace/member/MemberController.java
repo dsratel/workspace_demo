@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +34,12 @@ import com.dialoguespace.utils.EncryptionUtils;
 import com.dialoguespace.vo.FileVO;
 import com.dialoguespace.vo.PaginationVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Controller
 @RequestMapping(value="/member")
+@Slf4j
 public class MemberController {
 	
 	private final MemberService memberService;
@@ -57,11 +61,20 @@ public class MemberController {
 		this.session = session;
 	}
 	
+	@ModelAttribute
+	public void loginInfo(Model model) {
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		if(loginInfo != null) {
+			model.addAttribute("loginId", loginInfo.getId());
+			model.addAttribute("masteryn", loginInfo.getMasteryn());			
+		}
+	}
+	
 	// 회원 등록
 	@PostMapping(value="/insertMember.do")
 	public String insertMember(MemberDTO memberDto, @RequestParam("upfile") MultipartFile[] files, HttpServletRequest request) throws Exception {
 		// 회원 등록
-		System.out.println("MemberController memberDto : " + memberDto); 
+		log.info("MemberController memberDto : " + memberDto); 
 		
 		// RSA PrivateKey
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
@@ -74,7 +87,7 @@ public class MemberController {
 		if(memberService.insertMember(memberDto) < 0) {
 			return "errorPage";
 		};
-		System.out.println("회원정보 등록 완료");
+		log.info("회원정보 등록 완료");
 		
 		// 프로필 사진 등록
 		if(files[0].getSize() > 0) {
@@ -95,11 +108,12 @@ public class MemberController {
 	// 리스트 페이지 이동
 	@GetMapping(value="/list")
 	public String toMemberList(@RequestParam(defaultValue = "0") String searchType, @RequestParam(defaultValue = "")String searchKeyword,
-			 @RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "10") int pageSize, Model model) throws Exception {
+			 @RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "10") int pageSize,
+			 @RequestParam(defaultValue = "1") String status, Model model) throws Exception {
 		// 검색 조건 - 조건으로 검색 - 전체 페이지 출력 - 조건 및 페이지에 맞는 데이터만 추출 - 화면에 출력
 		// 검색 및 페이징 Map에 담기
 		// 검색조건
-		Map<String, Object> srchInfo = commonService.makeSrchInfo(searchType, searchKeyword);
+		Map<String, Object> srchInfo = commonService.makeSrchInfo(searchType, searchKeyword, status);
 		
 		// 조건에 맞는 데이터 개수
 		int listCnt = memberService.countList(srchInfo);
@@ -119,9 +133,8 @@ public class MemberController {
 		}
 		
 		model.addAttribute("srchInfo", srchInfo);
-		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
-		model.addAttribute("masteryn", loginInfo.getMasteryn());
-		model.addAttribute("loginId", loginInfo.getId());
+		
+		if(Integer.parseInt(status) == 2) model.addAttribute("delList", "y");
 		
 		return "/member/list";
 	}
@@ -131,7 +144,7 @@ public class MemberController {
 	@PostMapping(value="/delMember.do")
 	public String delMember(@RequestParam String id, String self) throws Exception {
 		//if(!id.equals("devvv")) memberService.delMember(id);
-		System.out.println("id : " + id + " / self : " + self);
+		log.info("id : " + id + " / self : " + self);
 		
 		return (self.equals("y") ?  "redirect:/" : "redirect:/member/list");
 	}
@@ -141,23 +154,21 @@ public class MemberController {
 	@PostMapping(value="/selDelMember.do")
 	public void selDelMember(@RequestBody String[] selectedMember) throws Exception {
 		for(int i=0; i<selectedMember.length; i++) {
-			System.out.println(selectedMember[i]);
+			log.info(selectedMember[i]);
 		}
-		System.out.println("삭제할 회원 목록 : " + selectedMember);
+		log.info("삭제할 회원 목록 : " + selectedMember);
 		memberService.selDelMember(selectedMember);
-		System.out.println("선택한 회원 삭제 완료");
+		log.info("선택한 회원 삭제 완료");
 	}
 	
 	// 회원 상세보기 페이지로 이동
 	@GetMapping(value="/toViewMember")
-	public String toViewMember(String id, Model model) throws Exception {
-		System.out.println("상세 보기 회원 ID : " + id);
+	public String toViewMember(@RequestParam(defaultValue = "")String id, Model model) throws Exception {
+		log.info("상세 보기 회원 ID : " + id);
 		
-		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+//		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		
-		if(id == null) {
-			id =  loginInfo.getId();
-		}
+		if(id.equals("")) id = commonService.getLoginInfo().getId();
 		
 		// 멤버 정보 Model에 담기
 		MemberDTO dto = memberService.toViewMember(id);
@@ -171,8 +182,8 @@ public class MemberController {
 			
 		}
 		// 사진 경로
-		model.addAttribute("masteryn", loginInfo.getMasteryn());
-		model.addAttribute("loginId", loginInfo.getId());
+//		model.addAttribute("masteryn", loginInfo.getMasteryn());
+//		model.addAttribute("loginId", loginInfo.getId());
 		model.addAttribute("filePath", filePath);
 		return "/member/memberView";
 		
@@ -196,7 +207,7 @@ public class MemberController {
 				// 새로운 사진 O & 기존에 프로필 사진 O
 				//// 기존 프로필 사진 물리파일 삭제
 				commonService.delFilePhs(seq);
-				System.out.println("기존 프로필 사진 물리파일 삭제");
+				log.info("기존 프로필 사진 물리파일 삭제");
 				
 				//// 새로운 프로필 사진 저장				
 				commonService.saveFileOnly(files[0], fileList.get(0).getSysName(), tempPath, sysPath);
@@ -224,11 +235,11 @@ public class MemberController {
 		}
 		
 		// 회원의 DB 정보 수정
-		System.out.println("수정할 회원 정보 : " + memberDto.toString());
+		log.info("수정할 회원 정보 : " + memberDto.toString());
 		if(memberService.editMember(memberDto) < 0) {
 			return "errorPage";
 		}
-		System.out.println(memberDto.getId() + "님 회원정보 수정 완료");
+		log.info(memberDto.getId() + "님 회원정보 수정 완료");
 		
 		return toViewMember(memberDto.getId(), model);
 	}
@@ -250,12 +261,12 @@ public class MemberController {
 			PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 			if(privateKey != null) {
 				String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
-				System.out.println("로그인 시 입력한 비밀번호 : " + strPw);
+				log.info("로그인 시 입력한 비밀번호 : " + strPw);
 				
 				// SHA-512 암호화
 				strPw = encryptionUtils.getSHA512(strPw);
 				memberDto.setPw(strPw);
-				System.out.println("로그인 시 입력한 암호화 SHA512 : " + strPw);
+				log.info("로그인 시 입력한 암호화 SHA512 : " + strPw);
 				MemberDTO dto = memberService.selMemberByIdPw(memberDto);
 				
 				// redirect할 URI가 없다면 글목록을 요청
@@ -297,8 +308,8 @@ public class MemberController {
 	@Transactional
 	@GetMapping(value="/delPfPhoto")
 	public int delPfPhoto(String id) {
-		System.out.println("========== MemberController - delPfPhoto ==========");
-		System.out.println("프로필 파일을 삭제할 유저 id : " + id);
+		log.info("========== MemberController - delPfPhoto ==========");
+		log.info("프로필 파일을 삭제할 유저 id : " + id);
 		// t_filemeta DB, 물리파일 삭제
 		commonService.delFileByIdCat(id, "member");
 		
@@ -321,19 +332,19 @@ public class MemberController {
 	public String changePassword(String id, String pw, String curPw, Model model) throws NoSuchPaddingException, NoSuchAlgorithmException
 				, IllegalBlockSizeException, UnsupportedEncodingException, InvalidKeyException, BadPaddingException{
 		int rs = 0;
-		System.out.println("현재 str : " + curPw);
-		System.out.println("수정 str : " + pw);
+		log.info("현재 str : " + curPw);
+		log.info("수정 str : " + pw);
 		// RSA PrivateKey
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 		if(!pw.equals("")) {
 			String strCurPw = encryptionUtils.decryptRsa(privateKey, curPw);
 			String strPw = encryptionUtils.decryptRsa(privateKey, pw);
-			System.out.println("현재 비밀번호 : " + strCurPw);
-			System.out.println("수정 비밀번호 : " + strPw);
+			log.info("현재 비밀번호 : " + strCurPw);
+			log.info("수정 비밀번호 : " + strPw);
 			strCurPw = encryptionUtils.getSHA512(strCurPw);
 			strPw = encryptionUtils.getSHA512(strPw);
-			System.out.println("현재 비밀번호 암호화 : " + strCurPw);
-			System.out.println("수정 비밀번호 암호화 : " + strPw);
+			log.info("현재 비밀번호 암호화 : " + strCurPw);
+			log.info("수정 비밀번호 암호화 : " + strPw);
 			rs = memberService.changePassword(id, strPw, strCurPw);
 		}
 	

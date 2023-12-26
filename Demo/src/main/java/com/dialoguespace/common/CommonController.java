@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(value="/common")
+@Slf4j
 public class CommonController {
 	
 	private final HttpSession session;
@@ -21,18 +24,18 @@ public class CommonController {
 	// 로그아웃
 	@GetMapping(value="/logout")
 	public String logout(String id) {
-		System.out.println("========== CommonController - logout ==========");
-		System.out.println("로그아웃 ID : " + id);
+		log.info("========== CommonController - logout ==========");
+		log.info("logout ID : " + id);
 		
 		session.removeAttribute("loginSession");
-		System.out.println(id + "님 로그아웃 완료");
+		log.info(id + "님 로그아웃 완료");
 		return "redirect:/";
 	}
 	
 	// seq로 파일 지우기
 	@GetMapping(value="/delFile")
 	public String delFileBySeq(int seq) {
-		System.out.println("========== CommonController - delFileBySeq ==========");
+		log.info("========== CommonController - delFileBySeq ==========");
 		return "";
 	}
 }

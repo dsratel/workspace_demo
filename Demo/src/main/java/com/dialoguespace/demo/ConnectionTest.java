@@ -13,20 +13,26 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class ConnectionTest {
-	private static char map1[];
-	private static byte map2[];
-	
-	public static void main(String[] args) throws Exception {
+public class ConnectionTest {public static void main(String[] args) throws Exception {
 		
-
-		String pw = "9c0fabac9beb630646bddea285ee3360b4dbc4826db332fde59597d9c7ccc77e352f68ed697c4c1bfbc839f522c95aed3e4762bcd57033dd298174702e5a4700625c5fa2ab181aeaf9b48f844c23e64e71a46d48e3f677eeab94b0fe739d8d6d0a569aeb7d5c1e224cad08c297296bf843fc89dbc327b48d96e6d112bd4ce83b66dceb9bf35280a2db7ae498fe193e8810ea136e64175baa2519de8e88a44aaa25cac1c9ec74c89f3d1eabc526c0b260582ca6846ab0499904a12ea599a8ee98a49f6e617e2adef016fdc1d94fd43c760c11d3b16bcfc578848b9a6c49a2d31b521f375d4e8738f297b9fe4258cb5b2c229efc3d708a4414484a019eaf2ef5c2";
+		String password = "Freepass123!@#";
+		System.out.println(getSHA512(password));
 		
-
-		
-		
-
 	}	// main end
+	
+	// SHA512 암호화
+	public static String getSHA512(String password) {
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+			md.reset();
+			md.update(password.getBytes("utf8"));
+			password = String.format("%0128x", new BigInteger(1, md.digest()));
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return password;
+	}
 	
 	
 	// RSA 복호화

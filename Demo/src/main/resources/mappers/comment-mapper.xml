@@ -120,22 +120,13 @@
 		ORDER BY regdate
 	</select>
 	
-	<!-- 조건에 맞는 댓글 개수 -->
-	<select id="countList" parameterType="map" resultType="commentDto">
-		SELECT seq, id, content, boardseq, replyboardseq, pid, regdate FROM t_comment
-		WHERE id = #{id} AND
-  		<choose>
-			<when test="searchType == 0">
-				content LIKE CONCAT('%', #{searchKeyword}, '%') 
-			</when>
-			<otherwise>
-				boardseq = #{searchKeyword}
-			</otherwise>		
-		</choose>
-		UNION
-		SELECT seq, id, content, -1, -1, pid, regdate FROM t_comment_reply
-		WHERE id = #{id} AND
-  		<choose>
+	<!-- 조건에 맞는 댓글 갯수 -->
+	<select id="countList" parameterType="map" resultType="Integer">
+		SELECT count(*) + (SELECT count(*) FROM t_comment_reply tcr WHERE
+		<if test='id != "devvv"'>
+			id = #{id} AND
+		</if>
+ 		<choose>
 			<when test="searchType == 0">
 				content LIKE CONCAT('%', #{searchKeyword}, '%') 
 			</when>
@@ -143,6 +134,51 @@
 				pid IN (SELECT seq FROM t_comment WHERE id = #{id} AND boardseq = #{searchKeyword})
 			</otherwise>		
 		</choose>
+		) AS cnt FROM t_comment WHERE
+		<if test='id != "devvv"'>
+			id = #{id} AND
+		</if>
+		<choose>
+			<when test="searchType == 0">
+				content LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<otherwise>
+				boardseq = #{searchKeyword}
+			</otherwise>		
+		</choose>
 	</select>
-
+	
+	<!-- 조건에 맞는 댓글 목록 -->
+	<select id="commentList" parameterType="map" resultType="commentDto">
+		SELECT seq, id, content, boardseq, replyboardseq, pid, regdate FROM t_comment
+		WHERE
+		<if test='id != "devvv"'>
+			id = #{id} AND
+		</if>
+		<choose>
+			<when test="searchType == 0">
+				content LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<otherwise>
+				boardseq = #{searchKeyword}
+			</otherwise>
+		</choose>
+		UNION
+		SELECT seq, id, content, (SELECT boardseq FROM t_comment tc WHERE tc.seq = tcr.pid) AS boardseq
+				, (SELECT replyboardseq FROM t_comment tc WHERE tc.seq = tcr.pid) AS replyboardseq, pid, regdate FROM t_comment_reply tcr
+		WHERE
+		<if test='id != "devvv"'>
+			id = #{id} AND
+		</if>
+ 		<choose>
+			<when test="searchType == 0">
+				content LIKE CONCAT('%', #{searchKeyword}, '%') 
+			</when>
+			<otherwise>
+				pid IN (SELECT seq FROM t_comment WHERE id = #{id} AND boardseq = #{searchKeyword})
+			</otherwise>
+		</choose>
+		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
+	</select>
+	
 </mapper>

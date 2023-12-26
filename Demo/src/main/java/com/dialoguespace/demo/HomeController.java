@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.utils.EncryptionUtils;
 
 /**
@@ -59,7 +59,17 @@ public class HomeController {
 		//model.addAttribute("publicKeyExponent", map.get("publicKeyExponent"));
 		
 		
-		String redirect = request.getSession().getAttribute("loginSession") == null ? "home" : "redirect:board/toList";
+		MemberDTO dto = (MemberDTO)request.getSession().getAttribute("loginSession");
+		String redirect = "";
+		if(dto == null) {
+			redirect = "home";
+		} else {
+			if(dto.getId().equals("devvv")) {
+				redirect = "redirect:board/toList";
+			} else {
+				redirect = "/master/home";
+			}
+		}
 		return redirect;
 	}
 	

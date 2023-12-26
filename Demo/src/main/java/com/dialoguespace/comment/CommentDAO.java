@@ -48,6 +48,9 @@ public interface CommentDAO {
 	public List<CommentDTO> cmtList(String id);
 	
 	// 조건에 맞는 댓글 개수
-	public List<CommentDTO> countList(Map<String, Object> srchInfo);
+	public int countList(Map<String, Object> srchInfo);
+	
+	// 조건에 맞는 댓글 목록
+	public List<CommentDTO> commentList(Map<String, Object> srchInfo);
 
 }

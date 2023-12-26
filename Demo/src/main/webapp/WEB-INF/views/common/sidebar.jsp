@@ -44,7 +44,14 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">USER INFO:</h6>
-                        <a class="collapse-item" href="/member/toViewMember?id=${loginId}">Profile</a>
+                        <c:choose>
+                        	<c:when test="${masteryn eq 'y'.charAt(0)}">
+                        		<a class="collapse-item" href="/master/toMemberList">Member</a>	
+                        	</c:when>
+                        	<c:otherwise>
+                        		<a class="collapse-item" href="/member/toViewMember?id=${loginId}">Profile</a>
+                        	</c:otherwise>
+                        </c:choose>
                         <a class="collapse-item" id="signOut">Sign out</a>
                     </div>
                 </div>
@@ -76,10 +83,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Article:</h6>
-                        <a class="collapse-item" href="/board/toList">list</a>
+                        <a class="collapse-item" href="/board/toList">board list</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Comment:</h6>
-                        <a class="collapse-item" href="/comment/myList?id=${loginId}">list</a>
+                        <a class="collapse-item" href="/comment/myList?id=${loginId}">comment list</a>
                     </div>
                 </div>
             </li>
@@ -87,7 +94,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
-            <c:if test="${masteryn eq 'y'.charAt(0)}">
+            <%-- <c:if test="${masteryn eq 'y'.charAt(0)}">
 	            <!-- Nav Item - attachfile -->
 	            <li class="nav-item">
 	                <a class="nav-link">
@@ -95,7 +102,7 @@
 	                    <span>files</span>
                     </a>
 	            </li>
-			</c:if>
+			</c:if> --%>
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline" style="padding-top:20px;">

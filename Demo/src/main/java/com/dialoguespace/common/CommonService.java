@@ -32,10 +32,11 @@ public class CommonService {
 	}
 
 	// 검색 조건 Map에 담기
-	public Map<String, Object> makeSrchInfo(String searchType, String searchKeyword) throws Exception {
+	public Map<String, Object> makeSrchInfo(String searchType, String searchKeyword, String status) throws Exception {
 		Map<String, Object> srchInfo = new HashMap<>();
 		srchInfo.put("searchType", searchType);
 		srchInfo.put("searchKeyword", searchKeyword);
+		srchInfo.put("status", status);
 		
 		return srchInfo;
 	}
@@ -284,10 +285,9 @@ public class CommonService {
 		return commonDAO.SelFilePathById(map);
 	}
 		
-	// login id 불러오기
-	public String getLoginId() {
-		MemberDTO dto = (MemberDTO)session.getAttribute("loginSession");
-		return dto.getId();
+	// loginInfo 불러오기
+	public MemberDTO getLoginInfo() {
+		return (MemberDTO)session.getAttribute("loginSession");
 	}
 	
 

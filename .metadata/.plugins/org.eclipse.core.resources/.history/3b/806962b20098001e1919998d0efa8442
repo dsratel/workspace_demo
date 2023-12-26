@@ -1,7 +1,0 @@
-#searchForm {
-	width:95%;
-}
-
-input[name='searchKeyword'] {
-	width:20%;
-}

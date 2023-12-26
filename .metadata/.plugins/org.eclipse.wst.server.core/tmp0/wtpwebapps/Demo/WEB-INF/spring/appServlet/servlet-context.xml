@@ -14,7 +14,7 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/repository/**" location="/repository/" />
+	<resources mapping="/repository/**" location="file:///D:/demo_repository/" />
 	<!-- <resources mapping="/resources/**" location="/WEB-INF/classes/resources/" /> -->
 	
 

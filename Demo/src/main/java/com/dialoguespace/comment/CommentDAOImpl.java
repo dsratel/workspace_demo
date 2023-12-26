@@ -101,7 +101,13 @@ public class CommentDAOImpl implements CommentDAO {
 	
 	// 조건에 맞는 댓글 개수
 	@Override
-	public List<CommentDTO> countList(Map<String, Object> srchInfo) {
-		return sqlsession.selectList("commentMapper.countList", srchInfo);
+	public int countList(Map<String, Object> srchInfo) {
+		return sqlsession.selectOne("commentMapper.countList", srchInfo);
+	}
+	
+	// 조건에 맞는 댓글 목록
+	@Override
+	public List<CommentDTO> commentList(Map<String, Object> srchInfo) {
+		return sqlsession.selectList("commentMapper.commentList", srchInfo);
 	};
 }

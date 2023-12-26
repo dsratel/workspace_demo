@@ -1,19 +1,17 @@
 package com.dialoguespace.master;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dialoguespace.board.BoardController;
-import com.dialoguespace.comment.CommentDTO;
-import com.dialoguespace.comment.CommentService;
+import com.dialoguespace.comment.CommentController;
 import com.dialoguespace.common.CommonService;
 import com.dialoguespace.member.MemberController;
 import com.dialoguespace.member.MemberDTO;
@@ -25,22 +23,31 @@ public class MasterController {
 	
 	private final MasterService masterService;
 	private final CommonService commonService;
-	private final CommentService commentService;
+	private final CommentController commentController;
 	private final BoardController boardController;
 	private final MemberController memberController;
 	private final MemberService memberService;
 	private final HttpSession session;
 	
 	@Autowired
-	public MasterController(MasterService masterService, CommonService commonService, CommentService commentService, BoardController boardController 
+	public MasterController(MasterService masterService, CommonService commonService, CommentController commentController, BoardController boardController 
 			, MemberController memberController, MemberService memberService, HttpSession session) {
 		this.masterService = masterService;
 		this.commonService = commonService;
-		this.commentService = commentService;
+		this.commentController = commentController;
 		this.boardController = boardController;
 		this.memberController = memberController;
 		this.memberService = memberService;
 		this.session = session;
+	}
+	
+	@ModelAttribute
+	public void loginInfo(Model model) {
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		if(loginInfo != null) {
+			model.addAttribute("loginId", loginInfo.getId());
+			model.addAttribute("masteryn", loginInfo.getMasteryn());			
+		}
 	}
 	
 	@GetMapping(value="/home")
@@ -50,11 +57,12 @@ public class MasterController {
 	
 	@GetMapping(value="/toMemberList")
 	public String memberList(@RequestParam(defaultValue = "0") String searchType, @RequestParam(defaultValue = "")String searchKeyword,
-			 @RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "10") int pageSize, Model model) throws Exception {
+			 @RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue = "10") int pageSize, 
+			 @RequestParam(defaultValue = "1") String status, Model model) throws Exception {
 		// 만약 세션에 저장되어 있는 로그인 정보가 관리자라면
-		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		MemberDTO loginInfo = commonService.getLoginInfo();
 		if(loginInfo.getMasteryn() == 'y') {
-			return memberController.toMemberList(searchType, searchKeyword, curPage, pageSize, model);
+			return memberController.toMemberList(searchType, searchKeyword, curPage, pageSize, status, model);
 		} else {
 			return "redirect:/master/home";
 		}
@@ -65,7 +73,7 @@ public class MasterController {
 			, @RequestParam(defaultValue = "")String searchKeyword, @RequestParam(defaultValue="10")int pageSize
 			, @RequestParam(defaultValue = "1")int curPage, Model model) throws Exception {
 		// 만약 세션에 저장되어 있는 로그인 정보가 관리자라면
-		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		MemberDTO loginInfo = commonService.getLoginInfo();
 		if(loginInfo.getMasteryn() == 'y') {
 			return boardController.toListPage(category, searchType, searchKeyword, pageSize, curPage, model);
 		} else {
@@ -74,13 +82,15 @@ public class MasterController {
 	}
 	
 	@GetMapping(value="/toCommentList")
-	public String commentList(Model model) {
+	public String commentList(@RequestParam(defaultValue="0")String searchType, @RequestParam(defaultValue = "")String searchKeyword
+			, @RequestParam(defaultValue="10")int pageSize, @RequestParam(defaultValue = "1")int curPage, String id, Model model) {
+		MemberDTO loginInfo = commonService.getLoginInfo();
 		// 만약 세션에 저장되어 있는 로그인 정보가 관리자라면
-		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo.getMasteryn() == 'y') {
-			List<CommentDTO> list = commentService.cmtList(loginInfo.getId());
-			model.addAttribute("list", list);
-			return "/comment/commentList";
+//			Map<String, Object> srchInfo = commentService.makeSrchInfo(loginInfo.getId(), "0", "");
+//			List<CommentDTO> list = commentService.commentList(srchInfo);
+//			model.addAttribute("list", list);
+			return commentController.myList(searchType, searchKeyword, pageSize, curPage, id, model);
 		} else {
 			return "redirect:/master/home";
 		}

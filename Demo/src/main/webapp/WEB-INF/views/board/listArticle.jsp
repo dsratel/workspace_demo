@@ -21,8 +21,6 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                 
-               
-                
 						<!-- Article List -->
 						<div class="searchTab" style="text-align:right;">
 							<c:if test="${loginId ne ''}">
@@ -121,13 +119,13 @@
 				                    <!-- Pagination -->
 				                    <ul class="pagination">
 				                        <c:if test="${srchInfo.pagination.curRange > 1}">
-				                            <li class="page-item"><a class="page-link" onclick="toPrevPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
+				                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
 				                        </c:if>
 				                        <c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
 				                            <li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
 				                        </c:forEach>
 				                        <c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
-				                            <li class="page-item"><a class="page-link" onclick="toNextPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
+				                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
 				                        </c:if>
 				                    </ul>		
 				                </c:if>

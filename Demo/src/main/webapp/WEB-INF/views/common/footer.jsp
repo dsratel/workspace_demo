@@ -9,5 +9,6 @@
             </footer>
             <!-- End of Footer -->
             
-    <input type="hidden" id="loginId" value="${loginId }">       
+    <input type="hidden" id="loginId" value="${loginId}">
+		<input type="hidden" id="masteryn" value="${masteryn}">
     <script src="/resources/template/js/custom.js"></script>

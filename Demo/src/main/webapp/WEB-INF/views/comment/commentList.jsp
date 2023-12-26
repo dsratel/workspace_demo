@@ -60,12 +60,15 @@
 	                    </div>
 	               		<c:forEach var="dto" items="${list}" varStatus="status">
 		                    <div class="row">
-		                    	<div class="col-1"><input type="checkbox" name="delCheck" value="${dto.seq}#${dto.pid}#${dto.boardseq}"></div>
+		                    	<div class="col-1"><input type="checkbox" name="delList" value="${dto.seq}#${dto.pid}#${dto.boardseq}#${dto.boardseq > 0 ? 'n' : 'y'}"></div>
 		               			<div class="col-1">${dto.id }</div>
 		               			<div class="col-6" style="text-align:left;">${dto.content }</div>
 		               			<div class="col-1">${dto.boardseq}</div>
 		               			<div class="col-1">${dto.pid > 0 ? "답글" : "댓글"}</div>
-		               			<div class="col-2">${dto.regdate }</div>
+		               			<div class="col-2">
+		               				<fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일" /><br/>
+		               				<fmt:formatDate value="${dto.regdate}" pattern="k시 m분 s초" />
+		               			</div>
 		                    </div>
 	               		</c:forEach>
                		</form>
@@ -74,13 +77,13 @@
 	                    <!-- Pagination -->
 	                    <ul class="pagination">
 	                        <c:if test="${srchInfo.pagination.curRange > 1}">
-	                            <li class="page-item"><a class="page-link" onclick="toPrevPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
+	                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
 	                        </c:if>
 	                        <c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
 	                            <li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
 	                        </c:forEach>
 	                        <c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
-	                            <li class="page-item"><a class="page-link" onclick="toNextPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
+	                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
 	                        </c:if>
 	                    </ul>		
 	                </c:if>
@@ -106,10 +109,37 @@
     <script src="/resources/template/js/sb-admin-2.min.js"></script>
     
     <script>
-	// 검색 버튼
-	$("#searchBtn").click(function(){
-		$("#searchForm").submit();
-	});
+    
+			// 초기 값 세팅
+			if("${srchInfo}" != "") {
+					$("#category").val("${srchInfo.category}");
+				$("#searchType").val("${srchInfo.searchType}");
+				$("#pageSize").val("${srchInfo.pagination.pageSize}");
+				$("input[name='searchKeyword']").val("${srchInfo.searchKeyword}");
+			}
+			// 검색 버튼
+			$("#searchBtn").click(function(){
+				$("#searchForm").submit();
+			});
+			
+			// 페이지 사이즈 변경
+			function changePageSize(pageSize) {
+				$("#searchForm").submit();
+			}
+			
+			// 선택한 댓글 삭제
+			$("#selDelBtn").click(function(){
+				var frm = $("#searchForm");
+				frm.attr("action", "/comment/selDelComment");
+				frm.attr("method", "post");
+				frm.submit();
+			});
+			
+			// 페이지 이동
+			function toPage(page) {
+				$("#curPage").val(page);
+				$("#searchForm").submit();
+			}
     </script>
 	
 </body>

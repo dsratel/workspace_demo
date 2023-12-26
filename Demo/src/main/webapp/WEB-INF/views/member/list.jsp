@@ -47,8 +47,7 @@
 							</form>
 			 			</div>
 			 			<div class="col-3" style="text-align: right">
-				 			<button class="btn btn-warning" id="logoutBtn">로그아웃</button>
-				 			<c:if test="${masteryn eq 'y'.charAt(0)}">
+				 			<c:if test="${masteryn eq 'y'.charAt(0) && delList ne 'y'}">
 				 				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
 			 				</c:if>
 						</div>
@@ -69,7 +68,9 @@
 								<th scope="col">가입일자</th>
 								<c:if test="${masteryn eq 'y'.charAt(0)}">
 									<th scope="col">보기</th>
-									<th scope="col">삭제</th>
+									<c:if test="${delList ne 'y'}">
+										<th scope="col">삭제</th>									
+									</c:if>
 								</c:if>
 							</tr>
 						</thead>
@@ -93,7 +94,9 @@
 								</td>
 								<c:if test="${masteryn eq 'y'.charAt(0)}">
 									<td><button type="button" class="btn btn-secondary BtnEditMember" id="BtnEditMember" value="${member.id }">보기</button></td>
-									<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>					
+									<c:if test="${delList ne 'y'}">
+										<td><button type="button" class="btn btn-danger BtnDelMember" id="BtnDelMember" value="${member.id }">삭제</button></td>									
+									</c:if>
 								</c:if>
 							</tr>
 							</c:forEach>

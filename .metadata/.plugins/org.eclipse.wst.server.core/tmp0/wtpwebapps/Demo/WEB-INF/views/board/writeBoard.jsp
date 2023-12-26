@@ -1,26 +1,30 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
-	<link rel="stylesheet" href="/resources/css/bootstrap/bootstrap.min.css">
-	<script src="/resources/js/jquery/jquery-3.7.1.min.js"></script>
-	<title>write board page</title>
-</head>
-<body>
-	<div style="text-align:center;">
-		<c:choose>
-			<c:when test="${pid > 0 }">
-				<h1>답글 작성하기</h1>
-			</c:when>
-			<c:otherwise>
-				<h1>게시글 작성하기</h1>
-			</c:otherwise>
-		</c:choose>	
-	</div>
-	<div class="container">
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+	
+		<!-- Sidebar -->
+		<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="main_content">
+
+                <!-- Topbar -->
+                <%@ include file="/WEB-INF/views/common/topbar.jsp" %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                
+                    <!-- Content Row -->
+                    <div class="">
+                
+                
 		<form method="post" name="writeBoardForm" action="/board/write.do" enctype="multipart/form-data">
 			
 			<div class="row">	<!-- 카테고리 -->
@@ -43,7 +47,7 @@
 							<input type="hidden" name="category" value="${category }">
 						</c:when>
 						<c:otherwise>
-							<select class="form-select" name="category" id="category">
+							<select class="form-control" name="category" id="category">
 								<option value="free">자유게시판</option>
 								<option value="notice">공지사항</option>
 							</select>						
@@ -103,8 +107,32 @@
 				</div>
 			</div>
 		</form>
-	</div>
-	<script>
+                
+                
+                
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+		
+	<!-- Core plugin JavaScript-->
+    <script src="/resources/template/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/resources/template/js/sb-admin-2.min.js"></script>
+    
+    	<script>
 		$(function(){
 			// css
 			$("div.tab, div.cont").css({"border" : "1px solid black", "padding" : "5px"});
@@ -161,5 +189,6 @@
 			});
 		})	// function() end
 	</script>
+	
 </body>
 </html>

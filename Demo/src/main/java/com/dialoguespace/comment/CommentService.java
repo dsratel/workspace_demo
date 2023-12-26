@@ -126,9 +126,15 @@ public class CommentService {
 		return map;
 	}
 	
-	// 조건에 맞는 댓글 개수
-	public List<CommentDTO> countList(Map<String, Object> srchInfo) {
+	// 조건에 맞는 댓글 갯수
+	public int countList(Map<String, Object> srchInfo) {
 		return commentDAO.countList(srchInfo);
+	}
+	
+	
+	// 조건에 맞는 댓글 목록
+	public List<CommentDTO> commentList(Map<String, Object> srchInfo) {
+		return commentDAO.commentList(srchInfo);
 	}
 	
 	// 검색 조건에 맞는 댓글 시퀀스

@@ -10,6 +10,15 @@
 		</layout>
 	</appender>
 	
+    <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+    	<param name="File" value="D:/workspace_demo/Demo/log/localhost.log" />
+    	<param name="Append" value="true" />
+    	<param name="DatePattern" value=".yyyy-MM-dd" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%d{HH:mm:ss.SSS}] %-5p %C{1}.%M(%F:%L) - %m%n"/>
+        </layout>
+    </appender>
+    
 	<!-- Application Loggers -->
 	<logger name="com.dialoguespage.demo">
 		<level value="info" />
@@ -57,8 +66,8 @@
 	
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
-		<appender-ref ref="console" />
+		<priority value="info" />
+		<appender-ref ref="file" />
 	</root>
 	
 </log4j:configuration>

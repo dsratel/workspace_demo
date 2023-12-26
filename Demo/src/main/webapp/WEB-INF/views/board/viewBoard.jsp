@@ -289,10 +289,12 @@
 		        success: function(data) {
 		            for(var i=0; i < data.length; i++) {
 		                console.log(data[i].depth == 0);
-		                appendStr = appendStr + "<div class='cmtList'>"
-		                                        + "<div class='row cmtIdDiv'>"
-		                                        +	 "<span>" + data[i].nickname + "</span>"
-		                                        + "</div>"
+		                appendStr = appendStr 	+	"<div class='cmtList'>"
+		                                        +	"<div class='row cmtIdDiv'>"
+		                                        +		"<div class='col'>"
+		                                        +			"<span>" + data[i].nickname + "</span>"
+		                                        +		"</div>"
+		                                        +	"</div>"
 		                                        + "<div class='row cmtContDiv'>"
 		                                        +	"<div class='col-8 cmtContent'>"
 		                                        +		"<span>" + data[i].content + "</span>"
@@ -320,7 +322,7 @@
 		            
 		            $("#cmtListDiv").children().remove();
 		            $("#cmtListDiv").append(appendStr);
-		            $(".cmtList").css({"border":"1px black solid", "margin":"5px"});
+		            $(".cmtList").css({"border":"1px black solid", "margin":"5px", "padding":"10px"});
 		            $(".cmtIdDiv").css({"margin-bottom":"10px"});
 		            $("input[name='pw'], #cmtContent").val("");
 		            $("button.delCmtBtn").css({"margin-top":"5px", "margin-right":"5px", "margin-bottom":"5px"});

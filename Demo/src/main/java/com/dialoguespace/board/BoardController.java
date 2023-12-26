@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +27,11 @@ import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.vo.FileVO;
 import com.dialoguespace.vo.PaginationVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(value="/board")
+@Slf4j
 public class BoardController {
 	
 	private final BoardService boardService;
@@ -45,19 +50,23 @@ public class BoardController {
 		this.session = session;
 	}
 	
+	@ModelAttribute
+	public void loginInfo(Model model) {
+		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+		if(loginInfo != null) {
+			model.addAttribute("loginId", loginInfo.getId());
+			model.addAttribute("masteryn", loginInfo.getMasteryn());			
+		}
+	}
+	
 	// 글 쓰기 페이지로 이동
 	@GetMapping(value="/toWrite")
 	public String toWritePage(@RequestParam(defaultValue = "0")int pid, @RequestParam(defaultValue = "")String title
 			, @RequestParam(defaultValue = "")String category, Model model) {
-		String loginId = commonService.getLoginId();
-		System.out.println("로그인한 ID는 " + loginId + " 입니다.");
-		System.out.println("pid : " + pid + " / title : " + title + " / category : " + category);
+		log.info("pid : " + pid + " / title : " + title + " / category : " + category);
 		
-		
-//		System.out.println("t_filemeta에 있는 저장하지 않은 이미지 파일 DB 삭제");
+//		log.info("t_filemeta에 있는 저장하지 않은 이미지 파일 DB 삭제");
 //		commonService.delFileByIdCat(loginId, "board");
-		
-		model.addAttribute("loginId", loginId);
 		if(pid > 0) {
 			model.addAttribute("pid", pid);
 			model.addAttribute("orgTitle", title);
@@ -68,10 +77,11 @@ public class BoardController {
 	}
 	
 	// 게시글 작성
+	@Transactional
 	@PostMapping(value="/write.do")
 	public String writeArticle(BoardDTO boardDto, @RequestParam("upfile") MultipartFile[] multipartFiles, Model model, HttpServletRequest request) throws IOException {
-		System.out.println("========== BoardController - writeBoard ==========");
-		System.out.println("BoardDTO : " + boardDto.toString());
+		log.info("========== BoardController - writeBoard ==========");
+		log.info("BoardDTO : " + boardDto.toString());
 		// board DB 저장
 		boardService.writeArticle(boardDto);
 		String seq = "" + boardService.getLatestSeq(boardDto.getAuthor(), boardDto.getPid());
@@ -79,11 +89,11 @@ public class BoardController {
 		// 첨부 파일이 있는 경우
 		if(boardDto.getAttachfile().contentEquals("y")) {
 			
-			System.out.println("게시글 첨부파일 저장경로 : " + this.path);
+			log.info("게시글 첨부파일 저장경로 : " + this.path);
 		
-		String category = (boardDto.getPid() > 0) ? "board_reply" : "board";
-		List<FileVO> fileList = commonService.setFileList(multipartFiles, seq, category, this.path);
-		commonService.saveNewFiles(multipartFiles, fileList);
+			String category = (boardDto.getPid() > 0) ? "board_reply" : "board";
+			List<FileVO> fileList = commonService.setFileList(multipartFiles, seq, category, this.path);
+			commonService.saveNewFiles(multipartFiles, fileList);
 		}
 		
 		return "redirect:/board/toList";
@@ -95,19 +105,6 @@ public class BoardController {
 	public String toListPage(@RequestParam(defaultValue = "free") String category, @RequestParam(defaultValue="0")String searchType
 			, @RequestParam(defaultValue = "")String searchKeyword, @RequestParam(defaultValue="10")int pageSize
 			, @RequestParam(defaultValue = "1")int curPage, Model model) throws Exception {
-		// loginId
-		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
-		String loginId = "";
-		char masteryn = 'n';
-		if(loginDto != null) {
-			loginId = loginDto.getId();
-			if(loginDto.getMasteryn() == "y".charAt(0)) {
-				masteryn = 'y';
-			}
-		}
-		
-		model.addAttribute("loginId", loginId);
-		model.addAttribute("masteryn", masteryn);
 		
 		// 검색요건 추가하여 리스트 출력
 		Map<String, Object> srchInfo = boardService.makeSrchInfo(category, searchType, searchKeyword);
@@ -119,7 +116,7 @@ public class BoardController {
 			srchInfo.put("seqList", seqList);
 			// 페이징 내용 추가
 			model.addAttribute("list", boardService.selectArticle(srchInfo));
-			model.addAttribute("srchInfo", srchInfo);			
+			model.addAttribute("srchInfo", srchInfo);
 		}
 		
 		return "/board/listArticle";
@@ -128,24 +125,12 @@ public class BoardController {
 	// 글 상세보기
 	@GetMapping(value="/viewArticle")
 	public String toViewPage(int seq, int pid, Model model) {
-		System.out.println("========== Board Controller 진입 ==========");
-		char replyYn = 'n';
-		if(pid > 0) replyYn = 'y'; 
-		
-		MemberDTO loginDto = (MemberDTO) session.getAttribute("loginSession");
-		String loginId = "";
-		if(loginDto != null) {
-			loginId = loginDto.getId();
-			System.out.println("글 번호 : " + seq);			  
-		}
-		System.out.println("로그인 아이디 : " + loginId);
-		 
+		char replyYn = pid > 0 ? 'y' : 'n';		 
 		
 		// model에 dto 객체 담기
 		//// 글 정보  
 		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		model.addAttribute("dto", dto);
-		model.addAttribute("loginId", loginId);
 		model.addAttribute("replyBoard", replyYn);
 		
 		//// 파일 정보
@@ -177,11 +162,11 @@ public class BoardController {
 	// 게시글 선택 삭제
 	@PostMapping(value="selDelArticle")
 	public String selDelArticle(String[] delList) {
-		System.out.println("========== BoardController - selDelArticle ==========");
+		log.info("========== BoardController - selDelArticle ==========");
 		if(delList != null) {	// null check
 			for(String str : delList) {
 				String delInfo[] = str.split("#");
-				System.out.println(Arrays.toString(delInfo));
+				log.info(Arrays.toString(delInfo));
 				delArticle(Integer.parseInt(delInfo[0]), Integer.parseInt(delInfo[1]), delInfo[2].charAt(0), delInfo[3].charAt(0));
 			}			
 		}
@@ -192,10 +177,10 @@ public class BoardController {
 	// 게시글 삭제
 	@GetMapping(value="/delArticle")
 	public String delArticle(int seq, int pid, char attachfile, char cmtYn) {
-		System.out.println("게시글 삭제 : seq - " + seq + " / pid : " + pid + " / attachfile - " + attachfile + " / cmtYn : " + cmtYn);
+		log.info("게시글 삭제 : seq - " + seq + " / pid : " + pid + " / attachfile - " + attachfile + " / cmtYn : " + cmtYn);
 		
 		// 로그인한 ID가 수정 권한이 있는지 확인 - 권한이 없으면 홈으로 이동
-		String loginId = commonService.getLoginId();
+		String loginId = commonService.getLoginInfo().getId();
 		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		if(!loginId.equals(dto.getAuthor()) && !loginId.equals("devvv")) {
 			return "redirect:/";
@@ -211,19 +196,12 @@ public class BoardController {
 	// 게시글 수정 페이지로 이동
 	@GetMapping(value="/editArticle")
 	public String toEditPage(int seq, int pid, Model model) {
-		System.out.println("========== BoardController - toEditPage ==========");
-		System.out.println("게시글 수정 페이지 이동 : seq - " + seq);
-		System.out.println("pid : " + pid);
-		
-		String loginId = commonService.getLoginId();
+		String loginId = commonService.getLoginInfo().getId();
 		BoardDTO dto = boardService.selArticleBySeq(seq, pid);
 		// 로그인한 ID가 수정 권한이 있는지 확인 - 권한이 없으면 홈으로 이동
-		if(!loginId.equals(dto.getAuthor())) {
-			return "redirect:/";
-		}
+		if(!loginId.equals(dto.getAuthor())) return "redirect:/";
 		
 		model.addAttribute("dto", dto);
-		model.addAttribute("loginId", loginId);
 		
 		// 파일 있는 경우
 		if(dto.getAttachfile().contentEquals("y")) {
@@ -242,26 +220,25 @@ public class BoardController {
 	@PostMapping(value="/edit.do")
 	public String editArticle(BoardDTO dto, int fileCnt, @RequestParam("upfile") MultipartFile[] multipartFiles
 			, @RequestParam(value="prevImg", required=false) String[] prevImgs, Model model, HttpServletRequest request) throws Exception {
-		System.out.println("========== BoardController - editArticle ==========");
 		// 로그인한 ID가 수정 권한이 있는지 확인 - 권한이 없으면 홈으로 이동
-		String loginId = commonService.getLoginId();
+		String loginId = commonService.getLoginInfo().getId();
 		BoardDTO dtoCheck = boardService.selArticleBySeq(dto.getSeq(), dto.getPid());
 		if(!loginId.equals(dtoCheck.getAuthor())) {
 			return "redirect:/";
 		}
 		
-		System.out.println("BoardDTO : " + dto.toString());
-		System.out.println("*** 기존 이미지 목록 ***");
+		log.info("BoardDTO : " + dto.toString());
+		log.info("*** 기존 이미지 목록 ***");
 		if(prevImgs != null) {
 			for(String p : prevImgs) {
-				System.out.println("기존 이미지 seq : " + p);
+				log.info("기존 이미지 seq : " + p);
 			}			
 		}
 		
-		System.out.println("*** 첨부파일 목록 ***");
+		log.info("*** 첨부파일 목록 ***");
 		if(multipartFiles != null) {
 			for(MultipartFile f : multipartFiles) {
-				System.out.println("첨부파일 이름 " + f.getOriginalFilename());
+				log.info("첨부파일 이름 " + f.getOriginalFilename());
 			}
 		}
 		
@@ -275,7 +252,7 @@ public class BoardController {
 			List<String> arr = Arrays.asList(prevImgs);
 			List<Integer> delSeq = commonService.getDelSeq(""+dto.getSeq(), arr);
 			
-			System.out.println("삭제할 seq는 " + delSeq.toString());
+			log.info("삭제할 seq는 " + delSeq.toString());
 			
 			// 만약 삭제할 이미지가 있다면, 기존 이미지 삭제
 			for(int seq : delSeq) {
@@ -301,10 +278,10 @@ public class BoardController {
 	 *썸머노트 글 작성
 	@PostMapping(value="/writeSummernote.do")
 	public String writeAtricle(BoardDTO dto, Model model) throws IOException {
-		System.out.println("========== Board Controller 진입 ==========");
-		System.out.println("BoardDTO : " + dto.toString());
+		log.info("========== Board Controller 진입 ==========");
+		log.info("BoardDTO : " + dto.toString());
 		boardService.writeArticle(dto);
-		System.out.println("글 저장 완료");
+		log.info("글 저장 완료");
 		
 		// 파일 DB의 fileparent를 게시글 seq로 변경
 		int seq = boardService.getLatestSeq(dto.getAuthor());
@@ -325,11 +302,11 @@ public class BoardController {
 		commonService.saveNewFiles(multipartFiles, fileList);
 		
 
-		System.out.println("썸머노트 이미지 저장");
+		log.info("썸머노트 이미지 저장");
 		
 
 		String path = "/" + filePath.substring(filePath.lastIndexOf("resources")) + fileList.get(0).getSysName();
-		System.out.println("ajax로 넘겨줄 url path : " + path);
+		log.info("ajax로 넘겨줄 url path : " + path);
 		
 		return path;
 	}

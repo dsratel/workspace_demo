@@ -34,7 +34,7 @@ input[name='searchKeyword'] {
 }
 
 select[name='pageSize'] {
-	width: 5%;
+	width: 6%;
 	display:inline;
 }
 
@@ -65,4 +65,8 @@ div.btnDiv {
 
 a {
 	text-decoration : none !important;
+}
+
+li.page-item {
+	cursor : pointer;
 }

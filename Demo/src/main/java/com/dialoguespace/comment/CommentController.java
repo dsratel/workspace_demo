@@ -16,29 +16,46 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dialoguespace.board.BoardService;
+import com.dialoguespace.common.CommonService;
 import com.dialoguespace.member.MemberDTO;
 import com.dialoguespace.vo.PaginationVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping(value="/comment")
+@Slf4j
 public class CommentController {
 	
 	private final CommentService commentService;
 	private final BoardService boardService;
+	private final CommonService commonService;
 	private final HttpSession session;
 	
 	@Autowired
-	public CommentController(CommentService commentService, BoardService boardService, HttpSession session) {
+	public CommentController(CommentService commentService, BoardService boardService, CommonService commonService, HttpSession session) {
 		this.commentService = commentService;
 		this.boardService = boardService;
+		this.commonService = commonService;
 		this.session = session;
 	}
 	
-	@ModelAttribute("loginId")
-	public String loginId() {
+//	@ModelAttribute("loginId")
+//	public String loginId() {
+//		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
+//		return loginInfo.getId();
+//		//model.addAttribute("loginInfo", loginInfo); 
+//	}
+	
+	@ModelAttribute
+	public void loginInfo(Model model) {
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
-		return loginInfo.getId(); 
+		if(loginInfo != null) {
+			model.addAttribute("loginId", loginInfo.getId());
+			model.addAttribute("masteryn", loginInfo.getMasteryn());			
+		}
 	}
+	
 	
 	// 댓글 작성
 	@ResponseBody
@@ -114,26 +131,28 @@ public class CommentController {
 	}
 	
 	// 선택 댓글 삭제
-//	@PostMapping(value="/selDelComment")
-//	public String selDelComment(String[] delList) {
-//		for(String delInfo : delList) {
-//			String[] arr = delInfo.split("#");
-//			boardService.reduceCommentCnt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), arr[3].charAt(0));
-//			commentService.deleteCmt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
-//		}
-//		return "redirect:/master/toCommentList";
-//	}
+	@PostMapping(value="/selDelComment")
+	public String selDelComment(String[] delList) {
+		for(String delInfo : delList) {
+			String[] arr = delInfo.split("#");
+			boardService.reduceCommentCnt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), arr[3].charAt(0));
+			commentService.deleteCmt(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]));
+		}
+		return "redirect:/master/toCommentList";
+	}
 	
 	// 댓글 목록 - id별
 	@GetMapping(value="/myList")
 	public String myList(@RequestParam(defaultValue="0")String searchType, @RequestParam(defaultValue = "")String searchKeyword
 			, @RequestParam(defaultValue="10")int pageSize, @RequestParam(defaultValue = "1")int curPage, String id, Model model) {
 		// 검색요건 추가하여 리스트 출력
-		if(id == null) id = loginId();
+		if(id == null) id = commonService.getLoginInfo().getId();
 		Map<String, Object> srchInfo = commentService.makeSrchInfo(id, searchType, searchKeyword);
-		List<CommentDTO> listCnt = commentService.countList(srchInfo);
-		if(listCnt.size() > 0) {
-			srchInfo.put("pagination", new PaginationVO(listCnt.size(),curPage,pageSize));
+		int countList = commentService.countList(srchInfo);
+		if(countList > 0) {
+			srchInfo.put("pagination", new PaginationVO(countList,curPage,pageSize));
+			List<CommentDTO> commentList = commentService.commentList(srchInfo);
+			model.addAttribute("list", commentList);
 			// 검색할 글 시퀀스
 		//	List<Integer> seqList = CommentService.getSeqList(srchInfo);
 		//	srchInfo.put("seqList", seqList); 
@@ -141,8 +160,6 @@ public class CommentController {
 		//	model.addAttribute("list", boardService.selectArticle(srchInfo));
 			model.addAttribute("srchInfo", srchInfo);
 		}
-		
-		model.addAttribute("list", listCnt);
 		
 		return "/comment/commentList";
 	}

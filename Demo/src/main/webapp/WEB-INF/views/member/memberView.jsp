@@ -103,9 +103,12 @@
 								</div>
 						</div>
 						<div class="row btnDiv">
-							<button class="btn btn-success view" type="button" id="toEdit">수정하기</button>
+							<c:if test="${dto.status != 2 }">
+								<button class="btn btn-success view" type="button" id="toEdit">수정하기</button>	
+							</c:if>
 							<c:if test="${loginId.equals('devvv')}">
-								<button class="btn btn-dark view" type="button" id="showList">목록출력</button>							
+								<button class="btn btn-dark view" type="button" id="showList">목록출력</button>						
+								<input type="hidden" id="status" value="${dto.status}">
 							</c:if>
 							<button class="btn btn-info edit" type="button" form="editMemberForm" id="save">수정요청</button>
 							<button class="btn btn-secondary edit" type="button" id="editCancel">취소</button>
@@ -135,7 +138,7 @@
 		
 		// 목록출력
 		$("#showList").click(function(){
-			window.location.replace("/member/list");
+			window.location.replace("/member/list?status="+$("#status").val());
 		});
 		
 		// css
