@@ -7,6 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -15,8 +16,16 @@ import javax.crypto.NoSuchPaddingException;
 
 public class ConnectionTest {public static void main(String[] args) throws Exception {
 		
-		String password = "Freepass123!@#";
-		System.out.println(getSHA512(password));
+//		String password = "Freepass123!@#";
+//		System.out.println(getSHA512(password));
+	
+	String url = "https://www.demo.com:8080/password/resetpassword?link=";
+	String uuid = UUID.randomUUID().toString().replace("-", "");
+	url = url + uuid;
+	
+	System.out.println(url);
+	
+	
 		
 	}	// main end
 	

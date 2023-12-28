@@ -351,6 +351,23 @@ public class MemberController {
 		model.addAttribute("rs", ( rs > 0 ? "success" : "fail"));
 		
 		return "result";
-		
 	}
+	
+	// 비밀번호 변경 페이지 - 비밀번호 잊었을 경우
+	@GetMapping(value="/forgotPassword")
+	public String toPasswordEmail() {
+		return "/member/passwordEmail";
+	}
+	
+	// ID와 email로 회원정보 확인
+	@ResponseBody
+	@PostMapping(value="/userByIdemail")
+	public int userByIdemail(MemberDTO dto) {
+		if(dto.getId() != null && dto.getEmail() != null) {
+			return memberService.userByIdemail(dto);			
+		} else {
+			return -1;
+		}
+	}
+	
 }

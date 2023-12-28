@@ -14,5 +14,6 @@
 			<typeAlias type="com.dialoguespace.board.BoardDTO" alias="boardDto" />
 			<typeAlias type="com.dialoguespace.vo.FileVO" alias="fileVo" />
 			<typeAlias type="com.dialoguespace.comment.CommentDTO" alias="commentDto" />
+			<typeAlias type="com.dialoguespace.password.PasswordResetDTO" alias="passwordResetDTO" />
 		</typeAliases>
 	</configuration>

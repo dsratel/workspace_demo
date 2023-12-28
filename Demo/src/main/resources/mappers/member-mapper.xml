@@ -139,5 +139,10 @@
 	<update id="changePassword" parameterType="map">
 		UPDATE t_member SET pw = #{pw} WHERE id = #{id} AND pw = #{curPw}
 	</update>
+	
+	<!-- ID와 email로 회원정보 확인 -->
+	<select id="userByIdemail" parameterType="memberDto" resultType="Integer">
+		SELECT count(*) FROM t_member WHERE id = #{id} AND email = #{email} AND status = 1
+	</select>
 
 </mapper>

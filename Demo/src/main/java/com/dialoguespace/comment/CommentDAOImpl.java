@@ -10,8 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CommentDAOImpl implements CommentDAO {
 	
+	private SqlSession sqlsession;
+	
 	@Autowired
-	SqlSession sqlsession;
+	public CommentDAOImpl(SqlSession sqlsession) {
+		this.sqlsession = sqlsession;
+	}
 	
 	// 댓글 작성
 	@Override

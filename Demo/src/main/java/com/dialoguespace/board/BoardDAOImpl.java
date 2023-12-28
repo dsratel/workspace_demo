@@ -10,8 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BoardDAOImpl implements BoardDAO {
 	
+	private SqlSession sqlsession;
+	
 	@Autowired
-	SqlSession sqlsession;
+	public BoardDAOImpl(SqlSession sqlsession) {
+		this.sqlsession = sqlsession;
+	}
 	
 	// 글 작성 프로세스
 	@Override

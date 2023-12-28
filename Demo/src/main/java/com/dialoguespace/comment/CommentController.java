@@ -127,6 +127,8 @@ public class CommentController {
 	@ResponseBody
 	@GetMapping(value="/listReply")
 	public List<CommentDTO> cmtListByPid(int pid) {
+		System.out.println("========== Comment Controller - cmtListByPid ==========");
+		System.out.println("pid : " + pid);
 		return commentService.cmtListByPid(pid);
 	}
 	

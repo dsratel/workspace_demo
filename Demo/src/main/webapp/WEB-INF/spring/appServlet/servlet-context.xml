@@ -46,6 +46,11 @@
 			<exclude-mapping path="/member/checkId" />
 			<exclude-mapping path="/board/toList" />
 			<exclude-mapping path="/board/viewArticle" />
+			<exclude-mapping path="/comment/listReply" />
+			<exclude-mapping path="/member/forgotPassword" />
+			<exclude-mapping path="/member/userByIdemail" />
+			<exclude-mapping path="/password/resetPassword" />
+			<exclude-mapping path="/kakao" />
 			<exclude-mapping path="/resources/**" />
 			<exclude-mapping path="/repository/**" />
 			<beans:bean class="com.dialoguespace.utils.LoginInterceptor" />

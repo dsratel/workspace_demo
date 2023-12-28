@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.dialoguespace.utils.EncryptionUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CommentService {
 	
 	private final CommentDAO commentDAO;
@@ -105,7 +108,11 @@ public class CommentService {
 	
 	// 대댓글 목록
 	public List<CommentDTO> cmtListByPid(int pid) {
-		return commentDAO.cmtListByPid(pid);
+		System.out.println("========== Comment Service - cmtListByPid ==========");
+		System.out.println("pid : " + pid);
+		List<CommentDTO> list = commentDAO.cmtListByPid(pid);
+		log.info(list.toString());
+		return list;
 	}
 	
 	// 댓글 목록(댓글+대댓글)

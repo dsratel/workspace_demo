@@ -45,4 +45,7 @@ public interface MemberDAO {
 	
 	// 비밀번호 변경
 	public int changePassword(Map<String, String> map);
+	
+	// ID와 email로 회원정보 확인
+	public int userByIdemail(MemberDTO dto);
 }

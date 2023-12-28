@@ -10,8 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemberDAOImpl implements MemberDAO {
 
-	@Autowired
 	private SqlSession sqlsession;
+	
+	@Autowired
+	public MemberDAOImpl(SqlSession sqlsession) {
+		this.sqlsession = sqlsession;
+	}
 	
 	// 회원 등록
 	@Override
@@ -102,6 +106,12 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int changePassword(Map<String, String> map) {
 		return sqlsession.update("memberMapper.changePassword", map);
+	}
+	
+	// ID와 email로 회원정보 확인
+	@Override
+	public int userByIdemail(MemberDTO dto) {
+		return sqlsession.selectOne("memberMapper.userByIdemail", dto);
 	}
 
 }

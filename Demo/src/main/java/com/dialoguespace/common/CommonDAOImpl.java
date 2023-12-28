@@ -12,9 +12,12 @@ import com.dialoguespace.vo.FileVO;
 @Repository
 public class CommonDAOImpl implements CommonDAO {
 	
+	private SqlSession sqlsession;
+	
 	@Autowired
-	SqlSession sqlsession;
-
+	public CommonDAOImpl(SqlSession sqlsession) {
+		this.sqlsession = sqlsession;
+	}
 	
 	// 파일 저장
 	@Override

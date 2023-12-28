@@ -138,4 +138,9 @@ public class MemberService {
 		return memberDAO.changePassword(map);
 	}
 	
+	// ID와 email로 회원정보 확인
+	public int userByIdemail(MemberDTO dto) {
+		return memberDAO.userByIdemail(dto);
+	}
+	
 }
