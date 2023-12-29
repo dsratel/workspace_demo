@@ -65,9 +65,9 @@ public class HomeController {
 			redirect = "home";
 		} else {
 			if(dto.getId().equals("devvv")) {
-				redirect = "redirect:board/toList";
+				redirect = "redirect:/master/home";
 			} else {
-				redirect = "/master/home";
+				redirect = "redirect:/board/toList";
 			}
 		}
 		return redirect;

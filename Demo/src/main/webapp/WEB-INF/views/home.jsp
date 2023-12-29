@@ -181,7 +181,6 @@
 			
 			$("#loginForm").submit();	
 		}
-		
 	</script>
 </body>
 </html>

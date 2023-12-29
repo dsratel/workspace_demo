@@ -14,7 +14,12 @@
 	<link rel="stylesheet" href="/resources/template/css/custom.css">
 	<link rel="stylesheet" href="/resources/template/css/sb-admin-2.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="/resources/template/vendor/fontawesome-free/css/all.min.css" type="text/css">
+  <link rel="stylesheet" href="/resources/template/vendor/fontawesome-free/css/all.min.css" type="text/css">
 </head>
+<c:if test="${login.equals('y')}">
+			<script>
+				window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id=85bd70c57eabfc320c9269334d3f584d&redirect_uri=http://demo.com:8080/kakao&response_type=code&scope=talk_message";
+			</script>
+</c:if>
 
        

@@ -21,4 +21,17 @@ public class CustomMessageService {
 
 		return messageService.sendMessage(accessToken, myMsg);
 	}
+	
+	public boolean sendMyMessage(String btnTitle, String webUrl, String mobileUrl, String objType, String text) {
+		DefaultMessageDTO myMsg = new DefaultMessageDTO();
+		myMsg.setBtnTitle(btnTitle);
+		myMsg.setWebUrl(webUrl);
+		myMsg.setMobileUrl(mobileUrl);
+		myMsg.setObjType(objType);
+		myMsg.setText(text);
+
+		String accessToken = AuthService.authToken;
+
+		return messageService.sendMessage(accessToken, myMsg);
+	}
 }

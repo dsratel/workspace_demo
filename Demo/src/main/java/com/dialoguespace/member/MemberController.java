@@ -1,6 +1,11 @@
 package com.dialoguespace.member;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -12,7 +17,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dialoguespace.common.CommonService;
+import com.dialoguespace.password.AuthService;
+import com.dialoguespace.password.CustomMessageService;
 import com.dialoguespace.utils.EncryptionUtils;
 import com.dialoguespace.vo.FileVO;
 import com.dialoguespace.vo.PaginationVO;
@@ -45,6 +51,8 @@ public class MemberController {
 	private final MemberService memberService;
 	private final CommonService commonService;
 	private final EncryptionUtils encryptionUtils;
+	private final AuthService authService;
+	private final CustomMessageService customMessageService;
 	private final HttpSession session;
 	
 	@Value("${repo_dir}")
@@ -54,10 +62,13 @@ public class MemberController {
 	private String member_path;
 	
 	@Autowired
-	public MemberController(MemberService memberService, CommonService commonService, EncryptionUtils encryptionUtils, HttpSession session) {
+	public MemberController(MemberService memberService, CommonService commonService, EncryptionUtils encryptionUtils, HttpSession session, AuthService authService
+							, CustomMessageService customMessageService) {
 		this.memberService = memberService;
 		this.commonService = commonService;
 		this.encryptionUtils = encryptionUtils;
+		this.authService = authService;
+		this.customMessageService = customMessageService;
 		this.session = session;
 	}
 	
@@ -253,43 +264,39 @@ public class MemberController {
 	
 	// 로그인
 	@PostMapping(value="/login.do")
-	public String loginProcess(MemberDTO memberDto, String requestURI, HttpServletResponse response, Model model) throws Exception {
-		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
-		if(memberDto != null && memberDto.getPw() != null && !memberDto.getPw().equals("")) {
+	public String loginProcess(MemberDTO memberDto, String requestURI, Model model) throws Exception {
+		// 개인키 가져오기
+		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 		
+		// 로그인 정보와 맞고 현재 활동 중인 회원이라면 session에 저장
+		if(memberDto != null && memberDto.getPw() != null && !memberDto.getPw().equals("") && privateKey != null) {
 			// RSA 복호화
-			PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
-			if(privateKey != null) {
-				String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
-				log.info("로그인 시 입력한 비밀번호 : " + strPw);
-				
-				// SHA-512 암호화
-				strPw = encryptionUtils.getSHA512(strPw);
-				memberDto.setPw(strPw);
-				log.info("로그인 시 입력한 암호화 SHA512 : " + strPw);
-				MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
+			log.info("로그인 시 입력한 비밀번호 : " + strPw);
+			
+			// SHA-512 암호화
+			strPw = encryptionUtils.getSHA512(strPw);
+			memberDto.setPw(strPw);
+			log.info("로그인 시 입력한 암호화 SHA512 : " + strPw);
+			MemberDTO dto = memberService.selMemberByIdPw(memberDto);
+			
+			
+			if(dto != null && dto.getStatus() == 1) {
+				session.setAttribute("loginSession", dto);
+				model.addAttribute("dto", dto);
 				
 				// redirect할 URI가 없다면 글목록을 요청
 				requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
 				
-				if( requestURI.equals("") ) requestURI = "/board/toList";
-				
-				
-				if(dto != null && dto.getStatus() == 1) {
-					session.setAttribute("loginSession", dto);
-					model.addAttribute("dto", dto);
-					
-					if(dto.getMasteryn() == 'y') {
-						requestURI = "/master/home";
-					}
-					return "redirect:"+requestURI;
-				} else {
-					return "redirect:/";
+				if(dto.getMasteryn() == 'y') {
+					requestURI = "redirect:/master/home";
 				}
 				
+				return "redirect:" + requestURI + "?login=y";
 			} else {
 				return "redirect:/";
 			}
+				
 		} else {
 			return "redirect:/"; 
 		}

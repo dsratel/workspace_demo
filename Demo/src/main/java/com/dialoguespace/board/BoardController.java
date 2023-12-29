@@ -51,12 +51,13 @@ public class BoardController {
 	}
 	
 	@ModelAttribute
-	public void loginInfo(Model model) {
+	public void loginInfo(Model model, String login) {
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo != null) {
 			model.addAttribute("loginId", loginInfo.getId());
 			model.addAttribute("masteryn", loginInfo.getMasteryn());			
 		}
+		model.addAttribute("login", login);
 	}
 	
 	// 글 쓰기 페이지로 이동
