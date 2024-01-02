@@ -42,12 +42,13 @@ public class MasterController {
 	}
 	
 	@ModelAttribute
-	public void loginInfo(Model model) {
+	public void loginInfo(Model model, String login) {
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo != null) {
 			model.addAttribute("loginId", loginInfo.getId());
 			model.addAttribute("masteryn", loginInfo.getMasteryn());			
 		}
+		model.addAttribute("login", login);
 	}
 	
 	@GetMapping(value="/home")

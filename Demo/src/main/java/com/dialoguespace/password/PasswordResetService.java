@@ -23,11 +23,16 @@ public class PasswordResetService {
 	}
 	
 	// 비밀번호 변경 URL 정보 저장
-	public int addInfo(String id, String email) {
+	public int addInfo(String url, String id, String email) {
 		Map<String, String> map = new HashMap<>();
+		map.put("url", url);
 		map.put("id", id);
 		map.put("email", email);
 		return passwordResetDAO.addInfo(map);
 	}
-
+	
+	// 비밀번호 변경한 URL 폐기
+	public int expiredURL(String url) {
+		return passwordResetDAO.expiredURL(url);
+	}
 }

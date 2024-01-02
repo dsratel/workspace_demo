@@ -12,9 +12,9 @@ public class CustomMessageService {
 	public boolean sendMyMessage() {
 		DefaultMessageDTO myMsg = new DefaultMessageDTO();
 		myMsg.setBtnTitle("자세히보기");
-		myMsg.setMobileUrl("https://www.naver.com");
+		myMsg.setMobileUrl("http://www.naver.com");
 		myMsg.setObjType("text");
-		myMsg.setWebUrl("https://www.daum.net");
+		myMsg.setWebUrl("http://www.daum.net");
 		myMsg.setText("JAVA 메세지 테스트");
 
 		String accessToken = AuthService.authToken;

@@ -50,6 +50,8 @@
 			<exclude-mapping path="/member/forgotPassword" />
 			<exclude-mapping path="/member/userByIdemail" />
 			<exclude-mapping path="/password/resetPassword" />
+			<exclude-mapping path="/password/resetPassword.do" />
+			<exclude-mapping path="/password/sendURL" />
 			<exclude-mapping path="/kakao" />
 			<exclude-mapping path="/resources/**" />
 			<exclude-mapping path="/repository/**" />

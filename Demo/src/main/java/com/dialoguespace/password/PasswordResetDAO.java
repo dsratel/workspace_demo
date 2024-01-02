@@ -9,5 +9,7 @@ public interface PasswordResetDAO {
 	
 	// 비밀번호 초기화 URL 저장
 	public int addInfo(Map<String, String> map);
-
+	
+	// 비밀번호 변경한 URL 폐기
+	public int expiredURL(String url);
 }

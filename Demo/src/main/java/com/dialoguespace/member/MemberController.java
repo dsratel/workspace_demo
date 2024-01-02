@@ -1,11 +1,6 @@
 package com.dialoguespace.member;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -73,12 +68,13 @@ public class MemberController {
 	}
 	
 	@ModelAttribute
-	public void loginInfo(Model model) {
+	public void loginInfo(Model model, String login) {
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo != null) {
 			model.addAttribute("loginId", loginInfo.getId());
 			model.addAttribute("masteryn", loginInfo.getMasteryn());			
 		}
+		model.addAttribute("login", login);
 	}
 	
 	// 회원 등록
@@ -371,7 +367,7 @@ public class MemberController {
 	@PostMapping(value="/userByIdemail")
 	public int userByIdemail(MemberDTO dto) {
 		if(dto.getId() != null && dto.getEmail() != null) {
-			return memberService.userByIdemail(dto);			
+			return memberService.userByIdemail(dto);
 		} else {
 			return -1;
 		}

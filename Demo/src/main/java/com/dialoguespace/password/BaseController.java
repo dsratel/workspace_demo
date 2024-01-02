@@ -44,8 +44,8 @@ public class BaseController {
 			if(loginInfo != null) loginId = loginInfo.getId();
 			
 			String btnTitle = "버튼 제목";
-			String webUrl = "https://www.naver.com";
-			String mobileUrl = "https://www.daum.net";
+			String webUrl = "http://www.naver.com";
+			String mobileUrl = "http://www.daum.net";
 			String objType = "text";
 			String text = loginId + "님이 로그인하였습니다.";
 			customMessageService.sendMyMessage(btnTitle, webUrl, mobileUrl, objType, text);

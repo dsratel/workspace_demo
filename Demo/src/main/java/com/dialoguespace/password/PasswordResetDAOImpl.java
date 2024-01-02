@@ -23,8 +23,15 @@ private SqlSession sqlsession;
 	}
 	
 	// 비밀번호 초기화 URL 저장
+	@Override
 	public int addInfo(Map<String, String> map) {
 		return sqlsession.insert("passwordResetMapper.addInfo", map);
 	};
+	
+	// 비밀번호 변경한 URL 폐기
+	@Override
+	public int expiredURL(String url) {
+		return sqlsession.update("passwordResetMapper.expiredURL", url);
+	}
 
 }

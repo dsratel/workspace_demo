@@ -23,7 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class EncryptionUtils {
 	
 	private final HttpSession session;
@@ -86,8 +89,7 @@ public class EncryptionUtils {
 		if(privateKey == null) return ;
 		//// 개인키 세션에 개인키를 저장
 		session.setAttribute("__rsaPrivateKey__", privateKey);
-		System.out.println("========== EncryptionUtils - getRsaInstance ==========");
-		System.out.println(session.getAttribute("__rsaPrivateKey__"));
+		log.info("========== EncryptionUtils - getRsaInstance ==========");
 		//// KeyFactory 인스턴스 생성(RSA 알고리즘)
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 		//// RSAPublicKeySpec 인스턴스 생성. 공개키를 문자열로 전환하여 JavaScript RSA 라이브러리에 넘겨주기.

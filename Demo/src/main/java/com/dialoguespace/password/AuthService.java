@@ -30,7 +30,7 @@ public class AuthService extends HttpCallService{
 		parameters.add("code", code);
 		parameters.add("grant_type", "authorization_code");
 		parameters.add("client_id", "85bd70c57eabfc320c9269334d3f584d");
-		parameters.add("redirect_url", "http://127.0.0.1:8080/");
+		parameters.add("redirect_url", "https://www.naver.com/");
 
 		HttpEntity<?> requestEntity = httpClientEntity(header, parameters);
 

@@ -113,5 +113,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public int userByIdemail(MemberDTO dto) {
 		return sqlsession.selectOne("memberMapper.userByIdemail", dto);
 	}
+	
+	// 비밀번호 초기화
+	@Override
+	public int resetPassword(Map<String, String> map) {
+		return sqlsession.update("memberMapper.resetPw", map);
+	}
 
 }

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="login"/>
+		<item key="selection" value="sendURL"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="sendURL"/>
+			<item value="createMimeMessage"/>
+			<item value="javamailsenderimpl"/>
+			<item value="mailSender2"/>
+			<item value="mail"/>
+			<item value="springframework.mail"/>
+			<item value="javamailsender"/>
+			<item value="javamail"/>
+			<item value="spring-context"/>
+			<item value="spring-context-support"/>
+			<item value="javax.mail"/>
 			<item value="login"/>
-			<item value="if"/>
-			<item value="조회결과"/>
-			<item value="seq로 파일 지우기"/>
-			<item value="delFileBySeq"/>
-			<item value="code"/>
 			<item value="login.do"/>
-			<item value="geta"/>
-			<item value="ajax"/>
-			<item value="response"/>
-			<item value="APP_TYPE_URL_ENCODED"/>
-			<item value="requestURI"/>
-			<item value="APP_TYPE_JSON"/>
-			<item value="httpClientEntity"/>
-			<item value="getKakaoAuthToken"/>
+			<item value="HttpS"/>
+			<item value="https"/>
 		</list>
 		<list key="replacehistory">
 			<item value="log.info"/>

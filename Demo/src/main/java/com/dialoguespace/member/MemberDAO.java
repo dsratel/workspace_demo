@@ -48,4 +48,7 @@ public interface MemberDAO {
 	
 	// ID와 email로 회원정보 확인
 	public int userByIdemail(MemberDTO dto);
+
+	// 비밀번호 초기화
+	public int resetPassword(Map<String, String> map);
 }

@@ -143,4 +143,12 @@ public class MemberService {
 		return memberDAO.userByIdemail(dto);
 	}
 	
+	// 비밀번호 초기화
+	public int resetPassword(String id, String pw) {
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("pw", pw);
+		return memberDAO.resetPassword(map);
+	}
+	
 }

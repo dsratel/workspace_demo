@@ -85,7 +85,7 @@
 						success: function(rs){
 							if(rs > 0) {
 //								window.location.replace("/password/resetPassword");
-									kakaoMessage();
+									sendEmail();
 							} else {
 								alert("일치하는 회원 정보가 없습니다. 입력하신 ID와 EMAIL을 다시 확인해주시기 바랍니다.");
 							}
@@ -99,103 +99,11 @@
 			});
 		});
 		
-		function kakaoMessage() {
-			/*
-			$.ajax({
-				type: "post",
-				url: 'https://kapi.kakao.com/v1/api/talk/friends/message/default/send',
-				data: {
-				  
-				},
-				success: function(rs){
-					  alert("성공");
-					  console.log(rs);	  
-				},
-				error: function(rs){
-					  alert("실패");
-					  console.log(rs);
-				}
-				  
-			});
-			*/
-			
-			Kakao.API.request({
-				  url: '/v1/api/talk/friends/message/default/send',
-				  data: {
-				    receiver_uuids: ['${RECEIVER_UUID}'],
-				    template_object: {
-				      object_type: 'feed',
-				      content: {
-				        title: '딸기 치즈 케익',
-				        description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
-				        image_url:
-				          'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-				        link: {
-				          web_url: 'https://developers.kakao.com',
-				          mobile_web_url: 'https://developers.kakao.com',
-				        },
-				      },
-				      item_content: {
-				        profile_text: 'Kakao',
-				        profile_image_url: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-				        title_image_url: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-				        title_image_text: 'Cheese cake',
-				        title_image_category: 'Cake',
-				        items: [
-				          {
-				            item: 'Cake1',
-				            item_op: '1000원',
-				          },
-				          {
-				            item: 'Cake2',
-				            item_op: '2000원',
-				          },
-				          {
-				            item: 'Cake3',
-				            item_op: '3000원',
-				          },
-				          {
-				            item: 'Cake4',
-				            item_op: '4000원',
-				          },
-				          {
-				            item: 'Cake5',
-				            item_op: '5000원',
-				          },
-				        ],
-				        sum: 'Total',
-				        sum_op: '15000원',
-				      },
-				      social: {
-				        like_count: 100,
-				        comment_count: 200,
-				      },
-				      buttons: [
-				        {
-				          title: '웹으로 보기',
-				          link: {
-				            mobile_web_url: 'https://developers.kakao.com',
-				            web_url: 'https://developers.kakao.com',
-				          },
-				        },
-				        {
-				          title: '앱으로 보기',
-				          link: {
-				            mobile_web_url: 'https://developers.kakao.com',
-				            web_url: 'https://developers.kakao.com',
-				          },
-				        },
-				      ],
-				    },
-				  },
-				})
-				  .then(function(response) {
-				    console.log(response);
-				  })
-				  .catch(function(error) {
-				    console.log(error);
-				  });
+		function sendEmail() {
+			$("#passwordResetForm").attr("action", "/password/sendURL");
+			$("#passwordResetForm").submit();
 		}
+
 
 	</script>
 </body>
