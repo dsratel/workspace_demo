@@ -32,7 +32,7 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
+												<c:if test="${loginId ne '' && loginId ne null}">
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -55,7 +55,7 @@
                                 </a>
                             </div>
                         </li>
-
+												</c:if>
                     </ul>
 
                 </nav>

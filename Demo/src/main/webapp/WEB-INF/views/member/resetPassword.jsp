@@ -19,7 +19,7 @@
     <link href="/resources/template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	
 
-	<title>login page</title>
+	<title>reset password page</title>
 </head>
 
 <script src="/resources/js/rsa/jsbn.js"></script>

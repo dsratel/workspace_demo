@@ -70,3 +70,8 @@ a {
 li.page-item {
 	cursor : pointer;
 }
+
+div.sideHome:hover {
+	  transform : scale(1.2) rotate(-20deg);
+  transition : all 300ms ease-in;
+}

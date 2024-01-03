@@ -8,8 +8,15 @@
                     <i class="fas fa-grin-squint"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">NOLBU <sup>v1</sup></div>
+                
             </a>
+            <c:if test="${loginId eq '' || loginId eq null }">
+            	<a class="sidebar-brand d-flex align-items-center justify-content-center"  style="cursor:pointer;">
+               <div class="sidebar-brand-text mx-3 sideHome" onclick="moveToHome();">Move to home</div>
+              </a>
+            </c:if>
 
+						<c:if test="${loginId ne '' && loginId ne null }">
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -28,7 +35,7 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            
             <!-- Heading -->
             <div class="sidebar-heading">
                 USER
@@ -91,6 +98,7 @@
                 </div>
             </li>
 
+						
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             
@@ -108,7 +116,7 @@
             <div class="text-center d-none d-md-inline" style="padding-top:20px;">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
-
+						
+						</c:if>
         </ul>
         <!-- End of Sidebar -->

@@ -44,24 +44,20 @@ public class HomeController {
 		System.out.println("========== Home Controller 진입 ==========");
 		System.out.println("요청 uri : " + uri);
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		model.addAttribute("requestURI", uri);
-		
-		// KeyPariGenerator 인스턴스 생성(RSA 알고리즘)
-		encryptionUtils.genRsaInstance(model);
-		
-		//model.addAttribute("publicKeyModulus", map.get("publicKeyModulus"));
-		//model.addAttribute("publicKeyExponent", map.get("publicKeyExponent"));
-		
-		
 		MemberDTO dto = (MemberDTO)request.getSession().getAttribute("loginSession");
 		String redirect = "";
 		if(dto == null) {
+			Date date = new Date();
+			DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+			
+			String formattedDate = dateFormat.format(date);
+			
+			model.addAttribute("serverTime", formattedDate );
+			model.addAttribute("requestURI", uri);
+			
+			// KeyPariGenerator 인스턴스 생성(RSA 알고리즘)
+			encryptionUtils.genRsaInstance(model);
+			
 			redirect = "home";
 		} else {
 			if(dto.getId().equals("devvv")) {

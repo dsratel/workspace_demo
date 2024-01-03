@@ -11,7 +11,9 @@ import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,7 +262,10 @@ public class MemberController {
 	
 	// 로그인
 	@PostMapping(value="/login.do")
-	public String loginProcess(MemberDTO memberDto, String requestURI, Model model) throws Exception {
+	public String loginProcess(MemberDTO memberDto, String requestURI, String[] rememberId, HttpServletResponse response, Model model) throws Exception {
+		System.out.println("========== MemberController - loginProcess =========");
+
+		
 		// 개인키 가져오기
 		PrivateKey privateKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
 		
@@ -288,6 +293,16 @@ public class MemberController {
 					requestURI = "redirect:/master/home";
 				}
 				
+				// ID 기억 요청한 경우
+				if(rememberId != null) {
+					Cookie cookie = new Cookie("rememberId", memberDto.getId());
+					cookie.setDomain("demo.com");
+					cookie.setPath("/");
+					cookie.setMaxAge(24*60*60);
+					cookie.setSecure(false);
+					
+					response.addCookie(cookie);
+				}
 				return "redirect:" + requestURI + "?login=y";
 			} else {
 				return "redirect:/";

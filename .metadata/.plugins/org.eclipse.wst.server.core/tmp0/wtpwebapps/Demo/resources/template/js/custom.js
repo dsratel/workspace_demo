@@ -1,6 +1,7 @@
 $("#category").css("width", "60%");
 
 var masteryn = $("#masteryn").val();
+var loginId = $("#loginId").val();
 
 // 사이드바 - 회원 탈퇴
 $("#signOut").click(function(){
@@ -25,3 +26,7 @@ $("#signOut").click(function(){
 		window.location.replace("/member/list?status=2");
 	}
 });
+
+function moveToHome() {
+	window.location.replace("/");
+}

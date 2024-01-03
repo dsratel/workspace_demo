@@ -42,7 +42,6 @@
 	                                    <div class="text-center">
 	                                        <h1 class="h4 text-gray-900 mb-4">Welcome to NOLBU!</h1>
 	                                    </div>
-	                                    <form class="user">
 	                                        <div class="form-group">
 	                                            <input type="text" class="form-control form-control-user"
 	                                                id="id" name="id" aria-describedby="emailHelp"
@@ -50,16 +49,16 @@
 	                                        </div>
 	                                        <div class="form-group">
 	                                            <input type="password" class="form-control form-control-user" id="password" placeholder="Password" onkeyup="enterkey()">
-												<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModulus}">
-												<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}">
-												<input type="hidden" name="pw" id="pw"> 
+																							<input type="hidden" id="rsaPublicKeyModulus" value="${publicKeyModulus}">
+																							<input type="hidden" id="rsaPublicKeyExponent" value="${publicKeyExponent}">
+																							<input type="hidden" name="pw" id="pw"> 
 	                                        </div>
 	                                        <c:if test="${!requestURI.equals('') }">
 												<input type="hidden" name="requestURI" value="${requestURI }">
 											</c:if>	
 	                                        <div class="form-group">
 	                                            <div class="custom-control custom-checkbox small">
-	                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+	                                                <input type="checkbox" name="rememberId" class="custom-control-input" id="customCheck" value="rememberId">
 	                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
 	                                            </div>
 	                                        </div>
@@ -74,7 +73,6 @@
 	                                        <button type="button" class="btn btn-blue btn-user btn-block" id="listBtn">
 	                                            <i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Board List
 	                                        </button>
-	                                    </form>
 	                                    <hr>
 	                                    <div class="text-center">
 	                                        <a class="small" href="/member/forgotPassword">Forgot Password?</a>
@@ -129,6 +127,28 @@
 			$("#listBtn").click(function(){
 				window.location.replace("/board/toList");
 			});
+			
+			// remember Me 체크 한 경우
+			var cookie = document.cookie;
+			var ckName = "rememberId=";
+			var ckVal  = cookie.substr(cookie.lastIndexOf(ckName) + ckName.length);
+			if(ckVal.length > 0) {
+				$("#id").val(ckVal);
+				$("#customCheck").prop("checked", true);
+			}
+			
+			$("#customCheck").change(function(){
+				if(!$("#customCheck").is(":checked")){
+					var date = new Date();
+					date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
+					
+					document.cookie = 'rememberId=; domain=.demo.com; expires=' + date.toUTCString() + '; path=/;'
+					console.log('rememberId=; domain=.demo.com; expires=' + date.toUTCString() + '; path=/;');
+					//console.log('rememberId=; expires=' + date.toUTCString() + '; path=/;');
+					alert("쿠키 날짜 변경");
+				}
+			});
+			
 		})	// function() end
 		
 		// 비밀번호에서 엔터
