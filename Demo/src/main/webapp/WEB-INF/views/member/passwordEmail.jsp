@@ -74,10 +74,7 @@
 		$(function(){
 			// 비밀번호 초기화 버튼
 			$("#resetBtn").click(function(){
-				console.log($("#id").val().trim());
-				console.log($("#email").val().trim());
 				if($("#id").val().trim().length > 5 && new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test($("#email").val().trim())) {
-					console.log("id, 비밀번호 유효성검사 통과");
 					$.ajax({
 						type: "post", 
 						url: "/member/userByIdemail",
@@ -94,6 +91,8 @@
 							alert("통신 오류가 발생하였습니다. 다시 시도해 주시기 바랍니다.");
 						}
 					}) 
+				} else {
+					alert("check your id and email address please");
 				}
 				
 			});

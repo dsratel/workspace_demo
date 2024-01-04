@@ -28,6 +28,8 @@ public class PasswordResetService {
 		map.put("url", url);
 		map.put("id", id);
 		map.put("email", email);
+		// 동일 id의 url이 있는 경우 expired = 'y' 처리
+		passwordResetDAO.expiredUrlById(id);
 		return passwordResetDAO.addInfo(map);
 	}
 	

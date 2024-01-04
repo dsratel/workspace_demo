@@ -7,23 +7,22 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import com.dialoguespace.demo.TestVO.Builder;
+
 public class ConnectionTest {public static void main(String[] args) throws Exception {
 		
 //		String password = "Freepass123!@#";
 //		System.out.println(getSHA512(password));
 	
-	String url = "https://www.demo.com:8080/password/resetpassword?link=";
-	String uuid = UUID.randomUUID().toString().replace("-", "");
-	url = url + uuid;
+	TestVO test = new TestVO.Builder().name("hb").build();
 	
-	System.out.println(url);
+	System.out.println(test.toString());
 	
 	
 		
@@ -105,4 +104,50 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		System.out.println(filePath + " 삭제 완료");
 	}
 	
+}
+
+class TestVO {
+    private final String name;
+    private final int age;
+    private final String phone;
+    private final String email;
+    
+    // 생성자
+    public TestVO(Builder builder) {
+        this.name = builder.name;
+        this.age = builder.age;
+        this.phone = builder.phone;
+        this.email = builder.email;
+    }
+    
+    
+    public static class Builder {
+        private String name;
+        private int age;
+        private String phone;
+        private String email;
+
+        public Builder name(String name){
+            this.name = name;
+            return this;
+        }
+        public Builder age(int age){
+            this.age = age;
+            return this;
+        }
+        public Builder phone(String phone){
+            this.phone = phone;
+            return this;
+        }
+        public Builder email(String email){
+            this.email = email;
+            return this;
+        }
+        public TestVO build(){
+            return new TestVO(this);
+        }
+        
+    }
+    
+    
 }

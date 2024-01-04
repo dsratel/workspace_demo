@@ -33,5 +33,11 @@ private SqlSession sqlsession;
 	public int expiredURL(String url) {
 		return sqlsession.update("passwordResetMapper.expiredURL", url);
 	}
+	
+	// 동일 id의 URL이 있는 경우 폐기 처리
+	@Override
+	public int expiredUrlById(String id) {
+		return sqlsession.update("passwordResetMapper.expiredUrlById", id);
+	};
 
 }

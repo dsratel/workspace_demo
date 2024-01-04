@@ -143,9 +143,7 @@
 					date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
 					
 					document.cookie = 'rememberId=; domain=.demo.com; expires=' + date.toUTCString() + '; path=/;'
-					console.log('rememberId=; domain=.demo.com; expires=' + date.toUTCString() + '; path=/;');
-					//console.log('rememberId=; expires=' + date.toUTCString() + '; path=/;');
-					alert("쿠키 날짜 변경");
+					$("#id").val("");
 				}
 			});
 			

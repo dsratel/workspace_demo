@@ -56,14 +56,14 @@ public class PasswordResetController {
 	public String sendURL(String id, String email) throws MessagingException {
 		// 비밀번호 변경 URL 생성
 		String uuid = UUID.randomUUID().toString();
-		String url = "localhost:8080/password/resetPassword?link="+uuid;
+		String url = "demo.com:8080/password/resetPassword?link="+uuid;
 		
 		// DB저장
 		passwordResetService.addInfo(url, id, email);
 		// 이메일 전송
 		// [참고 : https://kimvampa.tistory.com/93]
         String subject = "[NOLBU] PASSWORD RESET EMAIL";
-        String content = "아래의 url을 주소창에 복사하여 접속하세요.\n" + url;
+        String content = "URL을 주소창에 복사하여 접속하세요.\n" + url;
         String from = "test@gmail.com";//"ratelamsh@gmail.com";
         String to = "ratelamsh@dialoguespace.co.kr";
         //.createMimeMessage()

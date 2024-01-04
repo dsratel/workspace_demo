@@ -12,4 +12,7 @@ public interface PasswordResetDAO {
 	
 	// 비밀번호 변경한 URL 폐기
 	public int expiredURL(String url);
+	
+	// 동일 id의 URL이 있는 경우 폐기 처리
+	public int expiredUrlById(String id);
 }
