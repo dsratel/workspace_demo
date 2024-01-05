@@ -18,13 +18,15 @@
 <fullyQualifiedTypeName name="java.security.KeyFactory"/>
 <fullyQualifiedTypeName name="java.security.spec.RSAPublicKeySpec"/>
 <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
-<fullyQualifiedTypeName name="java.security.InvalidKeyException"/>
 <fullyQualifiedTypeName name="org.springframework.web.context.request.RequestContextHolder"/>
-<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="java.util.logging.Logger"/>
-<fullyQualifiedTypeName name="org.slf4j.Logger"/>
 <fullyQualifiedTypeName name="java.io.DataOutputStream"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.security.InvalidKeyException"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Value"/>
+<fullyQualifiedTypeName name="javax.servlet.http.Cookie"/>
+<fullyQualifiedTypeName name="org.slf4j.Logger"/>
+<fullyQualifiedTypeName name="com.dialoguespace.demo.TestVO.Builder"/>
 </qualifiedTypeNameHistroy>

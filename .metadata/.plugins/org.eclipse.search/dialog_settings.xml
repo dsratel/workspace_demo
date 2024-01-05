@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="">
-		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
-		<item key="org.eclipse.jdt.search.resultpage.limit_enabled" value="TRUE"/>
+		<item key="org.eclipse.search.resultpage.limit" value="1000"/>
 	</section>
 	<section name="org.eclipse.jdt.ui.JavaSearchResultPage">
 		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
@@ -39,12 +38,12 @@
 		<item key="WHOLE_WORD" value="false"/>
 		<item key="SEARCH_DERIVED" value="false"/>
 		<item key="SEARCH_IN_BINARIES" value="false"/>
-		<item key="HISTORY_SIZE" value="9"/>
+		<item key="HISTORY_SIZE" value="12"/>
 		<section name="HISTORY0">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="firstlogin"/>
+			<item key="textPattern" value="pop"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -64,7 +63,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="delFileBySeq"/>
+			<item key="textPattern" value="@RestController"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -77,7 +76,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="stringbuilder"/>
+			<item key="textPattern" value="mailSender2"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -90,7 +89,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="APP_TYPE_JSON"/>
+			<item key="textPattern" value="firstlogin"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -103,6 +102,45 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="delFileBySeq"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*.java"/>
+				<item value="*.jsp"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY5">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="false"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="stringbuilder"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*.java"/>
+				<item value="*.jsp"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY6">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="false"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="APP_TYPE_JSON"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*.java"/>
+				<item value="*.jsp"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY7">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="false"/>
+			<item key="isWholeWord" value="false"/>
 			<item key="textPattern" value="new regex"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
@@ -111,7 +149,7 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY5">
+		<section name="HISTORY8">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
@@ -123,7 +161,7 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY6">
+		<section name="HISTORY9">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
@@ -135,7 +173,7 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY7">
+		<section name="HISTORY10">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
@@ -147,7 +185,7 @@
 			<list key="workingSets">
 			</list>
 		</section>
-		<section name="HISTORY8">
+		<section name="HISTORY11">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
@@ -175,5 +213,7 @@
 	</section>
 	<section name="">
 		<item key="org.eclipse.search.resultpage.limit" value="1000"/>
+		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
+		<item key="org.eclipse.jdt.search.resultpage.limit_enabled" value="TRUE"/>
 	</section>
 </section>

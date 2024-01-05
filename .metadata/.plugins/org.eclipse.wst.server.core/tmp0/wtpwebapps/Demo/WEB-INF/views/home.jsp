@@ -67,6 +67,9 @@
 	                                            Login
 	                                        </button>
 	                                        <hr>
+	                                        <button type="button" class="btn btn-red btn-user btn-block" id="loginGoogle">
+	                                            <i class="fa af-google" aria-hidden="true"></i>&nbsp;&nbsp;Google
+	                                        </button>	                                        
 	                                        <button type="button" class="btn btn-red btn-user btn-block" id="signUpBtn">
 	                                            <i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;&nbsp;SignUp
 	                                        </button>
@@ -147,6 +150,29 @@
 				}
 			});
 			
+			// googleLogin 버튼
+			$("#loginGoogle").click(function(){
+				$.ajax({
+					type : "post",
+					url : "/api/google-login",
+					data : {},
+					success : function(rs){
+						loginGoogle(rs);
+					},
+					error : function(rs){
+						alert("URL 받아오기 실패");
+					}
+				})
+				
+				function loginGoogle(url){
+					var width = 470;
+					var height = 620;
+					var popupX = (window.screen.width/2) - (width/2);
+					var popupY = (window.screen.height/2) - (height/2);
+					console.log(width + ' / ' + height + ' / ' + popupX + ' / ' + popupY);
+					window.open(url, 'google login popup', 'width=' + width + ',height=' + height + ',left=' + popupX + ',top=' + popupY);
+				}
+			});
 		})	// function() end
 		
 		// 비밀번호에서 엔터

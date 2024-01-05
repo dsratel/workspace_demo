@@ -32,7 +32,12 @@
 	
 	<!-- properties / 231208 -->
     <beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <beans:property name="location" value="/WEB-INF/properties/directory.properties"/>
+        <beans:property name="locations">
+        	<beans:list>
+        		<beans:value>/WEB-INF/properties/directory.properties</beans:value>
+        		<beans:value>/WEB-INF/properties/api.properties</beans:value>
+        	</beans:list>
+        </beans:property>
         <beans:property name="fileEncoding" value="UTF-8" />
     </beans:bean>
 	
@@ -53,6 +58,7 @@
 			<exclude-mapping path="/password/resetPassword.do" />
 			<exclude-mapping path="/password/sendURL" />
 			<exclude-mapping path="/kakao" />
+			<exclude-mapping path="/api/**" />
 			<exclude-mapping path="/resources/**" />
 			<exclude-mapping path="/repository/**" />
 			<beans:bean class="com.dialoguespace.utils.LoginInterceptor" />

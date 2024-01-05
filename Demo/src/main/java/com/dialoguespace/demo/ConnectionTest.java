@@ -13,6 +13,10 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.springframework.cloud.openfeign.FeignFormatterRegistrar;
+import org.springframework.context.annotation.Bean;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
+
 import com.dialoguespace.demo.TestVO.Builder;
 
 public class ConnectionTest {public static void main(String[] args) throws Exception {
@@ -27,6 +31,15 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 	
 		
 	}	// main end
+
+	@Bean
+	public FeignFormatterRegistrar localDateFormatter () {
+	    return registry -> {
+	        DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
+	        registrar.setUseIsoFormat(true);
+	        registrar.registerFormatters(registry);
+	    };
+	}
 	
 	// SHA512 암호화
 	public static String getSHA512(String password) {
