@@ -23,8 +23,8 @@
 	<script src="/resources/js/rsa/rng.js"></script>
 	<title>login page</title>
 </head>
-<body class="bg-gradient-primary">
-	<form name="loginForm" method="post" action="/member/login.do" id="loginForm">
+<body class="bg-gradient-light">
+	<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMemberForm" enctype="multipart/form-data">
 	    <div class="container">
 	
 	        <!-- Outer Row -->
@@ -36,7 +36,7 @@
 	                    <div class="card-body p-0">
 	                        <!-- Nested Row within Card Body -->
 	                        <div class="row">
-														<div class="col-12" style="border:1px solid; padding:20px;">
+														<div class="col-12" style="padding:20px;">
 																<div class="row" style="padding: 5px 0px 5px">
 																	<div class="col-3">
 																		<span>프로필 사진</span>
@@ -53,7 +53,7 @@
 																		<span>ID</span>
 																	</div>
 																	<div class="col-6">
-																		<input type="text" class="form-control" name="m_id">
+																		<input type="text" class="form-control" id="m_id">
 																	</div>
 																	<div class="col-3">
 																		<button type="button" class="btn btn-secondary" id="idCheckBtn">중복검사</button>
@@ -75,10 +75,10 @@
 																</div>
 																<div class="row" style="padding: 5px 0px 5px">
 																	<div class="col-3">
-																		<span>닉네임</span>
+																		<span>이름</span>
 																	</div>
 																	<div class="col-6">
-																		<input type="text" class="form-control" name="m_nickname">
+																		<input type="text" class="form-control" id="m_name">
 																	</div>
 																	<div class="col-3">
 																		<span>두 글자 이상</span>
@@ -86,10 +86,10 @@
 																</div>
 																<div class="row" style="padding: 5px 0px 5px">
 																	<div class="col-3">
-																		<span>이름</span>
+																		<span>닉네임</span>
 																	</div>
 																	<div class="col-6">
-																		<input type="text" class="form-control" name="m_name">
+																		<input type="text" class="form-control" id="m_nickname">
 																	</div>
 																	<div class="col-3">
 																		<span>두 글자 이상</span>
@@ -100,9 +100,21 @@
 																		<span>주소</span>
 																	</div>
 																	<div class="col-6">
-																		<input type="text" class="form-control" name="m_address">
+																		<input type="text" class="form-control" id="m_address">
 																	</div>
 																	<div class="col-3">
+																		<span></span>
+																	</div>
+																</div>
+																<div class="row" style="padding: 5px 0px 5px">
+																	<div class="col-3">
+																		<span>이메일</span>
+																	</div>
+																	<div class="col-6">
+																		<input type="text" class="form-control" id="m_email">
+																	</div>
+																	<div class="col-3">
+																		<button type="button" class="btn btn-secondary" id="emailCheckBtn">중복검사</button>
 																		<span></span>
 																	</div>
 																</div>
@@ -135,17 +147,16 @@
 														</div> -->
 													</div>
 													<div id="formDiv">
-														<form action="/member/insertMember.do" method="post" name="insertMember" id="insertMemberForm" enctype="multipart/form-data">
 															<div class="row" style="padding: 5px 0px 5px">
 																	<input type="file" name="upfile" class="form-control" id="upfile">
 																	<input type="text" class="form-control" name="id" id="id">
 																	<input type="password" class="form-control" name="pw" id="pw">
-																	<input type="text" class="form-control" name="nickname" id="nickname">
 																	<input type="text" class="form-control" name="name" id="name">
+																	<input type="text" class="form-control" name="nickname" id="nickname">
 																	<input type="text" class="form-control" name="address" id="address">
+																	<input type="text" class="form-control" name="email" id="email">
 																	<input type="text" class="form-control" name="phone" id="phone">
 															</div>
-														</form>
 													</div>
 	                        </div>
 	                    </div>
@@ -255,35 +266,47 @@
 					$("#pw").val(securedPassword);
 				}
 			}
+			console.log("PW valid check");
 			
-			//// 4. 닉네임
-			var testNickname = $("input[name='m_nickname']").val();
-			if(testNickname.length < 2) {
-				alert("닉네임은 2자리 이상이어야 합니다.");
-				return;
-			} else {
-				$("#nickname").val($("input[name='m_nickname']").val());
-			}
-			
-			//// 5. 이름
-			var testName = $("input[name='m_name']").val();
+			//// 4. 이름
+			var testName = $("#m_name").val().trim();
 			if(testName.length < 2) {
 				alert("이름은 2자리 이상이어야 합니다.");
 				return;
 			} else {
-				$("#name").val($("input[name='m_name']").val());
+				$("#name").val(testName);
 			}
+			console.log("name valid check");
 			
+			//// 5. 닉네임
+			var testNickname = $("#m_nickname").val().trim();
+			if(testNickname.length < 2) {
+				alert("닉네임은 2자리 이상이어야 합니다.");
+				return;
+			} else {
+				$("#nickname").val(testNickname);
+			}
+			console.log("nickname valid check");
+			
+
 			//// 6. 주소
-			var testAddress = $("input[name='m_address']").val();
+			var testAddress = $("#m_address").val().trim();
 			if(testAddress.length < 1) {
 				alert("주소를 입력해주세요.");
 				return;
 			} else {
-				$("#address").val($("input[name='m_address']").val());
+				$("#address").val(testAddress);
+			}
+			console.log("address valid check");
+			
+			//// 7. EMAIL -> EMAIL 중복검사 할 때 <input type="text">에 주입.
+			var testEmail = $("#email").val().trim();
+			if(!new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test(testEmail)) {
+				alert("EMAIL을 입력 후 중복검사를 해주세요.");
+				return;
 			}
 			
-			//// 7. 전화번호
+			//// 8. 전화번호
 			var regExp = /^[0-9]{4}$/;
 			var testPhone = "";
  			if(!regExp.test($("#m_phone2").val()) || $("#m_phone2").val().length < 4 || !regExp.test($("#m_phone3").val()) || $("#m_phone3").val().length < 4) {
@@ -306,39 +329,32 @@
 			}
  			
  			// <form> 값 대입
- 			//// 닉네임
- 			$("#nickname").val(testNickname);
- 			
- 			//// 이름
- 			$("#name").val(testName);
- 			
- 			//// 주소
- 			$("#address").val(testAddress);
- 			
  			//// 전화번호
  			$("#phone").val(testPhone);
  			
+ 			console.log("go to submit");
  			$("#insertMemberForm").submit();
 		});
-		
+
 		// ID 중복검사
 		$("#idCheckBtn").click(function(){
-			var testId = $("input[name='m_id']");
-			if(testId.val().length > 4) {
+			var testId = $("#m_id").val().trim();
+			if(testId.length > 4) {
 				$.ajax({
 					url: "/member/checkId",
 					dataType: "text",
 					type: "get",
-					data: {id :testId.val() },
+					data: {id :testId },
 					success: function(data) {
 						if(data > 0) {
 							// 중복되는 ID가 있는 경우
 							alert("중복되는 ID가 있습니다.");
-							testId.val("");
+							$("#m_id").val("");
 						} else {
 							// 중복되는 ID가 없는 경우 <form> 하위 <input>에 값 주입
 							alert("ID를 사용할 수 있습니다.");
-							$("#id").val(testId.val());						
+							$("#idCheckBtn").hide();
+							$("#id").val(testId);				
 						}
 					},
 					error: function(data) {
@@ -349,11 +365,61 @@
 			} else {
 				// 규칙에 맞지 않는 ID 중복 검사 한 경우 input 값 지우기
 				alert("ID는 5글자 이상 이어야 합니다.");
-				testId.val("");
+				$("#m_id").val("");
 				$("#id").val("");
 			}
 			
 		});
+		
+		// ID 입력창의 내용 변경 시 중복검사 재 실시
+		$("#m_id").keyup(function(rs){
+			if($("#idCheckBtn").css("display") == 'none') {
+				$("#id").val("");
+				$("#idCheckBtn").show(); 
+			}
+		});
+		
+		// email 중복검사
+		$("#emailCheckBtn").click(function(){
+			var testEmail = $("#m_email").val().trim();
+			if(new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test(testEmail)) {
+				$.ajax({
+					url: "/member/checkEmail",
+					dataType: "text",
+					type: "get",
+					data: {email: testEmail},
+					success: function(data) {
+						if(data > 0) {
+							// 중복되는 ID가 있는 경우
+							alert("중복되는 EMAIL이 있습니다.");
+							$("#m_email").val("");
+						} else {
+							// 중복되는 ID가 없는 경우 <form> 하위 <input>에 값 주입
+							alert("EMAIL을 사용할 수 있습니다.");
+							$("#emailCheckBtn").hide();
+							$("#email").val(testEmail);				
+						}
+					},
+					error: function(data) {
+						console.log("실패");
+						console.log(data);
+					}
+				});
+			} else {
+				// 규칙에 맞지 않는 EMAIL 중복 검사 한 경우 input 값 지우기
+				alert("EMAIL을 aaa@bbb.ccc 같은 형식으로 입력해주세요.");
+				$("#m_email").val("");
+				$("#email").val("");
+			}
+		});
+		
+		// EMAIL 입력창의 내용 변경 시 중복검사 재 실시
+		$("#m_email").keyup(function(rs){
+			if($("#emailCheckBtn").css("display") == 'none') {
+				$("#email").val("");
+				$("#emailCheckBtn").show(); 
+			}
+		});		
 		
 		// 홈으로 이동 버튼
 		$("#toHome").click(function(){

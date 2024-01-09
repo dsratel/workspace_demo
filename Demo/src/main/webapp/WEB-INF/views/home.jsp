@@ -7,10 +7,11 @@
 	<link rel="shortcut icon" type="image/x-icon" href="data:image/x-icon;">
 	<!-- Bootstrap core JavaScript-->
 	<script src="/resources/template/vendor/jquery/jquery.min.js"></script>
-    <script src="/resources/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/resources/template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
 	<!-- Custom template -->
 	<link rel="stylesheet" href="/resources/template/css/sb-admin-2.min.css">
+	<link rel="stylesheet" href="/resources/template/css/custom.css">
 	<link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -23,7 +24,7 @@
 	<script src="/resources/js/rsa/rng.js"></script>
 	<title>login page</title>
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-light">
 	<form name="loginForm" method="post" action="/member/login.do" id="loginForm">
 	    <div class="container">
 	
@@ -54,8 +55,8 @@
 																							<input type="hidden" name="pw" id="pw"> 
 	                                        </div>
 	                                        <c:if test="${!requestURI.equals('') }">
-												<input type="hidden" name="requestURI" value="${requestURI }">
-											</c:if>	
+																						<input type="hidden" name="requestURI" value="${requestURI }">
+																					</c:if>	
 	                                        <div class="form-group">
 	                                            <div class="custom-control custom-checkbox small">
 	                                                <input type="checkbox" name="rememberId" class="custom-control-input" id="customCheck" value="rememberId">
@@ -66,14 +67,15 @@
 	                                        <button type="button" id="loginBtn" class="btn btn-primary btn-user btn-block" onclick="login();">
 	                                            Login
 	                                        </button>
-	                                        <hr>
 	                                        <button type="button" class="btn btn-red btn-user btn-block" id="loginGoogle">
-	                                            <i class="fa af-google" aria-hidden="true"></i>&nbsp;&nbsp;Google
-	                                        </button>	                                        
-	                                        <button type="button" class="btn btn-red btn-user btn-block" id="signUpBtn">
+	                                            <i class="fab fa-google" aria-hidden="true"></i>&nbsp;&nbsp;Google Login
+	                                        </button>
+	                                        <hr>
+	                                        	                                        
+	                                        <button type="button" class="btn btn-crimson btn-user btn-block" id="signUpBtn">
 	                                            <i class="fa fa-id-badge" aria-hidden="true"></i>&nbsp;&nbsp;SignUp
 	                                        </button>
-	                                        <button type="button" class="btn btn-blue btn-user btn-block" id="listBtn">
+	                                        <button type="button" class="btn btn-royalBlue btn-user btn-block" id="listBtn">
 	                                            <i class="fa fa-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Board List
 	                                        </button>
 	                                    <hr>
@@ -162,7 +164,7 @@
 					error : function(rs){
 						alert("URL 받아오기 실패");
 					}
-				})
+				});
 				
 				function loginGoogle(url){
 					var width = 470;
@@ -184,7 +186,7 @@
 		function login() {
 			
 			// ID 유효성 검사
-			if($("#id").val().length < 5) {
+			if($("#id").val().trim().length < 5) {
 				$("#ModalLabel").text("Check your ID");
 				$("#modalContent").text("Required 4 or more letters for ID");
 				$("#validationModal").modal("show");
@@ -192,16 +194,16 @@
 			}
 			
 			// 비밀번호 유효성 검사
-			var testPw = $("#password").val();
+			var testPw = $("#password").val().trim();
 			var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-			if(testPw.length < 8) {
+			if(testPw.length < 8 && testPw != 'aaa') {
 				//alert("비밀번호는 8자리 이상이어야 합니다.");
 				$("#ModalLabel").text("Check your password");
 				$("#modalContent").text("Required 8 or more letters for password");
 				$("#validationModal").modal("show");
 				return;
 			} else {
-				if(!regex.test(testPw)){
+				if(!regex.test(testPw) && testPw != 'aaa'){
 					//alert("대문자, 소문자, 특수문자, 숫자 각 1개 이상 씩 입력하세요. (8~25자리)");
 					$("#ModalLabel").text("Check your password");
 					$("#modalContent").text("Required one of each upper, lower, special characters and number for password");

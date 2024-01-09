@@ -90,6 +90,12 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlsession.selectOne("memberMapper.checkId", id);
 	}
 	
+	// EMAIL 중복검사
+	@Override
+	public MemberDTO checkEmail(String email) {
+		return sqlsession.selectOne("memberMapper.checkEmail", email);
+	}
+	
 	// 로그인 - ID, PW로 회원 선택
 	@Override
 	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception {

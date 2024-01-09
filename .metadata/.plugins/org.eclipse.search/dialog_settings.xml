@@ -43,27 +43,30 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="pop"/>
+			<item key="textPattern" value="MaxBackupIndex"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
 				<item value="*.jsp"/>
+				<item value="xml"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
 		</section>
 		<section name="EXTENSIONS">
-			<item key="0" value="*.java, *.jsp"/>
-			<item key="1" value="*.jsp, *.java"/>
-			<item key="2" value="*.jsp"/>
-			<item key="3" value="*.java"/>
-			<item key="4" value="dto"/>
+			<item key="0" value="*.java, *.jsp, *,xml"/>
+			<item key="1" value="*.java, *.jsp"/>
+			<item key="2" value="*.jsp, *.java"/>
+			<item key="3" value="*.jsp"/>
+			<item key="4" value="*.java"/>
+			<item key="5" value="dto"/>
 		</section>
 		<section name="HISTORY1">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="@RestController"/>
+			<item key="textPattern" value="bg-login-image"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -76,7 +79,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="mailSender2"/>
+			<item key="textPattern" value="GoogleInfResponse"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -89,7 +92,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="firstlogin"/>
+			<item key="textPattern" value="pop"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -102,7 +105,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="delFileBySeq"/>
+			<item key="textPattern" value="@RestController"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -115,7 +118,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="stringbuilder"/>
+			<item key="textPattern" value="mailSender2"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -128,7 +131,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="APP_TYPE_JSON"/>
+			<item key="textPattern" value="firstlogin"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -141,9 +144,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="new regex"/>
+			<item key="textPattern" value="delFileBySeq"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
+				<item value="*.java"/>
 				<item value="*.jsp"/>
 			</list>
 			<list key="workingSets">
@@ -153,10 +157,11 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="uuid"/>
+			<item key="textPattern" value="stringbuilder"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
+				<item value="*.jsp"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -165,9 +170,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="ajax"/>
+			<item key="textPattern" value="APP_TYPE_JSON"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
+				<item value="*.java"/>
 				<item value="*.jsp"/>
 			</list>
 			<list key="workingSets">
@@ -177,10 +183,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="window.open"/>
+			<item key="textPattern" value="new regex"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="dto"/>
+				<item value="*.jsp"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -189,10 +195,10 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="map"/>
+			<item key="textPattern" value="uuid"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="dto"/>
+				<item value="*.java"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -213,7 +219,5 @@
 	</section>
 	<section name="">
 		<item key="org.eclipse.search.resultpage.limit" value="1000"/>
-		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
-		<item key="org.eclipse.jdt.search.resultpage.limit_enabled" value="TRUE"/>
 	</section>
 </section>

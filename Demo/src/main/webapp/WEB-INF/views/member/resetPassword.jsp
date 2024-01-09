@@ -27,7 +27,7 @@
 <script src="/resources/js/rsa/prng4.js"></script>
 <script src="/resources/js/rsa/rng.js"></script>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-light">
 	<form name="passwordResetForm" method="post" id="passwordResetForm">
 	    <div class="container">
 	
@@ -49,7 +49,7 @@
                                             and we'll send you a link to reset your password!</p>
                                     </div>
 	                                    <div class="form-group">
-	                                    	<input class="form-control" type="password" id="password" placeholder="Enter password..">
+	                                    	<input class="form-control mb-2" type="password" id="password" placeholder="Enter password..">
 	                                    	<input class="form-control" type="password" id="password2" placeholder="Enter password one more..">
 	                                    </div>
 	                                    <a id="resetBtn" class="btn btn-primary btn-user btn-block" onclick="editPassword(event)">

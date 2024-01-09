@@ -79,7 +79,11 @@ public class ApiController {
         ResponseEntity<GoogleInfResponse> resultEntity2 = restTemplate.postForEntity("https://oauth2.googleapis.com/tokeninfo",
                 map, GoogleInfResponse.class);
         System.out.println(resultEntity2.toString());
-        String email = resultEntity2.getBody().getEmail();       
+        String email = resultEntity2.getBody().getEmail();
+        
+        // 계정이 있는지 확인
+        
+        
         return email;
     }
 	

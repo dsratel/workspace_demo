@@ -37,6 +37,9 @@ public interface MemberDAO {
 	// ID 중복검사
 	public int checkId(String id) throws Exception;
 	
+	// EMAIL 중복검사
+	public MemberDTO checkEmail(String email);
+	
 	// 로그인 - ID, PW로 회원 선택
 	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception;
 	

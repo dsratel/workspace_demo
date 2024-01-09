@@ -49,6 +49,7 @@
 			<exclude-mapping path="/member/signUp" />
 			<exclude-mapping path="/member/insertMember.do" />
 			<exclude-mapping path="/member/checkId" />
+			<exclude-mapping path="/member/checkEmail" />
 			<exclude-mapping path="/board/toList" />
 			<exclude-mapping path="/board/viewArticle" />
 			<exclude-mapping path="/comment/listReply" />

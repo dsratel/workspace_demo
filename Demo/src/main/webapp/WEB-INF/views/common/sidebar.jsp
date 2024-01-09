@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" style="cursor:default;">
@@ -20,15 +20,14 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            
            	<c:choose>
            		<c:when test="${masteryn eq 'y'.charAt(0)}">
            			<!-- Nav Item - Dashboard -->
 		            <li class="nav-item active">
-						<a class="nav-link" href="/master/home">
-		                    <i class='fas fa-stream'></i>
-		                    <span>MASTER MENU</span>
-						</a>            		
+									<a class="nav-link" href="/master/home">
+                    <i class='fas fa-stream'></i>
+                    <span>MASTER MENU</span>
+									</a>            		
 		            </li>
            		</c:when>
           	</c:choose>

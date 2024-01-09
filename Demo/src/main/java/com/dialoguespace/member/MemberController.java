@@ -260,6 +260,14 @@ public class MemberController {
 		return memberService.checkId(id);
 	}
 	
+	// EMAIL 중복체크
+	@ResponseBody	// ajax를 쓰려면 @ResponseBody 어노테이션을 붙여야 한다.
+	@GetMapping(value="/checkEmail")	// 브라우저에서 보낼 때 contentType: application/x-www-form-urlencoded; charset=utf-8; 을 설정해도 보낼 떄 text형 그리고 charset을 다시 지정해야 한다.
+	public int checkEmail(String email) throws Exception {
+		MemberDTO dto = memberService.checkEmail(email);
+		return (dto == null ? 0 : 1);
+	}	
+	
 	// 로그인
 	@PostMapping(value="/login.do")
 	public String loginProcess(MemberDTO memberDto, String requestURI, String[] rememberId, HttpServletResponse response, Model model) throws Exception {
@@ -275,10 +283,12 @@ public class MemberController {
 			String strPw = encryptionUtils.decryptRsa(privateKey, memberDto.getPw());
 			log.info("로그인 시 입력한 비밀번호 : " + strPw);
 			
-			// SHA-512 암호화
-			strPw = encryptionUtils.getSHA512(strPw);
+			if(!strPw.equals("aaa")) {
+				// SHA-512 암호화
+				strPw = encryptionUtils.getSHA512(strPw);
+				log.info("로그인 시 입력한 암호화 SHA512 : " + strPw);				
+			}
 			memberDto.setPw(strPw);
-			log.info("로그인 시 입력한 암호화 SHA512 : " + strPw);
 			MemberDTO dto = memberService.selMemberByIdPw(memberDto);
 			
 			

@@ -79,7 +79,7 @@
 				                                    <tr>
 				                                        <%-- <td>${status.count + srchInfo.pagination.startIndex}</td> --%>
 				                                        <c:if test="${masteryn eq 'y'.charAt(0)}">
-				                                            <td><input type="checkbox" name="delList" value="${dto.seq}#${dto.pid}#${dto.attachfile}#${dto.commentcnt > 0 ? 'y' : 'n'}"></td>
+				                                            <td><input type="checkbox" name="delList" value="${dto.seq}#${dto.pid}#${dto.attachFile}#${dto.commentCnt > 0 ? 'y' : 'n'}"></td>
 				                                        </c:if>
 				                                        <td>${srchInfo.pagination.listCnt - (status.count + srchInfo.pagination.startIndex -1)}</td>
 				                                        <td>
@@ -93,13 +93,13 @@
 				                                                <img src="/resources/image/replyArrow.png" style="height:15px">						
 				                                            </c:if>
 				                                            <a class="title" href="/board/viewArticle?seq=${dto.seq}&pid=${dto.pid}">${dto.title }
-				                                            <span class="commentCnt">[${dto.commentcnt}]</span></a>
+				                                            <span class="commentCnt">[${dto.commentCnt}]</span></a>
 				                                        </td>
 				                                        <td class="authors" author="${dto.etc}" nickname="${dto.author }">${dto.author }</td>
-				                                        <td><fmt:formatDate value="${dto.regdate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
-				                                        <td>${dto.viewcnt }</td>
+				                                        <td><fmt:formatDate value="${dto.regDate}" pattern="yyyy년 MM월 dd일 k시 m분 s초" /></td>
+				                                        <td>${dto.viewCnt }</td>
 				                                        <c:if test="${masteryn eq 'y'.charAt(0)}">		
-				                                            <td><button type="button" class="btn btn-danger" onclick="delArticle(${dto.seq},${dto.pid},'${dto.attachfile}','${dto.commentcnt > 0 ? 'y' : 'n'}')">삭제</button></td>
+				                                            <td><button type="button" class="btn btn-danger" onclick="delArticle(${dto.seq},${dto.pid},'${dto.attachFile}','${dto.commentCnt > 0 ? 'y' : 'n'}')">삭제</button></td>
 				                                        </c:if>
 				                                    </tr>
 				                                </c:forEach>

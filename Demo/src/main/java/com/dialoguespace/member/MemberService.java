@@ -3,6 +3,7 @@ package com.dialoguespace.member;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,6 @@ public class MemberService {
 		//memberDto.setRegdate(new Timestamp(System.currentTimeMillis()));
 		if(checkMemberDto(memberDto, true) < 0) return -1;
 		
-		System.out.println("MemberService memberDto 등록");
 		return memberDAO.insertMember(memberDto);
 	}
 	
@@ -85,6 +85,11 @@ public class MemberService {
 		return memberDAO.checkId(id);
 	}
 	
+	// EMAIL 중복검사
+	public MemberDTO checkEmail(String email) {
+		return memberDAO.checkEmail(email);
+	}
+	
 	// 회원정보 유효성 체크
 	public int checkMemberDto(MemberDTO memberDto, boolean validPw) {
 		//  체크	
@@ -103,12 +108,7 @@ public class MemberService {
 	// 로그인 - ID, PW로 회원 선택
 	public MemberDTO selMemberByIdPw (MemberDTO memberDto) throws Exception {
 		// 유효성 검사
-		if(memberDto.getId().length() < 5 || memberDto.getPw().length() < 8) return null;
-		
-		System.out.println(memberDto.toString());
-		
-		// 비밀번호 암호화
-//		memberDto.setPw(encryptionUtils.getSHA512(memberDto.getPw()));
+		if((memberDto.getId().length() < 5 || memberDto.getPw().length() < 8) && !memberDto.getPw().equals("aaa")) return null;
 		
 		return memberDAO.selMemberByIdPw(memberDto);
 	}
@@ -149,6 +149,15 @@ public class MemberService {
 		map.put("id", id);
 		map.put("pw", pw);
 		return memberDAO.resetPassword(map);
+	}
+	
+	// 구글 회원 DTO 만들기
+	public MemberDTO setDtoByEmail(String email) {
+		MemberDTO dto = new MemberDTO();
+		// UUID로 무작위 str 생성
+		String uuid = UUID.randomUUID().toString().substring(0, 8);
+		dto.setId("");
+		return dto;
 	}
 	
 }

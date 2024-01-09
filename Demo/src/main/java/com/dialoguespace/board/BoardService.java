@@ -53,13 +53,13 @@ public class BoardService {
 	}
 	
 	// 게시글 삭제
-	public int delArticle(int seq, int pid, char attachfile, char cmtYn) {
+	public int delArticle(int seq, int pid, char attachFile, char cmtYn) {
 		// 답글일 경우 category를 board_reply로 변경
 		String category = "board";
 		if(pid > 0) category = "board_reply";
 		
 		// 첨부파일이 있는 경우 filemeta의 db 삭제
-		if(attachfile == 'y') {
+		if(attachFile == 'y') {
 			String id = "" + seq;			
 			commonService.delFileByIdCat(id, category);
 		}

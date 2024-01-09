@@ -6,8 +6,12 @@ a.title {
 	color : #858796;
 }
 
-tr td:nth-child(4) {
+tr td:nth-child(3) {
 	text-align:left;
+}
+
+td.authors {
+	cursor: pointer;
 }
 
 #searchForm {
@@ -74,4 +78,54 @@ li.page-item {
 div.sideHome:hover {
 	  transform : scale(1.2) rotate(-20deg);
   transition : all 300ms ease-in;
+}
+
+.btn-crimson {
+	color: #fff;
+	background-color: #DC143C;
+	border-color: #fff; 
+}
+
+.btn-crimson:hover {
+	color: #fff;
+	background-color: #fc2121;
+	border-color: #e6e6e6;
+}
+
+.btn-crimson.focus, .btn-red:focus {
+	color: #fff;
+	background-color: #fc2121;
+	border-color: #e6e6e6;
+	box-shadow: 0 0 0 0 .2rem rgba(255, 255, 255, .5);
+}
+
+.btn-crimson.disabled, .btn-crimson:disabled {
+	color: #fff;
+	background-color: #DC143C;
+	border-color: #fff; 
+}
+
+.btn-royalBlue {
+    color: #fff;
+    background-color: #4169E1;
+    border-color: #fff
+}
+
+.btn-royalBlue:hover {
+    color: #fff;
+    background-color: #1E90FF;
+    border-color: #e6e6e6
+}
+
+.btn-royalBlue.focus,.btn-royalBlue:focus {
+    color: #fff;
+    background-color: #1E90FF;
+    border-color: #e6e6e6;
+    box-shadow: 0 0 0 .2rem rgba(255,255,255,.5)
+}
+
+.btn-royalBlue.disabled,.btn-royalBlue:disabled {
+    color: #fff;
+    background-color: #4169E1;
+    border-color: #fff
 }

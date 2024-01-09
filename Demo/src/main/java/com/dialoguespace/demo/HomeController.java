@@ -41,8 +41,8 @@ public class HomeController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String home(String uri, Locale locale, Model model, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		System.out.println("========== Home Controller 진입 ==========");
-		System.out.println("요청 uri : " + uri);
+//		System.out.println("========== Home Controller 진입 ==========");
+//		System.out.println("요청 uri : " + uri);
 		
 		MemberDTO dto = (MemberDTO)request.getSession().getAttribute("loginSession");
 		String redirect = "";

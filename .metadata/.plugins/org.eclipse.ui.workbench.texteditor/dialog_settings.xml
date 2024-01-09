@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="loginGoogle"/>
+		<item key="selection" value="log4j"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="logingoogle"/>
-			<item value="redirect"/>
-			<item value="googleLogin"/>
-			<item value="googlerequest"/>
-			<item value="google"/>
-			<item value="properties"/>
-			<item value="registerformatt"/>
-			<item value="setUseIsoFormat"/>
-			<item value="build()"/>
-			<item value="build"/>
-			<item value="header"/>
-			<item value="created"/>
-			<item value="ResponseEntity"/>
-			<item value="login.do"/>
-			<item value="console"/>
+			<item value="log4j"/>
+			<item value="slf4j"/>
+			<item value="sl4j"/>
+			<item value="org.slf4j-version"/>
+			<item value="log"/>
+			<item value="8"/>
+			<item value="MaxBackupIndex"/>
+			<item value="panda"/>
+			<item value="mb"/>
+			<item value="appender"/>
+			<item value="로그인 시 입력한 비밀번호"/>
+			<item value="insertMember"/>
+			<item value="insertmember.do"/>
+			<item value="signup"/>
+			<item value="name"/>
 		</list>
 		<list key="replacehistory">
 			<item value="log.info"/>

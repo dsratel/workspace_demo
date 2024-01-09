@@ -21,7 +21,7 @@
 
 	<title>login page</title>
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-light">
 	<form name="passwordResetForm" method="post" id="passwordResetForm">
 	    <div class="container">
 	
@@ -43,7 +43,7 @@
                                             and we'll send you a link to reset your password!</p>
                                     </div>
 	                                    <div class="form-group">
-																				<input type="text" class="form-control" id="id" name="id" placeholder="Enter Id...">
+																				<input type="text" class="form-control mb-2" id="id" name="id" placeholder="Enter Id...">
 																				<input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address...">
 	                                    </div>
 	                                    <a id="resetBtn" class="btn btn-primary btn-user btn-block">
@@ -74,7 +74,7 @@
 		$(function(){
 			// 비밀번호 초기화 버튼
 			$("#resetBtn").click(function(){
-				if($("#id").val().trim().length > 5 && new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test($("#email").val().trim())) {
+				if($("#id").val().trim().length > 4 && new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test($("#email").val().trim())) {
 					$.ajax({
 						type: "post", 
 						url: "/member/userByIdemail",
@@ -100,6 +100,7 @@
 		
 		function sendEmail() {
 			$("#passwordResetForm").attr("action", "/password/sendURL");
+			alert($("#email").val().trim() + " 로 비밀번호 변경 링크를 전송합니다.").
 			$("#passwordResetForm").submit();
 		}
 
