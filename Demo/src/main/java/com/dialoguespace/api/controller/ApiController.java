@@ -1,12 +1,15 @@
 package com.dialoguespace.api.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.http.impl.client.HttpClientBuilder;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +22,15 @@ import com.dialoguespace.api.dto.GoogleInfResponse;
 import com.dialoguespace.api.dto.GoogleRequest;
 import com.dialoguespace.api.dto.GoogleResponse;
 import com.dialoguespace.api.service.ApiService;
-
-import sun.net.www.http.HttpClient;
+import com.dialoguespace.member.MemberDTO;
+import com.dialoguespace.member.MemberService;
 
 @RestController
 @RequestMapping(value="/api")
 public class ApiController {
 	private final ApiService apiService;
+	private final MemberService memberService;
+	private final HttpSession session;
 	
 	@Value("${google.client.id}")
 	private String client_id;
@@ -34,8 +39,10 @@ public class ApiController {
 	private String client_pw;
 	
 	@Autowired
-	public ApiController(ApiService apiService) {
+	public ApiController(ApiService apiService, MemberService memberService, HttpSession session) {
 		this.apiService = apiService;
+		this.memberService = memberService;
+		this.session = session;
 	}
 	
 	@PostMapping(value="/google-login")
@@ -56,7 +63,7 @@ public class ApiController {
 //	}
 	
 	@GetMapping(value="/google-login")
-    public String loginGoogle(@RequestParam(value = "code") String authCode){
+    public String loginGoogle(@RequestParam(value = "code") String authCode, Model model) {
         RestTemplate restTemplate = new RestTemplate();
         GoogleRequest googleOAuthRequestParam = GoogleRequest
                 .builder()
@@ -80,14 +87,29 @@ public class ApiController {
                 map, GoogleInfResponse.class);
         System.out.println(resultEntity2.toString());
         String email = resultEntity2.getBody().getEmail();
+        String name = resultEntity2.getBody().getName();
         
         // 계정이 있는지 확인
+        List<MemberDTO> list = memberService.checkEmail(email);
+        MemberDTO dto = new MemberDTO();
+        if(list.size() == 0) {
+    	// 없으면 회원가입 후 로그인 화면 띄우기
+        	dto = memberService.createDtoBySocialAccount(email, name);
+        	try {
+        		memberService.insertMember(dto);        		
+        	} catch(Exception e) {
+        		e.printStackTrace();
+        		return "errorPage";
+        	}	
+        } else {
+        	dto = list.get(0);
+        }
         
-        
-        return email;
-    }
-	
+        session.setAttribute("loginSession", dto);
+		model.addAttribute("dto", dto);
 
+        return "<script>window.opener.location.reload();window.close();</script>";
+    }
 }
 
 

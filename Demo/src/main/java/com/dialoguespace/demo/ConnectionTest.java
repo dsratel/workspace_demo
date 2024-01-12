@@ -7,6 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -26,7 +27,12 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 	
 	TestVO test = new TestVO.Builder().name("hb").build();
 	
-	System.out.println(test.toString());
+	String uuid = UUID.randomUUID().toString().substring(0, 4) + "g2" + UUID.randomUUID().toString().substring(0, 4);
+	
+	String str = "aaaa-bbbb-cccc";
+	System.out.println(str.replace("-",""));
+	
+	
 	
 	
 		

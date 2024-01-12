@@ -9,10 +9,10 @@
 		INSERT INTO
 		<choose>
 			<when test="pid > 0">
-				t_board_reply(category, author, title, content, attachfile, pid, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachFile}, #{pid}, sysdate())
+				t_board_reply(category, author, title, content, attachfile, pid, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, #{pid}, sysdate())
 			</when>
 			<otherwise>
-				t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachFile}, sysdate())			
+				t_board(category, author, title, content, attachfile, regdate) VALUES(#{category}, #{author}, #{title}, #{content}, #{attachfile}, sysdate())			
 			</otherwise>
 		</choose>
 	</insert>

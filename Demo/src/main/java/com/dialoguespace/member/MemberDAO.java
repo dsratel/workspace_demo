@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface MemberDAO {
 	// 등록
-	public int insertMember(MemberDTO memberDto) throws Exception;
+	public int insertMember(MemberDTO memberDto) throws NullPointerException;
 	
 	// 회원 목록
 	public List<MemberDTO> memberList(Map<String, Object> srchInfo) throws Exception;
@@ -29,7 +29,7 @@ public interface MemberDAO {
 	public int countList(Map<String, Object> srchInfo) throws Exception;
 	
 	// 프로필 사진 PK 등록
-	public int addFileNo(Map<String, Object> map) throws Exception;
+	public int addFileNo(Map<String, Object> map) ;
 	
 	// 회원의 프로필 사진 PK 찾기
 	public int selFileNo(String id) throws Exception;
@@ -38,10 +38,10 @@ public interface MemberDAO {
 	public int checkId(String id) throws Exception;
 	
 	// EMAIL 중복검사
-	public MemberDTO checkEmail(String email);
+	public List<MemberDTO> checkEmail(String email);
 	
 	// 로그인 - ID, PW로 회원 선택
-	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception;
+	public MemberDTO selMemberByIdPw(MemberDTO memberDto) ;
 	
 	// 프로필 사진 삭제
 	public int delPfPhoto(String id);
@@ -50,7 +50,7 @@ public interface MemberDAO {
 	public int changePassword(Map<String, String> map);
 	
 	// ID와 email로 회원정보 확인
-	public int userByIdemail(MemberDTO dto);
+	public int userByIdEmail(MemberDTO dto);
 
 	// 비밀번호 초기화
 	public int resetPassword(Map<String, String> map);

@@ -20,7 +20,6 @@
 <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
 <fullyQualifiedTypeName name="org.springframework.web.context.request.RequestContextHolder"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="java.util.UUID"/>
 <fullyQualifiedTypeName name="java.util.logging.Logger"/>
 <fullyQualifiedTypeName name="java.io.DataOutputStream"/>
 <fullyQualifiedTypeName name="java.net.URL"/>
@@ -29,4 +28,5 @@
 <fullyQualifiedTypeName name="javax.servlet.http.Cookie"/>
 <fullyQualifiedTypeName name="org.slf4j.Logger"/>
 <fullyQualifiedTypeName name="com.dialoguespace.demo.TestVO.Builder"/>
+<fullyQualifiedTypeName name="java.util.UUID"/>
 </qualifiedTypeNameHistroy>

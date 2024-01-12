@@ -41,7 +41,7 @@ public class CommonDAOImpl implements CommonDAO {
 	
 	// 파일 경로 검색
 	@Override
-	public String getPath(int seq) throws Exception {
+	public String getPath(int seq) {
 		return sqlsession.selectOne("commonMapper.getPath", seq);
 	}
 	

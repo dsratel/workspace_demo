@@ -54,7 +54,7 @@
 			<exclude-mapping path="/board/viewArticle" />
 			<exclude-mapping path="/comment/listReply" />
 			<exclude-mapping path="/member/forgotPassword" />
-			<exclude-mapping path="/member/userByIdemail" />
+			<exclude-mapping path="/member/userByIdEmail" />
 			<exclude-mapping path="/password/resetPassword" />
 			<exclude-mapping path="/password/resetPassword.do" />
 			<exclude-mapping path="/password/sendURL" />

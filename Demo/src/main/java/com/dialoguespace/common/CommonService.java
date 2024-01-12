@@ -181,7 +181,7 @@ public class CommonService {
 	}
 	
 	// 파일 경로 검색
-	public String getPath(int seq) throws Exception {
+	public String getPath(int seq) {
 		return commonDAO.getPath(seq);
 	}
 	

@@ -77,7 +77,7 @@
 				if($("#id").val().trim().length > 4 && new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test($("#email").val().trim())) {
 					$.ajax({
 						type: "post", 
-						url: "/member/userByIdemail",
+						url: "/member/userByIdEmail",
 						data: $("form[name='passwordResetForm']").serialize(),
 						success: function(rs){
 							if(rs > 0) {

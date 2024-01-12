@@ -21,17 +21,27 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                 
-					<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
+								<form action="/member/editMember.do" method="post" name="editMemberForm" id="editMemberForm" enctype="multipart/form-data">
                     <!-- Content Row -->
                     <div class="contentRow">
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
 										<span>프로필 사진</span>
 									</div>
-									<div class="col-9">
+									<div class="col-7">
 										<img class="img-thumbnail view" src="${filePath}" />
 										<img class="img-thumbnail edit" src="${filePath}" fn="${dto.fileno }" id="preview"/>
 										<input type="file" class="form-control edit" id="profileInput" name="profilePhoto" onchange="readURL(this)";>
+<%-- 										<c:choose>
+											<c:when test="${!filePath.contains('userIcon.png') }">
+												<button type="button" class="btn btn-danger edit" id="delPfPhoto">프로필 사진 삭제</button>
+											</c:when>
+											<c:otherwise>
+												<span class="edit">선택한 프로필 사진을 취소하고 싶은 경우 사진을 더블클릭 해주세요.</span>
+											</c:otherwise>
+										</c:choose> --%>
+									</div>
+									<div class="col-3">
 										<c:choose>
 											<c:when test="${!filePath.contains('userIcon.png') }">
 												<button type="button" class="btn btn-danger edit" id="delPfPhoto">프로필 사진 삭제</button>
@@ -43,50 +53,69 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
 										<span>ID</span>
 									</div>
-									<div class="col-9">
+									<div class="col-7">
 										<span class="view">${dto.id}</span>
 										<input type="text" class="form-control edit" name="id" value="${dto.id }">
 									</div>
+									<div class="col-3"></div>
 								</div>
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
 										<span>이름</span>
 									</div>
-									<div class="col-9">
+									<div class="col-7">
 										<span class="view">${dto.name}</span>
 										<input type="text" class="form-control edit" name="name" value="${dto.name }">
 									</div>
+									<div class="col-3"></div>
 								</div>
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
 										<span>닉네임</span>
 									</div>
-									<div class="col-9">
+									<div class="col-7">
 										<span class="view">${dto.nickname}</span>
 										<input type="text" class="form-control edit" name="nickname" value="${dto.nickname }">
 									</div>
+									<div class="col-3"></div>
 								</div>
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
 										<span>주소</span>
 									</div>
-									<div class="col-9">
+									<div class="col-7">
 										<span class="view">${dto.address}</span>
 										<input type="text" class="form-control edit" name="address" value="${dto.address }">
 									</div>
+									<div class="col-3"></div>
 								</div>
 								<div class="row">
-									<div class="col-3 editOption">
+									<div class="col-2 editOption">
+										<span>이메일</span>
+									</div>
+									<div class="col-7">
+										<span class="view">${dto.email}</span>
+										<input type="text" class="form-control edit" name="email" value="${dto.email }">
+										<input type="hidden" id="sa" value="${dto.socialAccount }">
+									</div>
+									<div class="col-3">
+										<c:if test="${dto.socialAccount eq '' or dto.socialAccount eq null}">
+											<button type="button" class="btn btn-info" id="emailCheckBtn">이메일 중복검사</button>									
+										</c:if>
+									</div>
+								</div>								
+								<div class="row">
+									<div class="col-2 editOption">
 										<span>전화번호</span>
 									</div>
-									<div class="col-9 view">
+									<div class="col-7 view">
 										<span>${dto.phone.substring(0,3)} - ${dto.phone.substring(3,7)} - ${dto.phone.substring(7) }</span>
 									</div>
-									<div class="col-9 edit">
-										<select class="form-select phone" id="phone1" onchange="changePhone(this)">
+									<div class="col-7 edit">
+										<select class="form-control phone" id="phone1" onchange="changePhone(this)">
 											<option value="010">010</option>
 											<option value="070">070</option>
 											<option value="030">030</option>
@@ -101,6 +130,7 @@
 										<input type="text" class="form-control" name="phone" id="phone" value="">
 									</div>
 								</div>
+								<div class="col-3 btnDiv"></div>
 						</div>
 						<div class="row btnDiv">
 							<c:if test="${dto.status != 2 }">
@@ -143,11 +173,14 @@
 		
 		// css
 		//// ID input 태그 색상 변경
-		$("input[name='id']").css({"background-color":"grey", "color":"white"});
+		$("input[name='id']").css({"background-color":"grey", "color":"white"}).prop("disabled", true);
 		$(".img-thumbnail").css({"width" : "200px", "height" : "200px"});
 		$(".phone").css({"width" : "30%", "display" : "inline"});
-		$("#phone4, #phone").hide();
+		$("#phone4, #phone, #emailCheckBtn").hide();
 		$(".edit").hide();
+		if($("#sa").val() != '') {
+			$("input[name='email']").css({"background-color":"grey", "color":"white"}).prop("disabled", true);
+		}
 		
 		// 프로필 사진 삭제
  		$("#delPfPhoto").click(function(){
@@ -208,7 +241,13 @@
 				$("#address").val($("input[name='address']").val());
 			}
 			
-			//// 4. 전화번호
+			//// 4. 이메일
+			if($("#emailCheckBtn").attr("verified") != true) {
+				alert("이메일 중복검사를 실행해주세요.");
+				return;
+			};
+			
+			//// 5. 전화번호
 			var regExp = /^[0-9]{4}$/;
 			var testPhone = "";
  			if(!regExp.test($("#phone2").val()) || $("#phone2").val().length < 4 || !regExp.test($("#phone3").val()) || $("#phone3").val().length < 4) {
@@ -248,13 +287,57 @@
 		// 수정하기 버튼
 		$("#toEdit").click(function(){
 			$(".view").hide();
-			$(".edit").show();	
+			$(".edit, #emailCheckBtn").show();	
 		});
 		
 		// 수정 취소 버튼
 		$("#editCancel").click(function(){
-			$(".edit").hide();
+			$(".edit, #emailCheckBtn").hide();
 			$(".view").show();
+		});
+		
+		// email 중복검사
+		$("#emailCheckBtn").click(function(){
+			var testEmail = $("input[name='email']").val().trim();
+			if(new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test(testEmail)) {
+				$.ajax({
+					url: "/member/checkEmail",
+					dataType: "text",
+					type: "get",
+					data: {email: testEmail},
+					success: function(data) {
+						if(data > 0) {
+							// 중복되는 ID가 있는 경우
+							alert("중복되는 EMAIL이 있습니다.");
+							$("#input[name='email']").val("");
+							$("#emailCheckBtn").removeAttr("verified");
+						} else {
+							// 중복되는 ID가 없는 경우 <form> 하위 <input>에 값 주입
+							alert("EMAIL을 사용할 수 있습니다.");
+							$("#emailCheckBtn").hide();
+							$("#emailCheckBtn").attr("verified", true);
+							$("#email").val(testEmail);				
+						}
+					},
+					error: function(data) {
+						console.log("실패");
+						console.log(data);
+					}
+				});
+			} else {
+				// 규칙에 맞지 않는 EMAIL 중복 검사 한 경우 input 값 지우기
+				alert("EMAIL을 aaa@bbb.ccc 같은 형식으로 입력해주세요.");
+				$("input[name='email']").val("");
+				$("#email").val("");
+			}
+		});
+		
+		// EMAIL 입력창의 내용 변경 시 중복검사 재 실시
+		$("input[name='email']").keyup(function(rs){
+			if($("#emailCheckBtn").css("display") == 'none') {
+				$("input[name='email']").val("");
+				$("#emailCheckBtn").show();
+			}
 		});
 		
 	}); // function() end

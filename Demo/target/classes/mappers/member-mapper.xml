@@ -7,7 +7,7 @@
 	
 	<!-- 멤버 등록 -->
 	<insert id="insertMember" parameterType="memberDto">
-		INSERT INTO T_MEMBER(id, pw, name, nickname, address, email, phone, status, regdate) VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{address}, #{email}, #{phone}, 1, sysdate())
+		INSERT INTO T_MEMBER(id, pw, name, nickname, address, email, phone, status, social_account, regdate) VALUES(#{id}, #{pw}, #{name}, #{nickname}, #{address}, #{email}, #{phone}, 1, #{socialAccount}, sysdate())
 	</insert>
 	
 	<!-- 회원 목록 -->
@@ -59,18 +59,25 @@
 	
 	<!-- 회원 한 명 정보 가져오기 -->
 	<select id="selectMember" parameterType="String" resultType="memberDto">
-		SELECT id, pw, nickname, name, address, phone, fileno, status FROM T_MEMBER WHERE id = #{id}
+		SELECT id, pw, nickname, name, address, email, phone, fileno, status, social_account AS socialAccount FROM T_MEMBER WHERE id = #{id}
 	</select>
 	
 	<!-- 회원 정보 수정 -->
 	<update id="editMember" parameterType="memberDto">
-		UPDATE T_MEMBER
+		UPDATE T_MEMBER SET
 		<choose>
-			<when test="#{pw}.equals('')">
-				SET pw=#{pw}, name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}
+			<when test="pw.equals('')">
+				pw=#{pw}, name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}
 			</when>
-			<otherwise>			
-				SET name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}			
+			<otherwise>
+				<choose>
+					<when test="email.equals('')">
+						name=#{name}, nickname=#{nickname}, address=#{address}, phone=#{phone}, fileno=#{fileno}					
+					</when>
+					<otherwise>
+						name=#{name}, nickname=#{nickname}, address=#{address}, email=#{email}, phone=#{phone}, fileno=#{fileno}					
+					</otherwise>
+				</choose>
 			</otherwise>
 		</choose>
 		WHERE id = #{id}
@@ -127,12 +134,12 @@
 	
 		<!-- EMAIL 중복 검사 -->
 	<select id="checkEmail" parameterType="String" resultType="memberDto">
-		SELECT id, nickname, email FROM t_member WHERE email = #{email}
+		SELECT id, name, nickname, address, email, phone, status, social_account, fileno, masteryn FROM t_member WHERE email = #{email}
 	</select>
 	
 	<!-- 로그인 - ID, PW로 회원 선택 -->
 	<select id="selMemberByIdPw" parameterType="memberDto" resultType="memberDto">
-		SELECT id, name, nickname, address, phone, status, fileno, masteryn FROM t_member WHERE id = #{id} AND 
+		SELECT id, name, nickname, address, email, phone, status, social_account AS socialAccount, fileno, masteryn FROM t_member WHERE id = #{id} AND 
 		<choose>
 			<when test="pw.equals('aaa')">
 				TRUE
@@ -154,7 +161,7 @@
 	</update>
 	
 	<!-- ID와 email로 회원정보 확인 -->
-	<select id="userByIdemail" parameterType="memberDto" resultType="Integer">
+	<select id="userByIdEmail" parameterType="memberDto" resultType="Integer">
 		SELECT count(*) FROM t_member WHERE id = #{id} AND email = #{email} AND status = 1
 	</select>
 	

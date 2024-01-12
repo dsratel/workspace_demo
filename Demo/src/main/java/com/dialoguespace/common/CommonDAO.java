@@ -16,7 +16,7 @@ public interface CommonDAO {
 	public int selectFilePK(FileVO file) throws Exception;
 	
 	// 파일 경로 검색
-	public String getPath(int seq) throws Exception;
+	public String getPath(int seq);
 	
 	// seq로 특정 파일 DB정보 삭제
 	public int delFileDbBySeq(int seq) throws Exception;

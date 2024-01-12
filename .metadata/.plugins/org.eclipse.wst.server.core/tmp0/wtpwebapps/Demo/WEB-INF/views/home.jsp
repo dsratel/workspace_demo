@@ -169,7 +169,7 @@
 				function loginGoogle(url){
 					var width = 470;
 					var height = 620;
-					var popupX = (window.screen.width/2) - (width/2);
+					var popupX = window.screen.width/2 - width/2;
 					var popupY = (window.screen.height/2) - (height/2);
 					console.log(width + ' / ' + height + ' / ' + popupX + ' / ' + popupY);
 					window.open(url, 'google login popup', 'width=' + width + ',height=' + height + ',left=' + popupX + ',top=' + popupY);

@@ -19,7 +19,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 회원 등록
 	@Override
-	public int insertMember(MemberDTO memberDto) throws Exception {
+	public int insertMember(MemberDTO memberDto) throws NullPointerException {
 		return sqlsession.insert("memberMapper.insertMember", memberDto);
 	}
 	
@@ -72,7 +72,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// 프로필 사진 PK 등록
 	@Override
-	public int addFileNo(Map<String, Object> map) throws Exception {
+	public int addFileNo(Map<String, Object> map) {
 		return sqlsession.update("memberMapper.addFileNo", map);
 	}
 	
@@ -92,13 +92,13 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// EMAIL 중복검사
 	@Override
-	public MemberDTO checkEmail(String email) {
-		return sqlsession.selectOne("memberMapper.checkEmail", email);
+	public List<MemberDTO> checkEmail(String email) {
+		return sqlsession.selectList("memberMapper.checkEmail", email);
 	}
 	
 	// 로그인 - ID, PW로 회원 선택
 	@Override
-	public MemberDTO selMemberByIdPw(MemberDTO memberDto) throws Exception {
+	public MemberDTO selMemberByIdPw(MemberDTO memberDto) {
 		return sqlsession.selectOne("memberMapper.selMemberByIdPw", memberDto);
 	}
 	
@@ -116,8 +116,8 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	// ID와 email로 회원정보 확인
 	@Override
-	public int userByIdemail(MemberDTO dto) {
-		return sqlsession.selectOne("memberMapper.userByIdemail", dto);
+	public int userByIdEmail(MemberDTO dto) {
+		return sqlsession.selectOne("memberMapper.userByIdEmail", dto);
 	}
 	
 	// 비밀번호 초기화

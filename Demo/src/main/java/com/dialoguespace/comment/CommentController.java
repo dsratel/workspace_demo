@@ -52,7 +52,11 @@ public class CommentController {
 		MemberDTO loginInfo = (MemberDTO)session.getAttribute("loginSession");
 		if(loginInfo != null) {
 			model.addAttribute("loginId", loginInfo.getId());
-			model.addAttribute("masteryn", loginInfo.getMasteryn());			
+			model.addAttribute("masteryn", loginInfo.getMasteryn());
+			if(loginInfo.getFileno() > 0) {
+				String pfPath = "/repository/member/" + commonService.getSysNameBySeq(loginInfo.getFileno(), "member");
+				model.addAttribute("pfPath", pfPath);
+			}
 		}
 	}
 	

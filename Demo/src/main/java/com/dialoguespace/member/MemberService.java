@@ -23,9 +23,12 @@ public class MemberService {
 	}
 	
 	// 회원 추가
-	public int insertMember(MemberDTO memberDto) throws Exception {
+	public int insertMember(MemberDTO memberDto) throws NullPointerException {
 		//memberDto.setRegdate(new Timestamp(System.currentTimeMillis()));
-		if(checkMemberDto(memberDto, true) < 0) return -1;
+		// 소셜 로그인 계정인 경우 memberDto 유효성 검사 패스
+		if(memberDto.getSocialAccount().equals("")) {
+			if(checkMemberDto(memberDto, true) < 0) return -1;			
+		}
 		
 		return memberDAO.insertMember(memberDto);
 	}
@@ -67,7 +70,7 @@ public class MemberService {
 	}
 	
 	// 프로필 사진 PK 등록
-	public int addFileNo(String id, int seq) throws Exception {
+	public int addFileNo(String id, int seq)  {
 		// 파라미터 map에 등록
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
@@ -86,7 +89,7 @@ public class MemberService {
 	}
 	
 	// EMAIL 중복검사
-	public MemberDTO checkEmail(String email) {
+	public List<MemberDTO> checkEmail(String email) {
 		return memberDAO.checkEmail(email);
 	}
 	
@@ -106,7 +109,7 @@ public class MemberService {
 	}
 	
 	// 로그인 - ID, PW로 회원 선택
-	public MemberDTO selMemberByIdPw (MemberDTO memberDto) throws Exception {
+	public MemberDTO selMemberByIdPw (MemberDTO memberDto) {
 		// 유효성 검사
 		if((memberDto.getId().length() < 5 || memberDto.getPw().length() < 8) && !memberDto.getPw().equals("aaa")) return null;
 		
@@ -140,7 +143,7 @@ public class MemberService {
 	
 	// ID와 email로 회원정보 확인
 	public int userByIdemail(MemberDTO dto) {
-		return memberDAO.userByIdemail(dto);
+		return memberDAO.userByIdEmail(dto);
 	}
 	
 	// 비밀번호 초기화
@@ -152,11 +155,21 @@ public class MemberService {
 	}
 	
 	// 구글 회원 DTO 만들기
-	public MemberDTO setDtoByEmail(String email) {
+	public MemberDTO createDtoBySocialAccount(String email, String name) {
 		MemberDTO dto = new MemberDTO();
 		// UUID로 무작위 str 생성
-		String uuid = UUID.randomUUID().toString().substring(0, 8);
-		dto.setId("");
+		String uuid = UUID.randomUUID().toString();
+		String id = uuid.substring(0, 4) + "g2" + uuid.substring(4, 8);
+		
+		dto.setId(id);
+		dto.setName(name);
+		dto.setNickname(name);
+		dto.setAddress("Required to edit address");
+		dto.setEmail(email);
+		dto.setPhone("01012345678");
+		dto.setStatus(1);
+		dto.setSocialAccount("google");
+		
 		return dto;
 	}
 	
