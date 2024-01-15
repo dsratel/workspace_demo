@@ -51,6 +51,8 @@
 				 				<button class="btn btn-danger" id="selDelMember">선택 회원 삭제</button>
 			 				</c:if>
 						</div>
+						<input type="hidden" id="searchType_init" value="${srchInfo.searchType == null ? 0 : srchInfo.searchType}">
+						<input type="hidden" id="pageSize_init" value="${srchInfo.pagination.pageSize == null ? 10 : srchInfo.pagination.pageSize}">
 					</div>
 		
 					<table class="table">
@@ -114,8 +116,11 @@
 					    <c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
 					    	<li class="page-item"><a class="page-link" id="nextPage">Next</a></li>
 					    </c:if>
+					    <input type="hidden" id="curPage_init" value="${srchInfo.pagination.curPage}">
+					    <input type="hidden" id="curRange_init" value="${srchInfo.pagination.curRange}">
+					    <input type="hidden" id="rangeSize_init" value="${srchInfo.pagination.rangeSize}">
 					  </ul>
-					</nav>
+ 					</nav>
                     
                 </div>
                 <!-- /.container-fluid -->
@@ -132,160 +137,11 @@
     </div>
     <!-- End of Page Wrapper -->
 		
-
     <!-- Custom scripts for all pages-->
     <script src="/resources/template/js/sb-admin-2.min.js"></script>
-	<script>
-		$(function(){
-			// 삭제 버튼 클릭
-			$(".BtnDelMember").click(function(){
-				var param = "id=" + $(this).val();
-				console.log('param : ' + param);
- 				$.ajax({
-					url: "${pageContext.request.contextPath}/member/delMember.do",
-//					contentType: "application/json",
-					method: "post",
-//					data: JSON.stringify({
-//						id: $(this).val()
-//					}),
-					data: param,
-					success:function(data){
-						alert("삭제 성공");
-						window.location.replace("/member/list");
-					},
-					error:function(data){
-						alert("삭제 실패");
-					}
-				})
-			});
-			
-			
-			// 선택 회원 삭제
-			$("#selDelMember").on("click", function(){
-				var selectedMember = [];
-				$(".memCheckBox:checked").each(function(i) {
-					selectedMember.push($(this).val());
-				});
-				console.log(selectedMember);
-				console.log(JSON.stringify(selectedMember));
-				
-  				$.ajax({
-					url: "${pageContext.request.contextPath}/member/selDelMember.do",
-					method: "post",
-					contentType: "application/json",
-					data: JSON.stringify(selectedMember),
-					success: function(data){
-						alert("선택 삭제 성공");
-						window.location.replace("/member/list");
-					},
-					error: function(data) {
-						alert("선택 삭제 실패");
-					}
-				});
-			});
-			
-			// 보기 버튼 클릭
- 			$(".BtnEditMember").on("click", function(){
- 				window.location.replace("/member/toViewMember?id="+$(this).val());
- 			});
-			
-			// 검색 버튼 클릭
-			$("#searchBtn").on("click", function(){
-				search();
-			});
-			
-			// 검색창에서 엔터
-			$("searchKeyword").keypress(function(){
-				search();
-			});
-			
-			// 검색 함수
-			function search() {				
-				var searchType = $("#searchType").val();
-				var searchKeyword = $("#searchKeyword").val();
-				
-				console.log("searchType : " + searchType + " / searchKeyword : " + searchKeyword);
-				
-				$("#searchForm").submit();
-			}
-			
-			// 전 페이지의 내용 전달
-			$("#searchType").val("${srchInfo.searchType}").prop("selected", true);
-			$("#pageSize").val("${srchInfo.pagination.pageSize}").prop("selected", true);
-			
-			// 페이징
-			//// 페이징 파라미터
-			var searchType		= "";
-			var searchKeyword	= "";
-			var curPage			= "";
-			var pageSize		= "";
-			var url				= "";
-			
-			function setPaginationParam(opt, pageNo) {
-				switch(opt) {
-				case "prev" :
-					curPage = "${(srchInfo.pagination.curRange-1)*srchInfo.pagination.rangeSize}";
-				break;
-				case "next" :
-					curPage = "${(srchInfo.pagination.curRange*srchInfo.pagination.rangeSize)+1}";
-				break;
-				default :
-					curPage = pageNo;
-				break;
-				}
-				searchType		= $("#searchType").val();
-				searchKeyword	= $("#searchKeyword").val();
-				pageSize		= $("#pageSize").val();				
-				url				= "/member/list?" + "searchType=" + searchType + "&searchKeyword=" + searchKeyword
-										+ "&curPage=" + curPage + "&pageSize=" + pageSize;
-			}
-			
-			//// 이전 페이지 클릭
-			$("#prevPage").click(function(){
-				setPaginationParam('prev');
-				window.location.href=url;
-				// window.location.replace(url);
-				// window.open(url);
-			});
-			
-			//// 다음 페이지 클릭
-			$("#nextPage").click(function(){
-				setPaginationParam('next');
-				window.location.href=url;
-			});
-			
-			//// 특정 페이지 클릭
-			$(".toPage").click(function(){
-				setPaginationParam('cur', $(this).attr("value"));
-				window.location.href=url;
-			});
-			
-			//// 한 페이지 row 수 변경
-			$("#pageSize").on("change", function(){
-				setPaginationParam('cur', 1);		
-				window.location.href=url;
-			});
-			
-			// 로그아웃 버튼
-			$("#logoutBtn").click(function(){
-				window.location.replace("/common/logout?id=${loginId}");
-			});
-			
-			// css 수정
-			//// 검색
-			$("#searchKeyword").css("width","50%");
-			$(".form-control").css("display","inline");
-			//// 페이지
-			$(".page-item").css("cursor", "pointer");
-			$(".page-item").find("a[value=${srchInfo.pagination.curPage}]").css("color", "pink");
-			// row select
-			$("label").css("padding-left", "100px");
-
-			
-		});	// funcion() end
-		
-		
-		
-	</script>
+    
+    <!-- Custom for this page -->
+    <link rel="stylesheet" href="/resources/css/custom/member.css">
+    <script type="text/javascript" src="/resources/js/custom/member/list.js"></script>
 </body>
 </html>

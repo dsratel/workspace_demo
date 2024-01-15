@@ -70,41 +70,6 @@
 	    </div>
 	</form>
 	
-	<script>
-		$(function(){
-			// 비밀번호 초기화 버튼
-			$("#resetBtn").click(function(){
-				if($("#id").val().trim().length > 4 && new RegExp(/^[\w.%+\-]+@[\w.\-]+\.[A-Za-z]{2,3}$/).test($("#email").val().trim())) {
-					$.ajax({
-						type: "post", 
-						url: "/member/userByIdEmail",
-						data: $("form[name='passwordResetForm']").serialize(),
-						success: function(rs){
-							if(rs > 0) {
-//								window.location.replace("/password/resetPassword");
-									sendEmail();
-							} else {
-								alert("일치하는 회원 정보가 없습니다. 입력하신 ID와 EMAIL을 다시 확인해주시기 바랍니다.");
-							}
-						},
-						error: function(rs){
-							alert("통신 오류가 발생하였습니다. 다시 시도해 주시기 바랍니다.");
-						}
-					}) 
-				} else {
-					alert("check your id and email address please");
-				}
-				
-			});
-		});
-		
-		function sendEmail() {
-			$("#passwordResetForm").attr("action", "/password/sendURL");
-			alert($("#email").val().trim() + " 로 비밀번호 변경 링크를 전송합니다.").
-			$("#passwordResetForm").submit();
-		}
-
-
-	</script>
+	<script type="text/javascript" src="/resources/js/custom/passwordReset.js"></script>
 </body>
 </html>

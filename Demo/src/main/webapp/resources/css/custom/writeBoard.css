@@ -1,0 +1,34 @@
+div.tab, div.cont {
+	border: 1px solid black;
+	padding: 5px
+}
+
+button {
+	display: inline-block;
+	width: 20%;
+	margin: 5px;
+}
+
+#btnDiv, .tab {
+	text-align: center;
+}	
+
+#btnDiv div {
+	margin: 50px 0px;
+}
+
+.container {
+	margin-top: 20px;
+}
+
+#content {
+	width: 100%;
+	height: 300px;
+	border: none;
+	resize: none;
+}
+
+.img-thumbnail {
+	width: 200px;
+	height: 200px;
+}

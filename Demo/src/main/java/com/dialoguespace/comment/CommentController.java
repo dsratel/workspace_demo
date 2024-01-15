@@ -155,7 +155,7 @@ public class CommentController {
 		if(id == null) id = commonService.getLoginInfo().getId();
 		Map<String, Object> srchInfo = commentService.makeSrchInfo(id, searchType, searchKeyword);
 		int countList = commentService.countList(srchInfo);
-		if(countList > 0) {
+		if(countList > 0 || id.equals("devvv")) {
 			srchInfo.put("pagination", new PaginationVO(countList,curPage,pageSize));
 			List<CommentDTO> commentList = commentService.commentList(srchInfo);
 			model.addAttribute("list", commentList);

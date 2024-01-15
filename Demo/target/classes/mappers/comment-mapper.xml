@@ -165,7 +165,8 @@
 		</choose>
 		UNION
 		SELECT seq, id, content, (SELECT boardseq FROM t_comment tc WHERE tc.seq = tcr.pid) AS boardseq
-				, (SELECT replyboardseq FROM t_comment tc WHERE tc.seq = tcr.pid) AS replyboardseq, pid, regdate FROM t_comment_reply tcr
+				, /*(SELECT replyboardseq FROM t_comment tc WHERE tc.seq = tcr.pid)*/ seq AS replyboardseq, pid, regdate
+		FROM t_comment_reply tcr
 		WHERE
 		<if test='id != "devvv"'>
 			id = #{id} AND

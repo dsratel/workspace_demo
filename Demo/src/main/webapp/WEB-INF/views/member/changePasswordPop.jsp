@@ -130,7 +130,6 @@
 					} else {
 						// 3. 비밀번호 유효성 검사
 						if(validCheck(pw1, "pw")) {
-							console.log("비밀번호 수정");
 							if(confirm("비밀번호를 수정하시겠습니까?")) $("form[name='chgPwForm']").submit();							
 						}
 					}

@@ -20,10 +20,6 @@
 			
 		</div>
 	</div>
-	<script>
-		$(function(){
 
-		});
-	</script>
 </body>
 </html>

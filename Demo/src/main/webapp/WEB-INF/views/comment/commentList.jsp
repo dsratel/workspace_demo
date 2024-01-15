@@ -36,7 +36,7 @@
 													<option value="0">내용</option>
 													<option value="1">게시글 번호</option>
 												</select>					
-												<input type="text" class="form-control" name="searchKeyword">
+												<input type="text" class="form-control" name="searchKeyword" value="${srchInfo.searchKeyword}">
 												<button type="button" class="btn btn-primary" id="searchBtn">검색</button>
 												<span>페이지 수</span>
 												<select class="form-control" name="pageSize" id="pageSize" onchange="changePageSize(this)">
@@ -46,6 +46,8 @@
 													<option value="100">100</option>
 												</select>
 												<input type="hidden" name="curPage" id="curPage" value="${srchInfo.pagination.curPage }">
+												<input type="hidden" id="searchType_init" value="${srchInfo.searchType}">
+												<input type="hidden" id="pageSize_init" value="${srchInfo.pagination.pageSize}">
 											</div>
 										</div>
 				                
@@ -67,7 +69,7 @@
                     	<c:otherwise>
                     		<c:forEach var="dto" items="${list}" varStatus="status">
 			                    <div class="row">
-			                    	<div class="col-1"><input type="checkbox" name="delList" value="${dto.seq}#${dto.pid}#${dto.boardseq}#${dto.boardseq > 0 ? 'n' : 'y'}"></div>
+			                    	<div class="col-1"><input type="checkbox" name="delList" value="${dto.seq}#${dto.pid}#${dto.boardseq}#${dto.replyboardseq > 0 ? 'y' : 'n'}"></div>
 				               			<div class="col-1">${dto.id }</div>
 				               			<div class="col-6" style="text-align:left;">${dto.content }</div>
 				               			<div class="col-1">${dto.boardseq}</div>
@@ -89,7 +91,7 @@
 	                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curRange-1) * srchInfo.pagination.rangeSize})">Previous</a></li>			
 	                        </c:if>
 	                        <c:forEach var="i" begin="${srchInfo.pagination.startPage}" end="${srchInfo.pagination.endPage}">
-	                            <li class="page-item"><a class="page-link" onclick="toPage(${i})">${i}</a></li>
+	                            <li class="page-item"><a class="page-link" onclick="toPage(${i})" value="${i }" >${i}</a></li>
 	                        </c:forEach>
 	                        <c:if test="${srchInfo.pagination.rangeCnt > srchInfo.pagination.curRange}">
 	                            <li class="page-item"><a class="page-link" onclick="toPage(${(srchInfo.pagination.curPage*srchInfo.pagination.rangeSize)+1})">Next</a></li>			
@@ -111,45 +113,14 @@
     </div>
     <!-- End of Page Wrapper -->
 		
-	<!-- Core plugin JavaScript-->
+		<!-- Core plugin JavaScript-->
     <script src="/resources/template/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="/resources/template/js/sb-admin-2.min.js"></script>
     
-    <script>
-    
-			// 초기 값 세팅
-			if("${srchInfo}" != "") {
-					$("#category").val("${srchInfo.category}");
-				$("#searchType").val("${srchInfo.searchType}");
-				$("#pageSize").val("${srchInfo.pagination.pageSize}");
-				$("input[name='searchKeyword']").val("${srchInfo.searchKeyword}");
-			}
-			// 검색 버튼
-			$("#searchBtn").click(function(){
-				$("#searchForm").submit();
-			});
-			
-			// 페이지 사이즈 변경
-			function changePageSize(pageSize) {
-				$("#searchForm").submit();
-			}
-			
-			// 선택한 댓글 삭제
-			$("#selDelBtn").click(function(){
-				var frm = $("#searchForm");
-				frm.attr("action", "/comment/selDelComment");
-				frm.attr("method", "post");
-				frm.submit();
-			});
-			
-			// 페이지 이동
-			function toPage(page) {
-				$("#curPage").val(page);
-				$("#searchForm").submit();
-			}
-    </script>
+    <!-- Custom for this page -->
+    <script type="text/javascript" src="/resources/js/custom/comment/comment.js"></script>
 	
 </body>
 </html>

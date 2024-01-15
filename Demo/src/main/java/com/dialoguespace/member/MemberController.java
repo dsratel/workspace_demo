@@ -306,7 +306,7 @@ public class MemberController {
 				requestURI = requestURI.equals("") ? "/board/toList" : requestURI;
 				
 				if(dto.getMasteryn() == 'y') {
-					requestURI = "redirect:/master/home";
+					requestURI = "/master/home";
 				}
 				
 				// ID 기억 요청한 경우

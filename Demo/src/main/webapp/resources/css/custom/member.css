@@ -1,0 +1,56 @@
+/* 검색 */
+#searchKeyword {
+	width: 50%;
+}
+
+.form-control {
+	disply: inline;
+}
+
+/* 페이지 */
+$(".page-item").css("cursor", "pointer");
+.page-item {
+	cursor: pointer;
+}
+
+/* row select */
+label {
+	padding-left: 100px;
+}
+
+/* ID input 태그 색상 변경 */
+/* $("input[name='id']").css({"background-color":"grey", "color":"white"}).prop("disabled", true); */
+input[name='id'] {
+	background-color: grey;
+	color: white;
+	disabled: true;
+}
+
+/* $(".img-thumbnail").css({"width" : "200px", "height" : "200px"}); */
+.img-thumbnail {
+	width: 200px;
+	height: 200px;
+}
+
+/* $(".phone").css({"width" : "30%", "display" : "inline"}); */
+.phone {
+	width: 30%;
+	display: inline;
+}
+
+/* $("#phone4, #phone, #emailCheckBtn").hide(); */
+#phone4, #phone, #emailCheckBtn, .edit {
+	display: none;
+}
+
+#formDiv {
+	display: none;
+}
+
+#save, #showList {
+	margin: 1px;
+}
+
+#m_phone4 {
+	display: none;
+}
