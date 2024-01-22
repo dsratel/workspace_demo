@@ -1,43 +1,38 @@
 package com.dialoguespace.demo;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.util.UUID;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import org.springframework.cloud.openfeign.FeignFormatterRegistrar;
-import org.springframework.context.annotation.Bean;
-import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
-
-import com.dialoguespace.demo.TestVO.Builder;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ConnectionTest {public static void main(String[] args) throws Exception {
 		
 //		String password = "Freepass123!@#";
 //		System.out.println(getSHA512(password));
+		String key = "20240115";
+		String str = key.substring(0, 4) + "-" + key.substring(4, 6);
+		if(key.length() > 6) str += "-" + key.substring(6, 8);
+		
+		System.out.println(str);
+		
+		//str = str.length() > 6 ?  : "";
+		
+		List list = new ArrayList();
+		
+		System.out.println("list size : " + list.size());
 	
-	TestVO test = new TestVO.Builder().name("hb").build();
-	
-	String uuid = UUID.randomUUID().toString().substring(0, 4) + "g2" + UUID.randomUUID().toString().substring(0, 4);
-	
-	String str = "aaaa-bbbb-cccc";
-	System.out.println(str.replace("-",""));
-	
-	
-	
-	
+		List list2 = new LinkedList();
+		list2.add("one");
+		list2.add("two");
+		list2.add("three");
+		
+		System.out.println(list2.toString());
+		
+		//Node headNode = this.head;
+		
+		
 		
 	}	// main end
-
+/*
 	@Bean
 	public FeignFormatterRegistrar localDateFormatter () {
 	    return registry -> {
@@ -122,51 +117,5 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		f.delete();
 		System.out.println(filePath + " 삭제 완료");
 	}
-	
-}
-
-class TestVO {
-    private final String name;
-    private final int age;
-    private final String phone;
-    private final String email;
-    
-    // 생성자
-    public TestVO(Builder builder) {
-        this.name = builder.name;
-        this.age = builder.age;
-        this.phone = builder.phone;
-        this.email = builder.email;
-    }
-    
-    
-    public static class Builder {
-        private String name;
-        private int age;
-        private String phone;
-        private String email;
-
-        public Builder name(String name){
-            this.name = name;
-            return this;
-        }
-        public Builder age(int age){
-            this.age = age;
-            return this;
-        }
-        public Builder phone(String phone){
-            this.phone = phone;
-            return this;
-        }
-        public Builder email(String email){
-            this.email = email;
-            return this;
-        }
-        public TestVO build(){
-            return new TestVO(this);
-        }
-        
-    }
-    
-    
+	*/
 }

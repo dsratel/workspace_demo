@@ -179,7 +179,7 @@
 				pid IN (SELECT seq FROM t_comment WHERE id = #{id} AND boardseq = #{searchKeyword})
 			</otherwise>
 		</choose>
-		LIMIT #{pagination.startIndex}, #{pagination.pageSize}
+		ORDER BY regdate DESC LIMIT #{pagination.startIndex}, #{pagination.pageSize}
 	</select>
 	
 </mapper>

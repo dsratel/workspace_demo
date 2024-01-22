@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="이메일"/>
+		<item key="selection" value="key"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="이메일"/>
-			<item value="selectmember"/>
-			<item value="선택한"/>
-			<item value="selectMember"/>
-			<item value="toViewMember"/>
-			<item value="view"/>
-			<item value="memberview"/>
-			<item value="tomemberview"/>
-			<item value="tomember"/>
-			<item value="social_account"/>
-			<item value="SELECT id, pw, nickname, name, address, email, phone, fileno, status"/>
-			<item value=" SELECT id, pw, nickname, name, address, email, phone, fileno, status"/>
-			<item value="id"/>
-			<item value="ratelamsh"/>
-			<item value="cnt"/>
+			<item value="key"/>
+			<item value="linked"/>
+			<item value="activateBot"/>
+			<item value="p"/>
+			<item value="selenium"/>
+			<item value="profile"/>
+			<item value="/*"/>
+			<item value=".*"/>
+			<item value="delete"/>
+			<item value="LIKE CONCAT"/>
+			<item value="UNION SELECT"/>
+			<item value="dellist"/>
+			<item value="srchinfo"/>
+			<item value="searchtype_init"/>
+			<item value="keyword"/>
 		</list>
 		<list key="replacehistory">
 			<item value="royalBlue"/>
