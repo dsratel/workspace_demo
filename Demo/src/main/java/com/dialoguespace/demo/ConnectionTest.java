@@ -25,7 +25,10 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		list2.add("two");
 		list2.add("three");
 		
-		System.out.println(list2.toString());
+		//System.out.println(list2);
+		
+		System.out.println(Math.pow(10, 3));
+		
 		
 		//Node headNode = this.head;
 		
@@ -119,3 +122,19 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 	}
 	*/
 }
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ 
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+    }
+}
+*/
