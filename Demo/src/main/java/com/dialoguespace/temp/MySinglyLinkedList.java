@@ -1,5 +1,6 @@
 package com.dialoguespace.temp;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MySinglyLinkedList<E> {
@@ -42,7 +43,7 @@ public class MySinglyLinkedList<E> {
 		// 1. 먼자 가장 앞의 요소를 가져옴
 		Node<E> first = head;
 		
-		// 2. 새 노드 생성 (이 때 데이터와 enxt 포인트를 준다)
+		// 2. 새 노드 생성 (이 때 데이터와 next 포인트를 준다)
 		Node<E> newNode = new Node<>(value, first);
 		
 		// 3. 요소가 추가되었으니 size를 늘린다.
@@ -245,7 +246,80 @@ public class MySinglyLinkedList<E> {
 		return true;
 	}
 	
+	public E removeLast() {
+		return remove(size-1);
+	}
 	
+	public E get(int index) {
+		if(index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+		return search(index).item;
+	}
 	
-
+	public void set(int index, E value) {
+		if(index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+		// 1. search 메소드를 이용해 교체할 노드를 얻는다.
+		Node<E> replace_node = search(index);
+		
+		// 2. 교체할 노드의 요소를 변경한다.
+		replace_node.item = null;
+		replace_node.item = value;
+	}
+	
+	@Override
+	public String toString() {
+		// 1. 만일 head가 null 일 경우 빈 배열
+		if(head == null) {
+			return "[]";
+		}
+		
+		// 2. 현재 size만큼 배열 생성
+		Object[] array = new Object[size];
+		
+		// 3. 노드 next를 순회하면서 배열에 노드 값을 저장
+		int index = 0;
+		Node<E> n = head;
+		while(n != null) {
+			array[index] = (E)n.item;
+			index++;
+			n = n.next;
+		}
+		
+		// 3. 배열을 스트링화하여 반환
+		return Arrays.toString(array);
+	}
+	
+	public static void main(String[] args) {
+		MySinglyLinkedList<Number> l = new MySinglyLinkedList<>();
+		
+		l.add(3);
+		l.add(6);
+		l.add(4);
+		l.add(3);
+		l.add(8);
+		l.add(10);
+		l.add(11);
+		System.out.println(l);
+		
+		l.add(5, 204);
+		l.add(0, 301);
+		l.add(2, 105);
+		System.out.println(l);
+		
+		l.remove(3);
+		System.out.println(l);
+		
+		l.remove(new Integer(3));
+		System.out.println(l);
+		
+		l.set(4, 999);
+		System.out.println(l);
+		
+		
+	}
 }

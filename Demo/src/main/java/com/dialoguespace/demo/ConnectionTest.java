@@ -12,13 +12,13 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		String str = key.substring(0, 4) + "-" + key.substring(4, 6);
 		if(key.length() > 6) str += "-" + key.substring(6, 8);
 		
-		System.out.println(str);
+		//System.out.println(str);
 		
 		//str = str.length() > 6 ?  : "";
 		
 		List list = new ArrayList();
 		
-		System.out.println("list size : " + list.size());
+		//System.out.println("list size : " + list.size());
 	
 		List list2 = new LinkedList();
 		list2.add("one");
@@ -27,10 +27,121 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		
 		//System.out.println(list2);
 		
-		System.out.println(Math.pow(10, 3));
+		//System.out.println((int)Math.pow(10, 0));
+		
+		ListNode node1 = new ListNode(4, new ListNode(3, new ListNode(9, null)));
+		ListNode node2 = new ListNode(3, new ListNode(4, new ListNode(8, null)));
+		
+		ListNode node = null;
+		
+		// 첫 번째 리스트노드
+		node = node1;
+		
+		int p = 1;
+		int num1 = node.val;
+		while(node.next != null) {
+			node = node.next;			
+			num1 += node.val*(int)Math.pow(10,p);
+			p++;
+		}
+		
+		System.out.println(num1);
+		
+		// 두 번째 리스트노드
+		node = null;
+		node = node2;
+		p = 1;
+		int num2 = node.val;
+		while(node.next != null) {
+			node = node.next;
+			num2 += node.val*(int)Math.pow(10, p);
+			p++;
+		}
+		
+		System.out.println(num2);
+		
+		// 합계 리스트노드
+		int num3 = num1 + num2;
+		p = 1;
+		ListNode head = new ListNode(num3%(int)Math.pow(10,p));
+		ListNode tail = head;
+		
+		num3 -= num3%(int)Math.pow(10,p);	// 첫 째 자리인 경우 여기에서 끝
+		System.out.println("십의 자리부터 합계 리스트노드 : " + num3);
+		
+		while(num3 > 0) {
+			
+			ListNode last = tail;
+
+			p++;
+			System.out.println("p : " + p + " / num3 : " + num3);
+			int val = num3%(int)Math.pow(10,p)/(int)Math.pow(10,p-1);
+			tail = new ListNode(val);
+			//System.out.println("next_node 전 : " + next_node);
+			System.out.println("num3 : " + num3 + " / 뺄 수 : " + num3%(int)Math.pow(10,p));
+			//next_node = next_node.next;
+			//System.out.println("next_node 후 : " + next_node);
+			num3 -= num3%(int)Math.pow(10,p);
+			//node = node.next;
+			
+			last.next = tail;
+		}
+		
+
+		
+		LinkedList aaa = new LinkedList();
+		
+
+		
+//		while(num3 > 0) {
+//			ListNode next = new ListNode();
+//			next = n.next;				
+//			for(int i = 1; i < p; p++) {
+//				System.out.println("i : " + i + " / p : " + p);
+//				next = next.next;
+//			}
+//			p++;
+//			System.out.println("p : " + p + " / num3 : " + num3);
+//			int val = num3%(int)Math.pow(10,p)/(int)Math.pow(10,p-1);
+//			next = new ListNode(val);
+//			//System.out.println("next_node 전 : " + next_node);
+//			System.out.println("num3 : " + num3 + " / 뺄 수 : " + num3%(int)Math.pow(10,p));
+//			//next_node = next_node.next;
+//			//System.out.println("next_node 후 : " + next_node);
+//			num3 -= num3%(int)Math.pow(10,p);
+//			//node = node.next;
+//		}
+//		
+//		
+//		System.out.println("==========");		
+//		System.out.println(n.next);
+//		System.out.println(n.next.next);
 		
 		
-		//Node headNode = this.head;
+		//System.out.println(1822%100/10);
+		
+		
+		
+		//ListNode node3 = new ListNode(5, new ListNode(0, new ListNode(8, new ListNode(1, null))));
+		
+		
+		// n1=5, n2=0, n3=8, n4=1
+		// 
+		
+		
+//		int a = 1824356243;
+//		int l = 0;
+//		while(a > 0) {
+//			l++;
+//			a -= a%(int)Math.pow(10, l);
+//		}
+//		System.out.println(l);
+//		
+//		for(int i = 0; i < l; i++) {
+//			ListNode node
+//		}
+//		
+		
 		
 		
 		
@@ -131,10 +242,39 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
  *     ListNode(int val) { this.val = val; }
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
+ * 
+ * */
  
-class Solution {
+class Test {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        
+    	int l = l1.val;
+    	
+    	int lCnt = 0;
+    	
+		ListNode r1 = new ListNode();
+		
+//		List<ListNode> list = new ArrayList<ListNode> (); 
+		
+		List<Integer> list = new ArrayList<Integer> ();
+		
+    	while( l1.next != null ) {
+     		list.add(l1.val);
+    	}
+
+    	
+    	for( int i = list.size(); i == 0; i-- ) {
+    		list.add(l1.val);
+    	}
+    	
+        return new ListNode();
     }
 }
-*/
+
+class ListNode {
+	int val;
+	ListNode next;
+	ListNode() {}
+	ListNode(int val) { this.val = val; }
+	ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
