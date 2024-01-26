@@ -1,6 +1,7 @@
 package com.dialoguespace.demo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,24 +14,14 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		if(key.length() > 6) str += "-" + key.substring(6, 8);
 		
 		//System.out.println(str);
-		
-		//str = str.length() > 6 ?  : "";
-		
-		List list = new ArrayList();
-		
-		//System.out.println("list size : " + list.size());
-	
-		List list2 = new LinkedList();
-		list2.add("one");
-		list2.add("two");
-		list2.add("three");
+
 		
 		//System.out.println(list2);
 		
 		//System.out.println((int)Math.pow(10, 0));
 		
-		ListNode node1 = new ListNode(4, new ListNode(3, new ListNode(9, null)));
-		ListNode node2 = new ListNode(3, new ListNode(4, new ListNode(8, null)));
+		ListNode node1 = new ListNode(0);//new ListNode(4, new ListNode(3, new ListNode(9, null)));
+		ListNode node2 = new ListNode(0);//new ListNode(3, new ListNode(4, new ListNode(8, null)));
 		
 		ListNode node = null;
 		
@@ -62,6 +53,8 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		
 		// 합계 리스트노드
 		int num3 = num1 + num2;
+		/*
+		int size = 1;
 		p = 1;
 		ListNode head = new ListNode(num3%(int)Math.pow(10,p));
 		ListNode tail = head;
@@ -70,7 +63,7 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		System.out.println("십의 자리부터 합계 리스트노드 : " + num3);
 		
 		while(num3 > 0) {
-			
+			size++;
 			ListNode last = tail;
 
 			p++;
@@ -88,8 +81,79 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		}
 		
 
+//		ListNode aaa = head.next;
+//		while(aaa.next != null) {
+//			System.out.println("값 출력 : " + aaa.val);
+//			aaa = aaa.next;
+//			
+//		}
+		System.out.println("head val");
+		System.out.println(head.val);
+		System.out.println(head.next.val);
+		System.out.println(head.next.next.val);
+		System.out.println(head.next.next.next.val);
+		System.out.println("==========");
+		Object[] arr = new Object[size];
+		int index = 0;
+		ListNode n = head;
+		while(n != null) {
+			arr[index] = n.val;
+			index++;
+			n = n.next;			
+		}
 		
-		LinkedList aaa = new LinkedList();
+		System.out.println(Arrays.toString(arr));
+		*/
+		System.out.println("==========");
+//		List list = new ArrayList();
+//		int i = 10;
+//		while(num3 > 0) {
+//			list.add(num3%i/(i/10));
+//			num3 -= num3%i;
+//			i *= 10;
+//		}
+//		System.out.println(list.toString());
+
+		int i = 10;
+		int size = 0;
+		ListNode head = null;
+		ListNode tail = null;
+		while(num3 >= 0) {
+			ListNode last = tail;
+			ListNode newNode = new ListNode(num3%i/(i/10));
+			System.out.println("newNode.val : " + newNode.val);
+			tail = newNode;
+			size++;
+			if(last == null) {
+				// 마지막이 null 이라면 처음 추가하는 데이터 이므로 head도 똑같은 노드를 가리킨다.
+				head = tail;
+				System.out.println("head = tail");
+			} else {
+				last.next = newNode;
+			}
+			num3 -= num3%i;
+			i *= 10;
+		}
+		
+		Object[] arr = new Object[size];
+		int index = 0;
+		ListNode n = head;
+		while(n != null) {
+			arr[index] = n.val;
+			n = n.next;
+			index++;
+		}
+		
+		System.out.println(Arrays.toString(arr));
+		
+		
+		
+						
+		
+		
+		
+		
+		
 		
 
 		
