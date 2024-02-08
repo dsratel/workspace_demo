@@ -1,11 +1,13 @@
 package com.dialoguespace.board;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,6 +278,16 @@ public class BoardController {
 		}
 		
 		return "redirect:/board/toList";
+	}
+	
+	
+	// 엑셀 다운로드 테스트
+	@GetMapping(value="/excel")
+	public String excelDownload(HttpServletResponse response) throws UnsupportedEncodingException {
+//		String EncodedName = new String("다이얼엑셀".getBytes("UTF-8"), "8859_1");
+//		response.setHeader("Content-Disposision", "attachment; filename=" + EncodedName);
+		response.setHeader("Content-Disposition", "attachment; filename=dialogue.xls");
+		return "/excelDownload";
 	}
 	
 	/* 

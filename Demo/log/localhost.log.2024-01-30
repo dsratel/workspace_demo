@@ -1,0 +1,1 @@
+[19:15:39.026] DEBUG LogFactory.setImplementation(LogFactory.java:135) - Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
