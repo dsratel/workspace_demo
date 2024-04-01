@@ -43,7 +43,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="HttpServletResponse"/>
+			<item key="textPattern" value="rsaPublicKeyExponent"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*.java"/>
@@ -67,13 +67,13 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="regex"/>
+			<item key="textPattern" value="rsa"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
-				<item value="*"/>
 				<item value="*.java"/>
 				<item value="*.jsp"/>
 				<item value="xml"/>
+				<item value="*"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -82,7 +82,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="c:choose"/>
+			<item key="textPattern" value="document.location.href"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -97,7 +97,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="userbyidemail"/>
+			<item key="textPattern" value="ajax"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -112,7 +112,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="attachfile"/>
+			<item key="textPattern" value="HttpServletResponse"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -127,7 +127,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="bg-gradient-primary"/>
+			<item key="textPattern" value="regex"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -142,7 +142,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="context-param"/>
+			<item key="textPattern" value="c:choose"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -157,7 +157,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="========== EncryptionUtils - getRsaInstance =========="/>
+			<item key="textPattern" value="userbyidemail"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -172,7 +172,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="MaxBackupIndex"/>
+			<item key="textPattern" value="attachfile"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
 				<item value="*"/>
@@ -187,11 +187,13 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="bg-login-image"/>
+			<item key="textPattern" value="bg-gradient-primary"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
+				<item value="*"/>
 				<item value="*.java"/>
 				<item value="*.jsp"/>
+				<item value="xml"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -200,11 +202,13 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="GoogleInfResponse"/>
+			<item key="textPattern" value="context-param"/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
+				<item value="*"/>
 				<item value="*.java"/>
 				<item value="*.jsp"/>
+				<item value="xml"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -213,11 +217,13 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="pop"/>
+			<item key="textPattern" value="========== EncryptionUtils - getRsaInstance =========="/>
 			<item key="scope" value="0"/>
 			<list key="fileNamePatterns">
+				<item value="*"/>
 				<item value="*.java"/>
 				<item value="*.jsp"/>
+				<item value="xml"/>
 			</list>
 			<list key="workingSets">
 			</list>
@@ -231,7 +237,7 @@
 		<item key="DIALOG_Y_ORIGIN" value="168"/>
 		<item key="DIALOG_WIDTH" value="944"/>
 		<item key="DIALOG_HEIGHT" value="468"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|5|0|맑은 고딕"/>
 	</section>
 	<section name="org.eclipse.search.text.FileSearchResultPage">
 		<item key="org.eclipse.search.resultpage.limit" value="1000"/>

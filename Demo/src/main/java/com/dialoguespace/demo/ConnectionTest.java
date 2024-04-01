@@ -1,43 +1,78 @@
 package com.dialoguespace.demo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ConnectionTest {public static void main(String[] args) throws Exception {
+public class ConnectionTest {
+	public static void main(String[] args) throws Exception {
+	
+		String s = "PAYPALISHIRING";
+		int numRows = 5;
+		/*
+		StringBuilder sb = new StringBuilder();
+		// String 글자 수
+		int len = s.length();
 		
-//		String password = "Freepass123!@#";
-//		System.out.println(getSHA512(password));
-		String key = "20240115";
-		String str = key.substring(0, 4) + "-" + key.substring(4, 6);
-		if(key.length() > 6) str += "-" + key.substring(6, 8);
-		
-		//System.out.println(str);
+		for(int i = 0; i < numRows; i++) {
+			int index = i;
+						
+			if(i > 0 && i < numRows-1) {
+				int round = 0;
+				while(index < len) {
+					sb.append(s.charAt(index));
+					round++;
+					if(round%2 > 0) {
+						index += 2*(numRows-i-1);						
+					} else {
+						index += 2*i;						
+					}
+				}
+					 
+			} else if((i == 0 || i == numRows-1) && numRows > 1) {
+				while(index < len) {
+					sb.append(s.charAt(index));
+					index += 2*(numRows-1);
+				}
+			} else {
+				while(index < len) {
+					sb.append(s.charAt(index));
+					index++;
+				}
+			}
+		}
 
 		
-		//System.out.println(list2);
-		
-		//System.out.println((int)Math.pow(10, 0));
-//		String strUrl = "/Member/memberList.jsp";
-//		
-//		System.out.println("replaceAll : " + strUrl.replaceAll("^/", ""));
-//		String[] arrUrl = strUrl.replaceAll("^/", "").split("/");
-//		System.out.println(Arrays.toString(arrUrl));
-//		System.out.println(arrUrl[0]);
-//		System.out.println(arrUrl[1]);
-//		System.out.println(arrUrl[1].replaceAll("\\.[^\\.]*$",""));
+		System.out.println(sb.toString());
+		*/
 		
 		
-		String str1 = "abcabcbb";	// 3. abc
-		String str2 = "bbbbb";		// 1. b
-		String str3 = "pwwkew";		// 3. wke
+		////////
 		
-		CharSequence cs = null;
-		System.out.println(str1.subSequence(0, 3));
-		
-		
-		
+	     int len = s.length();
+
+	 
+
+	        int index = 0;
+	        int diff = 2 * numRows - 2;
+	        char[] arr = new char[len];
+
+	        for (int row = 0; row < numRows; row++) {
+	            int diagDiff = diff - 2 * row;
+	            boolean isDiagExist = diagDiff < diff && diagDiff > 0;
+
+	            for (int col = row; col < len; col += diff) {
+	                arr[index] = s.charAt(col);
+	                index++;
+
+	                if (isDiagExist && col + diagDiff < len) {
+	                    arr[index] = s.charAt(col + diagDiff);
+	                    index++;
+	                }
+	            }
+	        }
+
 
 		
 		
@@ -45,9 +80,6 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
 		
 	}	// main end
 
-	public int lengthOfLongestSubstring(String s) {
-	    return 0;
-	}
 /*
 	@Bean
 	public FeignFormatterRegistrar localDateFormatter () {
@@ -147,6 +179,9 @@ public class ConnectionTest {public static void main(String[] args) throws Excep
  * 
  * */
  
+
+
+
 class Test {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
     	int l = l1.val;

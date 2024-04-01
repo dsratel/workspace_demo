@@ -22,6 +22,8 @@
 	<script src="/resources/js/rsa/rsa.js"></script>
 	<script src="/resources/js/rsa/prng4.js"></script>
 	<script src="/resources/js/rsa/rng.js"></script>
+	<script src="/resources/js/custom/board/test1.js"></script>
+	<script src="/resources/js/custom/comment/test2.js"></script>
 	<title>login page</title>
 </head>
 <body class="bg-gradient-light">

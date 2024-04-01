@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="response"/>
+		<item key="selection" value="privateKey"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="privateKey"/>
+			<item value="encrypt"/>
+			<item value="rsaPublicKeyModulus"/>
+			<item value="publicKeyExponent"/>
+			<item value="genRsaInstance"/>
+			<item value="gstrWebSvrIp"/>
+			<item value="ajax"/>
+			<item value="str1"/>
 			<item value="response"/>
 			<item value="context"/>
 			<item value="appbase"/>
@@ -15,14 +23,6 @@
 			<item value="tostring"/>
 			<item value="next_node"/>
 			<item value="node"/>
-			<item value="last"/>
-			<item value="search"/>
-			<item value="key"/>
-			<item value="linked"/>
-			<item value="activateBot"/>
-			<item value="p"/>
-			<item value="selenium"/>
-			<item value="profile"/>
 		</list>
 		<list key="replacehistory">
 			<item value="royalBlue"/>
@@ -43,10 +43,10 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1022"/>
-		<item key="DIALOG_Y_ORIGIN" value="348"/>
+		<item key="DIALOG_X_ORIGIN" value="1363"/>
+		<item key="DIALOG_Y_ORIGIN" value="310"/>
 		<item key="DIALOG_WIDTH" value="288"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
-		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|5|0|맑은 고딕"/>
 	</section>
 </section>
